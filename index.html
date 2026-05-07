@@ -1,0 +1,762 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>XCID — CoInteligencia Profesional para Norteamérica</title>
+<meta name="description" content="Arquitectura que gobierna sistemas de IA por diseño. Para profesionales del corredor Juárez–El Paso que toman decisiones con consecuencias regulatorias, financieras y operativas reales." />
+
+<!-- Open Graph -->
+<meta property="og:title" content="XCID — CoInteligencia Profesional" />
+<meta property="og:description" content="Arquitectura que gobierna sistemas de IA por diseño. En desarrollo activo en el corredor Juárez–El Paso." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://xcid.dev" />
+<meta property="og:locale" content="es_MX" />
+<meta property="og:locale:alternate" content="en_US" />
+
+<!-- Twitter -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="XCID — CoInteligencia Profesional" />
+<meta name="twitter:description" content="Arquitectura que gobierna sistemas de IA por diseño. En desarrollo activo en el corredor Juárez–El Paso." />
+
+<!-- Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    /* Surface */
+    --bg:           #080812;
+    --bg-elev-1:    rgba(255,255,255,0.02);
+    --bg-elev-2:    rgba(255,255,255,0.035);
+
+    /* Text */
+    --text:         #f3f6f9;
+    --text-soft:    #d1d5db;
+    --text-muted:   #9ca3af;
+    --text-faint:   #6b7280;
+
+    /* Lines */
+    --line:         rgba(255,255,255,0.06);
+    --line-strong:  rgba(255,255,255,0.10);
+
+    /* Teal accent */
+    --teal:         #2dd4bf;
+    --teal-soft:    #5eead4;
+    --teal-deep:    #0d9488;
+    --teal-wash:    rgba(45,212,191,0.10);
+    --teal-line:    rgba(45,212,191,0.35);
+
+    /* Indigo (reserved for axis 04) */
+    --indigo:       #818cf8;
+    --indigo-wash:  rgba(79,70,229,0.04);
+    --indigo-line:  rgba(129,140,248,0.30);
+
+    /* Amber (reserved) */
+    --amber:        #fbbf24;
+
+    /* Type */
+    --font-display: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
+    --font-sans:    "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+    --font-mono:    "Geist Mono", ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+
+    /* Rhythm */
+    --max-prose:    720px;
+    --max-content:  1080px;
+    --max-hero:     960px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+
+  /* ── Living background ─────────────────────────────────── */
+  .bg-stage {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .orb {
+    position: absolute;
+    width: 720px;
+    height: 720px;
+    border-radius: 9999px;
+    filter: blur(80px);
+    opacity: 0;
+    will-change: transform, opacity;
+  }
+  .orb--teal {
+    background: radial-gradient(circle at 50% 50%, rgba(45,212,191,0.42) 0%, rgba(45,212,191,0) 65%);
+    top: -180px; left: -160px;
+    animation: drift-a 28s ease-in-out infinite, breathe-a 9s ease-in-out infinite;
+  }
+  .orb--indigo {
+    background: radial-gradient(circle at 50% 50%, rgba(129,140,248,0.40) 0%, rgba(129,140,248,0) 65%);
+    top: 38vh; right: -220px;
+    animation: drift-b 32s ease-in-out infinite, breathe-b 11s ease-in-out infinite;
+  }
+  .orb--indigo-soft {
+    background: radial-gradient(circle at 50% 50%, rgba(129,140,248,0.22) 0%, rgba(129,140,248,0) 60%);
+    width: 540px; height: 540px;
+    bottom: -120px; left: 30%;
+    animation: drift-c 24s ease-in-out infinite, breathe-c 8s ease-in-out infinite;
+  }
+  @keyframes drift-a {
+    0%   { transform: translate(0, 0); }
+    50%  { transform: translate(80px, 60px); }
+    100% { transform: translate(0, 0); }
+  }
+  @keyframes drift-b {
+    0%   { transform: translate(0, 0); }
+    50%  { transform: translate(-90px, -70px); }
+    100% { transform: translate(0, 0); }
+  }
+  @keyframes drift-c {
+    0%   { transform: translate(0, 0); }
+    50%  { transform: translate(60px, -50px); }
+    100% { transform: translate(0, 0); }
+  }
+  @keyframes breathe-a { 0%,100% { opacity: 0.18; } 50% { opacity: 0.28; } }
+  @keyframes breathe-b { 0%,100% { opacity: 0.16; } 50% { opacity: 0.24; } }
+  @keyframes breathe-c { 0%,100% { opacity: 0.12; } 50% { opacity: 0.20; } }
+
+  /* SVG noise grain */
+  .grain {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.045;
+    mix-blend-mode: overlay;
+  }
+
+  /* ── Layout shell ──────────────────────────────────────── */
+  main, header, footer { position: relative; z-index: 2; }
+
+  .container {
+    max-width: var(--max-content);
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+  .container--narrow {
+    max-width: var(--max-hero);
+  }
+  .container--prose {
+    max-width: var(--max-prose);
+  }
+  @media (max-width: 640px) {
+    .container { padding: 0 22px; }
+  }
+
+  /* ── Header ────────────────────────────────────────────── */
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(8,8,18,0.65);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--line);
+  }
+  .site-header__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 18px 32px;
+    max-width: 1280px;
+    margin: 0 auto;
+  }
+  @media (max-width: 640px) {
+    .site-header__inner { padding: 14px 22px; }
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    text-decoration: none;
+    color: inherit;
+  }
+  .brand__mark {
+    width: 38px;
+    height: 38px;
+    flex: 0 0 38px;
+    display: block;
+  }
+  .brand__text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    gap: 4px;
+  }
+  .brand__name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 22px;
+    letter-spacing: -0.01em;
+    color: var(--text);
+  }
+  .brand__kicker {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 9.5px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  @media (max-width: 540px) {
+    .brand__kicker { display: none; }
+    .brand__name { font-size: 20px; }
+  }
+
+  /* Lang toggle */
+  .lang {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px;
+    background: var(--bg-elev-1);
+    border: 1px solid var(--line);
+    border-radius: 9999px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+  }
+  .lang__btn {
+    background: transparent;
+    border: 0;
+    color: var(--text-muted);
+    padding: 6px 12px;
+    border-radius: 9999px;
+    cursor: pointer;
+    font: inherit;
+    text-transform: uppercase;
+    transition: color 200ms ease, background 200ms ease;
+  }
+  .lang__btn:hover { color: var(--text-soft); }
+  .lang__btn.is-active {
+    color: var(--bg);
+    background: var(--text);
+  }
+
+  /* ── Sections ──────────────────────────────────────────── */
+  .section {
+    padding: 96px 0;
+  }
+  @media (max-width: 760px) {
+    .section { padding: 72px 0; }
+  }
+  .section--hero {
+    padding: clamp(80px, 14vh, 160px) 0 clamp(64px, 10vh, 120px);
+  }
+  .section--manifesto {
+    padding: 24px 0 96px;
+  }
+  .section--foundations {
+    padding: 96px 0 120px;
+  }
+  .section--contact {
+    padding: 96px 0 80px;
+    border-top: 1px solid var(--line);
+  }
+
+  /* ── Type roles ────────────────────────────────────────── */
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin: 0 0 28px;
+  }
+  .eyebrow--teal {
+    color: var(--teal);
+  }
+
+  .display {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(48px, 7vw, 96px);
+    line-height: 1.02;
+    letter-spacing: -0.025em;
+    color: var(--text);
+    margin: 0 0 32px;
+    text-wrap: balance;
+  }
+  .display em {
+    font-style: italic;
+    font-weight: 500;
+    color: var(--text-soft);
+  }
+
+  .subhead {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: clamp(18px, 2vw, 22px);
+    line-height: 1.5;
+    letter-spacing: -0.005em;
+    color: var(--text-soft);
+    margin: 0;
+    max-width: 780px;
+    text-wrap: pretty;
+  }
+
+  .section-label {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin: 0 0 24px;
+  }
+
+  .section-title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(28px, 3.4vw, 40px);
+    line-height: 1.15;
+    letter-spacing: -0.015em;
+    color: var(--text);
+    margin: 0 0 56px;
+    max-width: 720px;
+    text-wrap: balance;
+  }
+
+  /* ── Manifesto ─────────────────────────────────────────── */
+  .manifesto {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .manifesto p {
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--text-soft);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .manifesto p:last-child {
+    color: var(--text-muted);
+    font-size: 16px;
+    padding-top: 8px;
+  }
+  @media (max-width: 640px) {
+    .manifesto p { font-size: 16.5px; }
+  }
+
+  /* Decorative rule between sections */
+  .rule {
+    display: block;
+    width: 56px;
+    height: 1px;
+    background: var(--teal-line);
+    margin: 0 0 40px;
+  }
+  .section-label--premise {
+    margin: 0 0 20px;
+  }
+
+  /* ── Foundations grid ──────────────────────────────────── */
+  .foundations {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+  @media (max-width: 920px) {
+    .foundations { grid-template-columns: 1fr; gap: 16px; }
+  }
+
+  .card {
+    position: relative;
+    padding: 40px 32px;
+    background: var(--bg-elev-1);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    transition: border-color 350ms ease, background 350ms ease, transform 350ms ease;
+  }
+  .card:hover {
+    border-color: var(--teal-line);
+    background: var(--bg-elev-2);
+  }
+  .card__num {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+    color: var(--teal);
+    margin: 0 0 28px;
+    display: block;
+  }
+  .card__title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+    color: var(--text);
+    margin: 0 0 16px;
+    text-wrap: balance;
+  }
+  .card__body {
+    font-size: 15px;
+    line-height: 1.65;
+    color: var(--text-soft);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* Featured card (axis 04) */
+  .card--featured {
+    margin-top: 20px;
+    padding: 56px 48px;
+    background: var(--indigo-wash);
+    border: 1px solid var(--indigo-line);
+    border-radius: 4px;
+    transition: border-color 350ms ease, background 350ms ease;
+  }
+  .card--featured:hover {
+    border-color: rgba(129,140,248,0.55);
+  }
+  .card--featured .card__num {
+    color: var(--indigo);
+  }
+  .card--featured .card__title {
+    font-size: 32px;
+    line-height: 1.15;
+    margin-bottom: 20px;
+  }
+  .card--featured .card__body {
+    font-size: 17px;
+    line-height: 1.7;
+    max-width: 760px;
+    color: var(--text-soft);
+  }
+  .card--featured .card__body strong {
+    color: var(--text);
+    font-weight: 500;
+  }
+  @media (max-width: 760px) {
+    .card { padding: 32px 26px; }
+    .card--featured { padding: 40px 28px; margin-top: 16px; }
+    .card--featured .card__title { font-size: 26px; }
+    .card--featured .card__body { font-size: 16px; }
+  }
+
+  /* ── Contact ──────────────────────────────────────────── */
+  .contact-block {
+    max-width: 720px;
+  }
+  .contact-block p {
+    font-size: 17px;
+    line-height: 1.7;
+    color: var(--text-soft);
+    margin: 0 0 28px;
+    text-wrap: pretty;
+  }
+  .contact-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+  }
+  .contact-links a {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 15px;
+    color: var(--teal);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    transition: color 200ms ease, border-color 200ms ease;
+  }
+  .contact-links a:hover {
+    color: var(--teal-soft);
+    border-bottom-color: var(--teal-soft);
+  }
+  @media (max-width: 540px) {
+    .contact-links { gap: 18px 24px; }
+  }
+
+  /* ── Footer ────────────────────────────────────────────── */
+  .site-footer {
+    padding: 32px 0 48px;
+    border-top: 1px solid var(--line);
+  }
+  .site-footer__line {
+    font-size: 13px;
+    color: var(--text-muted);
+    text-align: left;
+    margin: 0;
+    letter-spacing: 0.005em;
+  }
+
+  /* ── Bilingual switching ─────────────────────────────── */
+  [data-lang-mode="es"] [data-en],
+  [data-lang-mode="en"] [data-es] { display: none; }
+
+  /* ── Reduced motion ───────────────────────────────────── */
+  @media (prefers-reduced-motion: reduce) {
+    .orb { animation: none !important; opacity: 0.18; }
+    html { scroll-behavior: auto; }
+  }
+
+  /* Selection */
+  ::selection {
+    background: var(--teal-wash);
+    color: var(--text);
+  }
+</style>
+</head>
+<body data-lang-mode="es">
+
+  <!-- Living background -->
+  <div class="bg-stage" aria-hidden="true">
+    <div class="orb orb--teal"></div>
+    <div class="orb orb--indigo"></div>
+    <div class="orb orb--indigo-soft"></div>
+  </div>
+
+  <!-- Grain overlay -->
+  <svg class="grain" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <filter id="noise">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" stitchTiles="stitch"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.6 0"/>
+    </filter>
+    <rect width="100%" height="100%" filter="url(#noise)"/>
+  </svg>
+
+  <!-- HEADER -->
+  <header class="site-header">
+    <div class="site-header__inner">
+      <a class="brand" href="/" aria-label="XCID">
+        <img class="brand__mark" src="assets/logo-xcid.png" alt="" width="64" height="64" />
+        <span class="brand__text">
+          <span class="brand__name">XCID</span>
+          <span class="brand__kicker" data-es>CoInteligencia Profesional</span>
+          <span class="brand__kicker" data-en>Professional CoIntelligence</span>
+        </span>
+      </a>
+
+      <div class="lang" role="group" aria-label="Language">
+        <button class="lang__btn is-active" type="button" data-set-lang="es" aria-pressed="true">ES</button>
+        <button class="lang__btn"           type="button" data-set-lang="en" aria-pressed="false">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HERO -->
+    <section class="section section--hero">
+      <div class="container container--narrow">
+        <p class="eyebrow">
+          <span data-es>EN CONSTRUCCIÓN · CORREDOR JUÁREZ–EL PASO</span>
+          <span data-en>UNDER CONSTRUCTION · JUÁREZ–EL PASO CORRIDOR</span>
+        </p>
+        <h1 class="display">
+          <span data-es>CoInteligencia Profesional para Norteamérica.</span>
+          <span data-en>Professional CoIntelligence for North America.</span>
+        </h1>
+        <p class="subhead">
+          <span data-es>Una arquitectura que gobierna sistemas de IA por diseño — para profesionales que toman decisiones complejas con consecuencias regulatorias, financieras y operativas reales.</span>
+          <span data-en>An architecture that governs AI systems by design — for professionals making complex decisions with real regulatory, financial, and operational consequences.</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- MANIFESTO -->
+    <section class="section section--manifesto">
+      <div class="container container--prose">
+        <p class="section-label section-label--premise">
+          <span data-es>PREMISA</span>
+          <span data-en>PREMISE</span>
+        </p>
+        <span class="rule" aria-hidden="true"></span>
+        <div class="manifesto">
+          <div data-es>
+            <p>La industria está construyendo agentes de IA más rápido de lo que construye la arquitectura para hacerlos seguros. Las políticas y los guardrails se aplican como cosmética sobre sistemas que nunca fueron diseñados para ser gobernados desde sus cimientos.</p>
+            <p>XCID parte de una premisa distinta: la gobernanza no es contención añadida después del despliegue, es la forma en que los componentes del sistema están construidos para regularse mutuamente desde el origen.</p>
+            <p>El resultado es una infraestructura de inteligencia operativa que un profesional regulado — un consultor ambiental, un agente aduanal, un auditor fiscal, un director de cumplimiento — puede usar para tomar decisiones complejas con trazabilidad real, soberanía sobre su conocimiento, y un marco de confianza medible ante terceros.</p>
+            <p>Está en desarrollo activo. Lo que sigue es lo que ya está articulado.</p>
+          </div>
+          <div data-en>
+            <p>The industry is building AI agents faster than it&rsquo;s building the architecture to make them safe. Policies and guardrails are applied as cosmetics over systems that were never designed to be governed from their foundations.</p>
+            <p>XCID starts from a different premise: governance is not containment added after deployment — it&rsquo;s the way the system&rsquo;s components are built to regulate one another from the origin.</p>
+            <p>The result is an operational intelligence infrastructure that a regulated professional — an environmental consultant, a customs broker, a tax auditor, a compliance director — can use to make complex decisions with real traceability, sovereignty over their knowledge, and a measurable trust framework before third parties.</p>
+            <p>It is in active development. What follows is what is already articulated.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOUNDATIONS -->
+    <section class="section section--foundations">
+      <div class="container">
+        <p class="section-label">
+          <span data-es>FUNDAMENTOS</span>
+          <span data-en>FOUNDATIONS</span>
+        </p>
+        <h2 class="section-title">
+          <span data-es>Cuatro propiedades que sostienen el sistema.</span>
+          <span data-en>Four properties that hold the system together.</span>
+        </h2>
+
+        <div class="foundations">
+
+          <article class="card">
+            <span class="card__num">01</span>
+            <h3 class="card__title">
+              <span data-es>Arquitectura como gobernanza por diseño</span>
+              <span data-en>Architecture as governance by design</span>
+            </h3>
+            <p class="card__body">
+              <span data-es>La gobernanza no es un guardrail añadido después del despliegue. Es la forma en que los componentes del sistema están construidos para regularse mutuamente desde el origen.</span>
+              <span data-en>Governance is not a guardrail added after deployment. It is the way the system&rsquo;s components are built to regulate one another from the origin.</span>
+            </p>
+          </article>
+
+          <article class="card">
+            <span class="card__num">02</span>
+            <h3 class="card__title">
+              <span data-es>Soberanía total</span>
+              <span data-en>Full sovereignty</span>
+            </h3>
+            <p class="card__body">
+              <span data-es>El conocimiento operativo del actor — su experiencia, su contexto, sus decisiones — vive en estructuras que él controla. La inteligencia no se renta; se acumula y permanece.</span>
+              <span data-en>The actor&rsquo;s operational knowledge — their experience, context, decisions — lives in structures they control. Intelligence is not rented; it accumulates and remains.</span>
+            </p>
+          </article>
+
+          <article class="card">
+            <span class="card__num">03</span>
+            <h3 class="card__title">
+              <span data-es>Trazabilidad</span>
+              <span data-en>Traceability</span>
+            </h3>
+            <p class="card__body">
+              <span data-es>Cada decisión que el sistema influye queda registrada antes de la acción, no después como autopsia. Auditoría como estado vivo, no como evento posterior al incidente.</span>
+              <span data-en>Every decision the system influences is recorded before the action, not after as autopsy. Audit as a live state, not as a post-incident event.</span>
+            </p>
+          </article>
+
+        </div>
+
+        <article class="card card--featured">
+          <span class="card__num">04</span>
+          <h3 class="card__title">
+            <span data-es>Confianza operativa</span>
+            <span data-en>Operational trust</span>
+          </h3>
+          <p class="card__body">
+            <span data-es>El profesional que usa XCID puede sostener cada conclusión ante un cliente, un regulador, un OEM, un inversionista. El <strong>XTF Score</strong> — la métrica del trust framework de XCID — la hace medible, trazable y verificable.</span>
+            <span data-en>The professional using XCID can sustain every conclusion before a client, a regulator, an OEM, an investor. The <strong>XTF Score</strong> — the metric of XCID&rsquo;s trust framework — makes it measurable, traceable, and verifiable.</span>
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section section--contact">
+      <div class="container container--prose">
+        <p class="section-label">
+          <span data-es>CONSTRUIDO POR</span>
+          <span data-en>BUILT BY</span>
+        </p>
+
+        <div class="contact-block">
+          <p>
+            <span data-es>Jorge Luis Amparán Hernández — arquitecto de tecnología, consultor de IA, 25+ años en el corredor T-MEC. Lectura recomendada en la página personal: ensayos sobre gobernanza de IA, soberanía operativa, arquitectura de sistemas inteligentes.</span>
+            <span data-en>Jorge Luis Amparán Hernández — technology architect, AI consultant, 25+ years in the USMCA corridor. Recommended reading on his personal site: essays on AI governance, operational sovereignty, the architecture of intelligent systems.</span>
+          </p>
+
+          <ul class="contact-links">
+            <li>
+              <a href="https://jorgeamparan.github.io" target="_blank" rel="noopener noreferrer">
+                <span data-es>Página personal →</span>
+                <span data-en>Personal site →</span>
+              </a>
+            </li>
+            <li>
+              <a href="https://www.linkedin.com/in/jorge-luis-amparan/" target="_blank" rel="noopener noreferrer">
+                <span data-es>LinkedIn →</span>
+                <span data-en>LinkedIn →</span>
+              </a>
+            </li>
+            <li>
+              <a href="mailto:contacto@xcid.dev">
+                <span data-es>Contacto →</span>
+                <span data-en>Contact →</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer">
+    <div class="container">
+      <p class="site-footer__line">
+        <span data-es>XCID · CoInteligencia Profesional · Hecho en Juárez · El Paso · 2026</span>
+        <span data-en>XCID · Professional CoIntelligence · Made in Juárez · El Paso · 2026</span>
+      </p>
+    </div>
+  </footer>
+
+<script>
+  (function () {
+    var root = document.body;
+    var html = document.documentElement;
+    var btns = document.querySelectorAll('[data-set-lang]');
+
+    function setLang(lang) {
+      if (lang !== 'es' && lang !== 'en') lang = 'es';
+      root.setAttribute('data-lang-mode', lang);
+      html.setAttribute('lang', lang === 'es' ? 'es' : 'en');
+      btns.forEach(function (b) {
+        var active = b.getAttribute('data-set-lang') === lang;
+        b.classList.toggle('is-active', active);
+        b.setAttribute('aria-pressed', active ? 'true' : 'false');
+      });
+      try { localStorage.setItem('xcid-lang', lang); } catch (e) {}
+    }
+
+    btns.forEach(function (b) {
+      b.addEventListener('click', function () {
+        setLang(b.getAttribute('data-set-lang'));
+      });
+    });
+
+    var stored = null;
+    try { stored = localStorage.getItem('xcid-lang'); } catch (e) {}
+    if (stored === 'es' || stored === 'en') {
+      setLang(stored);
+    }
+  })();
+</script>
+
+</body>
+</html>
