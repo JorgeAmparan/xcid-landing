@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>XCID — CoInteligencia Profesional para Norteamérica</title>
-<meta name="description" content="Arquitectura que gobierna sistemas de IA por diseño. Para profesionales del corredor Juárez–El Paso que toman decisiones con consecuencias regulatorias, financieras y operativas reales." />
+<title>XCID — Sustentamos su criterio profesional.</title>
+<meta name="description" content="Sustentamos su criterio profesional. Arquitectura que gobierna sistemas de IA por diseño para profesionales del corredor Juárez–El Paso que toman decisiones con consecuencias regulatorias, financieras y operativas reales." />
 
 <!-- Open Graph -->
-<meta property="og:title" content="XCID — CoInteligencia Profesional" />
-<meta property="og:description" content="Arquitectura que gobierna sistemas de IA por diseño. En desarrollo activo en el corredor Juárez–El Paso." />
+<meta property="og:title" content="XCID — Sustentamos su criterio profesional." />
+<meta property="og:description" content="Sustentamos su criterio profesional. Arquitectura que gobierna sistemas de IA por diseño para profesionales del corredor Juárez–El Paso que toman decisiones con consecuencias regulatorias, financieras y operativas reales." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://xcid.dev" />
 <meta property="og:locale" content="es_MX" />
@@ -16,8 +16,8 @@
 
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="XCID — CoInteligencia Profesional" />
-<meta name="twitter:description" content="Arquitectura que gobierna sistemas de IA por diseño. En desarrollo activo en el corredor Juárez–El Paso." />
+<meta name="twitter:title" content="XCID — Sustentamos su criterio profesional." />
+<meta name="twitter:description" content="Sustentamos su criterio profesional. Arquitectura que gobierna sistemas de IA por diseño para profesionales del corredor Juárez–El Paso que toman decisiones con consecuencias regulatorias, financieras y operativas reales." />
 
 <!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -85,57 +85,42 @@
     min-height: 100vh;
   }
 
-  /* ── Living background ─────────────────────────────────── */
+  /* ── Living background — ESTRATO ───────────────────────
+     A WebGL scene of suspended document strata: 6 transparent
+     planes at varying Z-depths drifting with mouse parallax and
+     scroll velocity. The browser stops being a window and
+     becomes a space. The criterion is sustained on strata of
+     preserved evidence — quietly, in the background. */
   .bg-stage {
     position: fixed;
     inset: 0;
     z-index: 0;
     pointer-events: none;
     overflow: hidden;
+    background: var(--bg);
   }
-  .orb {
+  .bg-stage__canvas {
     position: absolute;
-    width: 720px;
-    height: 720px;
-    border-radius: 9999px;
-    filter: blur(80px);
-    opacity: 0;
-    will-change: transform, opacity;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
   }
-  .orb--teal {
-    background: radial-gradient(circle at 50% 50%, rgba(45,212,191,0.42) 0%, rgba(45,212,191,0) 65%);
-    top: -180px; left: -160px;
-    animation: drift-a 28s ease-in-out infinite, breathe-a 9s ease-in-out infinite;
+  .bg-stage::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 90% 70% at 50% 105%, rgba(8,8,18,0.85) 0%, rgba(8,8,18,0) 55%),
+      radial-gradient(ellipse 70% 50% at 50% 50%, rgba(8,8,18,0) 0%, rgba(8,8,18,0.35) 100%);
   }
-  .orb--indigo {
-    background: radial-gradient(circle at 50% 50%, rgba(129,140,248,0.40) 0%, rgba(129,140,248,0) 65%);
-    top: 38vh; right: -220px;
-    animation: drift-b 32s ease-in-out infinite, breathe-b 11s ease-in-out infinite;
+  .bg-stage--static {
+    background:
+      radial-gradient(ellipse 60% 55% at 25% 30%, rgba(45,212,191,0.07) 0%, rgba(45,212,191,0) 60%),
+      radial-gradient(ellipse 70% 60% at 78% 70%, rgba(129,140,248,0.06) 0%, rgba(129,140,248,0) 60%),
+      var(--bg);
   }
-  .orb--indigo-soft {
-    background: radial-gradient(circle at 50% 50%, rgba(129,140,248,0.22) 0%, rgba(129,140,248,0) 60%);
-    width: 540px; height: 540px;
-    bottom: -120px; left: 30%;
-    animation: drift-c 24s ease-in-out infinite, breathe-c 8s ease-in-out infinite;
-  }
-  @keyframes drift-a {
-    0%   { transform: translate(0, 0); }
-    50%  { transform: translate(80px, 60px); }
-    100% { transform: translate(0, 0); }
-  }
-  @keyframes drift-b {
-    0%   { transform: translate(0, 0); }
-    50%  { transform: translate(-90px, -70px); }
-    100% { transform: translate(0, 0); }
-  }
-  @keyframes drift-c {
-    0%   { transform: translate(0, 0); }
-    50%  { transform: translate(60px, -50px); }
-    100% { transform: translate(0, 0); }
-  }
-  @keyframes breathe-a { 0%,100% { opacity: 0.18; } 50% { opacity: 0.28; } }
-  @keyframes breathe-b { 0%,100% { opacity: 0.16; } 50% { opacity: 0.24; } }
-  @keyframes breathe-c { 0%,100% { opacity: 0.12; } 50% { opacity: 0.20; } }
 
   /* SVG noise grain */
   .grain {
@@ -375,6 +360,90 @@
     margin: 0 0 20px;
   }
 
+  /* Hero — brand kicker (category axiom, editorial register) */
+  .hero-kicker {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: clamp(14px, 1.3vw, 16px);
+    line-height: 1.5;
+    letter-spacing: 0.005em;
+    color: var(--text-soft);
+    margin: 0 0 28px;
+    max-width: 760px;
+    text-wrap: pretty;
+  }
+  .hero-kicker__es { color: var(--text); }
+  .hero-kicker__sep {
+    color: var(--teal);
+    margin: 0 0.45em;
+    font-weight: 400;
+  }
+  .hero-kicker__en { color: var(--text-muted); font-style: italic; }
+  [data-lang-mode="en"] .hero-kicker__es { color: var(--text-muted); font-style: italic; }
+  [data-lang-mode="en"] .hero-kicker__en { color: var(--text); font-style: normal; }
+
+  /* Hero — status badge (operational metadata, lower-priority) */
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 40px;
+    padding: 8px 14px 8px 14px;
+    border: 1px solid var(--line-strong);
+    border-radius: 9999px;
+    background: var(--bg-elev-1);
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .hero-badge::before {
+    content: "";
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 9999px;
+    background: var(--teal);
+    box-shadow: 0 0 0 4px rgba(45,212,191,0.12);
+  }
+
+  .section-title:has(+ .section-subtitle) {
+    margin-bottom: 16px;
+  }
+  .section-subtitle {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 17px;
+    line-height: 1.55;
+    letter-spacing: -0.005em;
+    color: var(--text-muted);
+    margin: 0 0 56px;
+    max-width: 720px;
+    text-wrap: pretty;
+  }
+  @media (max-width: 760px) {
+    .section-subtitle { font-size: 15.5px; margin-bottom: 40px; }
+  }
+
+  /* Footer — brand signature line */
+  .site-footer__sig {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-style: italic;
+    font-size: 14px;
+    line-height: 1.5;
+    letter-spacing: 0;
+    color: var(--text-soft);
+    margin: 0 0 10px;
+    text-wrap: pretty;
+  }
+  .site-footer__sig em {
+    font-style: normal;
+    color: var(--text-muted);
+  }
+
   /* ── Foundations grid ──────────────────────────────────── */
   .foundations {
     display: grid;
@@ -517,7 +586,6 @@
 
   /* ── Reduced motion ───────────────────────────────────── */
   @media (prefers-reduced-motion: reduce) {
-    .orb { animation: none !important; opacity: 0.18; }
     html { scroll-behavior: auto; }
   }
 
@@ -530,11 +598,9 @@
 </head>
 <body data-lang-mode="es">
 
-  <!-- Living background -->
-  <div class="bg-stage" aria-hidden="true">
-    <div class="orb orb--teal"></div>
-    <div class="orb orb--indigo"></div>
-    <div class="orb orb--indigo-soft"></div>
+  <!-- Living background — ESTRATO (Three.js scene) -->
+  <div class="bg-stage" id="bg-stage" aria-hidden="true">
+    <canvas class="bg-stage__canvas" id="estrato"></canvas>
   </div>
 
   <!-- Grain overlay -->
@@ -570,18 +636,21 @@
     <!-- HERO -->
     <section class="section section--hero">
       <div class="container container--narrow">
-        <p class="eyebrow">
-          <span data-es>EN CONSTRUCCIÓN · CORREDOR JUÁREZ–EL PASO</span>
-          <span data-en>UNDER CONSTRUCTION · JUÁREZ–EL PASO CORRIDOR</span>
+        <p class="hero-kicker">
+          <span class="hero-kicker__es">Sustentamos su criterio profesional.</span><span class="hero-kicker__sep" aria-hidden="true">—</span><span class="hero-kicker__en">We sustain your professional judgment.</span>
         </p>
         <h1 class="display">
-          <span data-es>CoInteligencia Profesional para Norteamérica.</span>
-          <span data-en>Professional CoIntelligence for North America.</span>
+          <span data-es>Su criterio, <em>con respaldo.</em></span>
+          <span data-en>Your judgment, <em>on the record.</em></span>
         </h1>
         <p class="subhead">
           <span data-es>Una arquitectura que gobierna sistemas de IA por diseño — para profesionales que toman decisiones complejas con consecuencias regulatorias, financieras y operativas reales.</span>
           <span data-en>An architecture that governs AI systems by design — for professionals making complex decisions with real regulatory, financial, and operational consequences.</span>
         </p>
+        <span class="hero-badge">
+          <span data-es>EN CONSTRUCCIÓN · CORREDOR JUÁREZ–EL PASO</span>
+          <span data-en>UNDER CONSTRUCTION · JUÁREZ–EL PASO CORRIDOR</span>
+        </span>
       </div>
     </section>
 
@@ -599,12 +668,14 @@
             <p>XCID parte de una premisa distinta: la gobernanza no es contención añadida después del despliegue, es la forma en que los componentes del sistema están construidos para regularse mutuamente desde el origen.</p>
             <p>El resultado es una infraestructura de inteligencia operativa que un profesional regulado — un consultor ambiental, un agente aduanal, un auditor fiscal, un director de cumplimiento — puede usar para tomar decisiones complejas con trazabilidad real, soberanía sobre su conocimiento, y un marco de confianza medible ante terceros.</p>
             <p>Está en desarrollo activo. Lo que sigue es lo que ya está articulado.</p>
+            <p>Eso es lo que XCID sustenta: el criterio profesional cuando la IA participa en formarlo. La IA no decide por usted; XCID conserva la evidencia de cómo decidió usted — ante el cliente, el regulador, el auditor, el juez.</p>
           </div>
           <div data-en>
             <p>The industry is building AI agents faster than it&rsquo;s building the architecture to make them safe. Policies and guardrails are applied as cosmetics over systems that were never designed to be governed from their foundations.</p>
             <p>XCID starts from a different premise: governance is not containment added after deployment — it&rsquo;s the way the system&rsquo;s components are built to regulate one another from the origin.</p>
             <p>The result is an operational intelligence infrastructure that a regulated professional — an environmental consultant, a customs broker, a tax auditor, a compliance director — can use to make complex decisions with real traceability, sovereignty over their knowledge, and a measurable trust framework before third parties.</p>
             <p>It is in active development. What follows is what is already articulated.</p>
+            <p>That is what XCID sustains: professional judgment when AI participates in shaping it. AI does not decide for you; XCID preserves the evidence of how you decided — before the client, the regulator, the auditor, the judge.</p>
           </div>
         </div>
       </div>
@@ -618,9 +689,13 @@
           <span data-en>FOUNDATIONS</span>
         </p>
         <h2 class="section-title">
+          <span data-es>Cuatro formas en que XCID sustenta su criterio.</span>
+          <span data-en>Four ways XCID sustains your judgment.</span>
+        </h2>
+        <p class="section-subtitle">
           <span data-es>Cuatro propiedades que sostienen el sistema.</span>
           <span data-en>Four properties that hold the system together.</span>
-        </h2>
+        </p>
 
         <div class="foundations">
 
@@ -631,8 +706,8 @@
               <span data-en>Architecture as governance by design</span>
             </h3>
             <p class="card__body">
-              <span data-es>La gobernanza no es un guardrail añadido después del despliegue. Es la forma en que los componentes del sistema están construidos para regularse mutuamente desde el origen.</span>
-              <span data-en>Governance is not a guardrail added after deployment. It is the way the system&rsquo;s components are built to regulate one another from the origin.</span>
+              <span data-es>La gobernanza no es un guardrail añadido después del despliegue. Es la forma en que los componentes del sistema están construidos para regularse mutuamente desde el origen. Esa regulación mutua es lo que permite a XCID sustentar el criterio profesional cuando la IA participa en formarlo.</span>
+              <span data-en>Governance is not a guardrail added after deployment. It is the way the system&rsquo;s components are built to regulate one another from the origin. That mutual regulation is what allows XCID to sustain professional judgment when AI participates in shaping it.</span>
             </p>
           </article>
 
@@ -719,12 +794,220 @@
   <!-- FOOTER -->
   <footer class="site-footer">
     <div class="container">
+      <p class="site-footer__sig">
+        <span data-es>Criterio profesional, sustentado por diseño.</span>
+        <span data-en>Professional judgment, sustained by design.</span>
+      </p>
       <p class="site-footer__line">
         <span data-es>XCID · CoInteligencia Profesional · Hecho en Juárez · El Paso · 2026</span>
         <span data-en>XCID · Professional CoIntelligence · Made in Juárez · El Paso · 2026</span>
       </p>
     </div>
   </footer>
+
+<!-- ESTRATO — WebGL ambient scene -->
+<script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+<script>
+  (function () {
+    if (typeof THREE === 'undefined') {
+      document.getElementById('bg-stage').classList.add('bg-stage--static');
+      return;
+    }
+    var stage = document.getElementById('bg-stage');
+    var canvas = document.getElementById('estrato');
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: false, powerPreference: 'low-power' });
+    } catch (e) {
+      stage.classList.add('bg-stage--static');
+      canvas.style.display = 'none';
+      return;
+    }
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    renderer.setSize(window.innerWidth, window.innerHeight, false);
+    renderer.setClearColor(0x000000, 0);
+
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.set(0, 0, 0);
+
+    var vert = [
+      'varying vec2 vUv;',
+      'void main() {',
+      '  vUv = uv;',
+      '  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);',
+      '}'
+    ].join('\n');
+
+    var frag = [
+      'precision highp float;',
+      'varying vec2 vUv;',
+      'uniform float uTime;',
+      'uniform float uTeal;',
+      'uniform vec3  uColor;',
+      'uniform float uMaxAlpha;',
+      'uniform float uTintBias;',
+      'vec3 mod289(vec3 x){return x-floor(x*(1.0/289.0))*289.0;}',
+      'vec2 mod289(vec2 x){return x-floor(x*(1.0/289.0))*289.0;}',
+      'vec3 permute(vec3 x){return mod289(((x*34.0)+1.0)*x);}',
+      'float snoise(vec2 v){',
+      '  const vec4 C = vec4(0.211324865405187, 0.366025403784439, -0.577350269189626, 0.024390243902439);',
+      '  vec2 i = floor(v + dot(v, C.yy));',
+      '  vec2 x0 = v - i + dot(i, C.xx);',
+      '  vec2 i1 = (x0.x > x0.y) ? vec2(1.0,0.0) : vec2(0.0,1.0);',
+      '  vec4 x12 = x0.xyxy + C.xxzz; x12.xy -= i1;',
+      '  i = mod289(i);',
+      '  vec3 p = permute(permute(i.y + vec3(0.0, i1.y, 1.0)) + i.x + vec3(0.0, i1.x, 1.0));',
+      '  vec3 m = max(0.5 - vec3(dot(x0,x0), dot(x12.xy,x12.xy), dot(x12.zw,x12.zw)), 0.0);',
+      '  m = m*m; m = m*m;',
+      '  vec3 x = 2.0 * fract(p * C.www) - 1.0;',
+      '  vec3 h = abs(x) - 0.5;',
+      '  vec3 ox = floor(x + 0.5);',
+      '  vec3 a0 = x - ox;',
+      '  m *= 1.79284291400159 - 0.85373472095314 * (a0*a0 + h*h);',
+      '  vec3 g; g.x = a0.x*x0.x + h.x*x0.y;',
+      '  g.yz = a0.yz*x12.xz + h.yz*x12.yw;',
+      '  return 130.0 * dot(m, g);',
+      '}',
+      'void main() {',
+      '  vec2 uv = vUv;',
+      '  vec2 d  = uv - 0.5;',
+      '  vec2 ad = abs(d);',
+      '  float fx = 1.0 - smoothstep(0.22, 0.49, ad.x);',
+      '  float fy = 1.0 - smoothstep(0.24, 0.49, ad.y);',
+      '  float fall = fx * fy;',
+      '  fall = pow(fall, 0.95);',
+      '  float n1 = snoise(uv * 3.2 + vec2(uTime * 0.020, uTime * 0.010)) * 0.5 + 0.5;',
+      '  float n2 = snoise(uv * 9.0 - vec2(uTime * 0.012, uTime * 0.018)) * 0.5 + 0.5;',
+      '  float lines = snoise(vec2(uv.x * 1.2, uv.y * 28.0 + uTime * 0.05)) * 0.5 + 0.5;',
+      '  float paper = mix(n1, n2, 0.40);',
+      '  paper = 0.68 + paper * 0.32 + (lines - 0.5) * 0.06;',
+      '  float topLight = smoothstep(-0.5, -0.05, d.y) * 0.18;',
+      '  float tintAxis = d.x * uTintBias + d.y * uTintBias * 0.3;',
+      '  float tintMix  = smoothstep(-0.4, 0.4, tintAxis);',
+      '  vec3 teal = vec3(0.176, 0.831, 0.749);',
+      '  vec3 col  = mix(uColor, teal, tintMix * uTeal * 0.75);',
+      '  col += vec3(topLight);',
+      '  float alpha = fall * paper * uMaxAlpha;',
+      '  gl_FragColor = vec4(col * paper, alpha);',
+      '}'
+    ].join('\n');
+
+    var strata = [
+      { z: -2.2, sx: 5.0,  sy: 3.0,  bx:  2.2, by:  0.85, rot: -0.11, alpha: 0.180, tint: 1.00, tintBias:  1.0, hue: 1 },
+      { z: -3.5, sx: 7.6,  sy: 4.5,  bx: -2.4, by:  0.15, rot:  0.08, alpha: 0.080, tint: 0.30, tintBias: -0.7, hue: 0 },
+      { z: -5.0, sx: 10.0, sy: 6.0,  bx:  1.1, by: -1.10, rot: -0.06, alpha: 0.165, tint: 0.85, tintBias:  0.5, hue: 2 },
+      { z: -6.6, sx: 13.0, sy: 7.8,  bx: -1.4, by:  0.70, rot:  0.09, alpha: 0.075, tint: 0.20, tintBias: -0.4, hue: 0 },
+      { z: -8.2, sx: 16.5, sy: 9.8,  bx:  0.4, by: -0.30, rot: -0.02, alpha: 0.130, tint: 0.55, tintBias:  0.6, hue: 1 },
+      { z: -9.8, sx: 22.0, sy: 13.5, bx:  0.0, by:  0.0,  rot:  0.03, alpha: 0.060, tint: 0.18, tintBias: -0.2, hue: 0 }
+    ];
+
+    var planes = [];
+    strata.forEach(function (d) {
+      var geo = new THREE.PlaneGeometry(d.sx, d.sy, 1, 1);
+      var baseColor = d.hue === 1 ? new THREE.Color(0.50, 0.78, 0.78)
+                    : d.hue === 2 ? new THREE.Color(0.62, 0.62, 0.92)
+                    :               new THREE.Color(0.78, 0.80, 0.86);
+      var mat = new THREE.ShaderMaterial({
+        vertexShader: vert,
+        fragmentShader: frag,
+        transparent: true,
+        depthWrite: false,
+        depthTest: false,
+        blending: THREE.NormalBlending,
+        uniforms: {
+          uTime:     { value: 0 },
+          uTeal:     { value: d.tint },
+          uColor:    { value: baseColor },
+          uMaxAlpha: { value: d.alpha },
+          uTintBias: { value: d.tintBias }
+        }
+      });
+      var mesh = new THREE.Mesh(geo, mat);
+      mesh.position.set(d.bx, d.by, d.z);
+      mesh.rotation.z = d.rot;
+      mesh.userData = { baseX: d.bx, baseY: d.by, baseZ: d.z, baseRotZ: d.rot, depth: Math.abs(d.z) };
+      scene.add(mesh);
+      planes.push(mesh);
+    });
+    planes.sort(function (a, b) { return a.position.z - b.position.z; });
+    planes.forEach(function (p, i) { p.renderOrder = i; });
+
+    var pX = 0, pY = 0, pXt = 0, pYt = 0;
+    window.addEventListener('mousemove', function (e) {
+      pXt = (e.clientX / window.innerWidth)  * 2 - 1;
+      pYt = -((e.clientY / window.innerHeight) * 2 - 1);
+    }, { passive: true });
+
+    var lastScrollY = window.scrollY || 0;
+    var scrollVel = 0, scrollVelSm = 0;
+    window.addEventListener('scroll', function () {
+      var y = window.scrollY || 0;
+      scrollVel += (y - lastScrollY) * 0.012;
+      lastScrollY = y;
+    }, { passive: true });
+
+    window.addEventListener('resize', function () {
+      renderer.setSize(window.innerWidth, window.innerHeight, false);
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+    });
+
+    var running = !document.hidden;
+    document.addEventListener('visibilitychange', function () {
+      running = !document.hidden;
+    });
+
+    var clock = new THREE.Clock();
+
+    function tick() {
+      requestAnimationFrame(tick);
+      if (!running) return;
+      var t = clock.getElapsedTime();
+
+      if (!reduced) {
+        pX += (pXt - pX) * 0.05;
+        pY += (pYt - pY) * 0.05;
+        scrollVelSm += (scrollVel - scrollVelSm) * 0.12;
+        scrollVel *= 0.86;
+
+        var tilt  = Math.max(-0.018, Math.min(0.018, scrollVelSm * 0.5));
+        var pulse = 1 + Math.max(-0.022, Math.min(0.022, scrollVelSm * 0.35));
+
+        for (var i = 0; i < planes.length; i++) {
+          var p = planes[i];
+          var u = p.userData;
+          var influence = u.depth * 0.090;
+          var ph = u.baseZ * 1.7 + i * 1.3;
+          var ampX = 0.85 * (0.5 + u.depth * 0.12);
+          var ampY = 0.55 * (0.5 + u.depth * 0.12);
+          var driftX = Math.sin(t * 0.18 + ph)         * ampX
+                     + Math.sin(t * 0.07 + ph * 1.9)   * ampX * 0.4;
+          var driftY = Math.cos(t * 0.14 + ph * 0.7)   * ampY
+                     + Math.cos(t * 0.055 + ph * 2.3)  * ampY * 0.5;
+          p.position.x = u.baseX + pX * influence * 1.1 + driftX;
+          p.position.y = u.baseY + pY * influence * 0.85 + driftY;
+          p.position.z = u.baseZ + Math.sin(t * 0.20 + ph * 0.5) * 0.35;
+          p.rotation.x = tilt + Math.sin(t * 0.09 + ph) * 0.012;
+          p.rotation.y = Math.cos(t * 0.08 + ph * 1.3) * 0.020;
+          p.rotation.z = u.baseRotZ
+                       + Math.sin(t * 0.10 + u.baseZ) * 0.028
+                       + pX * 0.012;
+          p.scale.setScalar(pulse);
+          p.material.uniforms.uTime.value = t;
+        }
+      } else {
+        for (var j = 0; j < planes.length; j++) {
+          planes[j].material.uniforms.uTime.value = 0;
+        }
+      }
+      renderer.render(scene, camera);
+    }
+    tick();
+  })();
+</script>
 
 <script>
   (function () {
