@@ -584,6 +584,295 @@
   [data-lang-mode="es"] [data-en],
   [data-lang-mode="en"] [data-es] { display: none; }
 
+  /* ══════════════════ TRAJECTORY (HERO) ══════════════════
+     Eight-level vertical narrative. Rail traces as user scrolls;
+     each level reveals via IntersectionObserver. The maturity
+     gradient (now → horizon) is encoded in node + pill color. */
+
+  .hero__intro {
+    margin-bottom: 88px;
+  }
+  @media (max-width: 760px) {
+    .hero__intro { margin-bottom: 64px; }
+  }
+
+  .hero__trajectory-wrap {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+
+  .hero__outro {
+    margin-top: 72px;
+    display: flex;
+    justify-content: flex-start;
+  }
+  @media (max-width: 760px) {
+    .hero__outro { margin-top: 56px; }
+  }
+
+  /* The list itself — vertical column of levels */
+  .trajectory {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+  }
+  @media (max-width: 760px) {
+    .trajectory { gap: 60px; }
+  }
+  @media (max-width: 540px) {
+    .trajectory { gap: 48px; }
+  }
+
+  /* RAIL — vertical line + scroll-driven progress overlay */
+  .trajectory__rail {
+    position: absolute;
+    left: 24px;
+    top: 20px;
+    bottom: 28px;
+    width: 1px;
+    pointer-events: none;
+  }
+  .trajectory__rail-base {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      180deg,
+      rgba(255,255,255,0.02) 0%,
+      rgba(255,255,255,0.10) 6%,
+      rgba(255,255,255,0.10) 94%,
+      rgba(255,255,255,0.02) 100%
+    );
+  }
+  .trajectory__rail-progress {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(
+      180deg,
+      var(--teal) 0%,
+      var(--teal) 35%,
+      var(--indigo) 78%,
+      rgba(129,140,248,0.55) 100%
+    );
+    transform: scaleY(0);
+    transform-origin: top;
+    transition: transform 140ms linear;
+    box-shadow: 0 0 8px rgba(45,212,191,0.25);
+  }
+  @media (max-width: 640px) {
+    .trajectory__rail { left: 14px; }
+  }
+
+  /* LEVEL — animated reveal */
+  .trajectory__level {
+    position: relative;
+    padding-left: 64px;
+    opacity: 0;
+    transform: translateY(28px);
+    transition:
+      opacity 800ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 800ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .trajectory__level.is-revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  @media (max-width: 640px) {
+    .trajectory__level { padding-left: 40px; }
+  }
+
+  /* NODE — sits on the rail; styled by maturity once revealed */
+  .trajectory__node {
+    position: absolute;
+    left: 24px;
+    top: 16px;
+    width: 11px;
+    height: 11px;
+    margin-left: -5px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 1px solid var(--line-strong);
+    z-index: 1;
+    transition:
+      background 700ms cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 700ms cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 700ms cubic-bezier(0.16, 1, 0.3, 1),
+      transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .trajectory__level.is-revealed .trajectory__node {
+    transform: scale(1.04);
+  }
+  .trajectory__level[data-maturity="now"].is-revealed .trajectory__node {
+    background: var(--teal);
+    border-color: var(--teal);
+    box-shadow: 0 0 0 4px rgba(45,212,191,0.18), 0 0 14px rgba(45,212,191,0.35);
+  }
+  .trajectory__level[data-maturity="next"].is-revealed .trajectory__node {
+    background: var(--indigo);
+    border-color: var(--indigo);
+    box-shadow: 0 0 0 4px rgba(129,140,248,0.14), 0 0 12px rgba(129,140,248,0.28);
+  }
+  .trajectory__level[data-maturity="roadmap"].is-revealed .trajectory__node {
+    background: var(--text-soft);
+    border-color: var(--text-soft);
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.06);
+  }
+  .trajectory__level[data-maturity="horizon"].is-revealed .trajectory__node {
+    background: transparent;
+    border-color: var(--text-muted);
+    box-shadow: 0 0 0 2px rgba(255,255,255,0.025);
+  }
+  @media (max-width: 640px) {
+    .trajectory__node { left: 14px; top: 14px; width: 9px; height: 9px; margin-left: -4px; }
+  }
+
+  /* CARD content */
+  .trajectory__head {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .trajectory__idx {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    color: var(--text-faint);
+    flex: 0 0 auto;
+  }
+  .trajectory__name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(26px, 3.4vw, 38px);
+    line-height: 1.1;
+    letter-spacing: -0.018em;
+    color: var(--text);
+    margin: 0;
+    flex: 0 1 auto;
+  }
+  .trajectory__pill {
+    margin-left: auto;
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 11px;
+    border-radius: 9999px;
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    flex: 0 0 auto;
+  }
+  .trajectory__pill--now {
+    color: var(--teal);
+    background: rgba(45,212,191,0.10);
+    border: 1px solid rgba(45,212,191,0.38);
+  }
+  .trajectory__pill--next {
+    color: var(--indigo);
+    background: rgba(129,140,248,0.08);
+    border: 1px solid rgba(129,140,248,0.32);
+  }
+  .trajectory__pill--roadmap {
+    color: var(--text-muted);
+    background: rgba(255,255,255,0.025);
+    border: 1px solid var(--line-strong);
+  }
+  .trajectory__pill--horizon {
+    color: var(--text-muted);
+    background: transparent;
+    border: 1px dashed var(--line-strong);
+  }
+  @media (max-width: 540px) {
+    .trajectory__head { gap: 10px 12px; }
+    .trajectory__pill { margin-left: 0; }
+    .trajectory__name { flex: 1 1 100%; order: 2; }
+    .trajectory__idx  { order: 1; }
+    .trajectory__pill { order: 3; }
+  }
+
+  /* TAGLINE — bilingual mono pair */
+  .trajectory__tagline {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin: 14px 0 14px;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .trajectory__tagline-sep {
+    color: var(--text-faint);
+  }
+  .trajectory__tagline-en {
+    color: var(--text-faint);
+  }
+
+  /* DESCRIPTORS — ES above, EN below (italic, muted) */
+  .trajectory__desc-es {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.55;
+    color: var(--text-soft);
+    margin: 0;
+    max-width: 640px;
+    text-wrap: pretty;
+  }
+  .trajectory__desc-en {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--text-muted);
+    font-style: italic;
+    margin: 5px 0 0;
+    max-width: 640px;
+    text-wrap: pretty;
+  }
+  @media (max-width: 540px) {
+    .trajectory__desc-es { font-size: 15px; }
+    .trajectory__desc-en { font-size: 13px; }
+  }
+
+  /* Horizon items: temporally distant — visually lighter */
+  .trajectory__level[data-maturity="horizon"] .trajectory__name {
+    color: var(--text-soft);
+  }
+  .trajectory__level[data-maturity="horizon"] .trajectory__desc-es {
+    color: var(--text-muted);
+  }
+  .trajectory__level[data-maturity="horizon"] .trajectory__desc-en {
+    color: var(--text-faint);
+  }
+
+  /* Reduced motion: levels visible immediately; rail filled statically */
+  @media (prefers-reduced-motion: reduce) {
+    .trajectory__level {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+    .trajectory__node {
+      transition: none;
+    }
+    .trajectory__rail-progress {
+      transform: scaleY(1);
+      opacity: 0.5;
+      transition: none;
+    }
+  }
+
   /* ── Reduced motion ───────────────────────────────────── */
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -633,20 +922,200 @@
 
   <main>
 
-    <!-- HERO -->
-    <section class="section section--hero">
-      <div class="container container--narrow">
+    <!-- HERO — Trayectoria / Trajectory -->
+    <section class="section section--hero" data-screen-label="Hero · Trayectoria">
+      <div class="container container--narrow hero__intro">
         <p class="hero-kicker">
           <span class="hero-kicker__es">Sustentamos su criterio profesional.</span><span class="hero-kicker__sep" aria-hidden="true">—</span><span class="hero-kicker__en">We sustain your professional judgment.</span>
         </p>
         <h1 class="display">
-          <span data-es>Su criterio, <em>con respaldo.</em></span>
-          <span data-en>Your judgment, <em>on the record.</em></span>
+          <span data-es>De navegador a <em>órbita.</em></span>
+          <span data-en>From browser to <em>orbit.</em></span>
         </h1>
         <p class="subhead">
-          <span data-es>Una arquitectura que gobierna sistemas de IA por diseño — para profesionales que toman decisiones complejas con consecuencias regulatorias, financieras y operativas reales.</span>
-          <span data-en>An architecture that governs AI systems by design — for professionals making complex decisions with real regulatory, financial, and operational consequences.</span>
+          <span data-es>Ocho niveles. Una sola arquitectura, sustentando criterio profesional desde el primer día hasta el horizonte aeroespacial.</span>
+          <span data-en>Eight levels. One architecture sustaining professional judgment from day one to the aerospace horizon.</span>
         </p>
+      </div>
+
+      <div class="container hero__trajectory-wrap">
+        <ol class="trajectory" aria-label="XCID — niveles de la trayectoria">
+          <span class="trajectory__rail" aria-hidden="true">
+            <span class="trajectory__rail-base"></span>
+            <span class="trajectory__rail-progress"></span>
+          </span>
+
+          <li class="trajectory__level" data-maturity="now">
+            <span class="trajectory__node" aria-hidden="true"></span>
+            <article class="trajectory__card">
+              <header class="trajectory__head">
+                <span class="trajectory__idx">01</span>
+                <h2 class="trajectory__name">XCID Web</h2>
+                <span class="trajectory__pill trajectory__pill--now">
+                  <span data-es>HOY</span>
+                  <span data-en>NOW</span>
+                </span>
+              </header>
+              <p class="trajectory__tagline">
+                <span class="trajectory__tagline-es">Navegador</span>
+                <span class="trajectory__tagline-sep" aria-hidden="true">·</span>
+                <span class="trajectory__tagline-en">Browser</span>
+              </p>
+              <p class="trajectory__desc-es">Acceso completo desde cualquier navegador. Despliegue inmediato.</p>
+              <p class="trajectory__desc-en">Full access from any browser. Immediate deployment.</p>
+            </article>
+          </li>
+
+          <li class="trajectory__level" data-maturity="now">
+            <span class="trajectory__node" aria-hidden="true"></span>
+            <article class="trajectory__card">
+              <header class="trajectory__head">
+                <span class="trajectory__idx">02</span>
+                <h2 class="trajectory__name">XCID Mobile</h2>
+                <span class="trajectory__pill trajectory__pill--now">
+                  <span data-es>HOY</span>
+                  <span data-en>NOW</span>
+                </span>
+              </header>
+              <p class="trajectory__tagline">
+                <span class="trajectory__tagline-es">Responsive</span>
+                <span class="trajectory__tagline-sep" aria-hidden="true">·</span>
+                <span class="trajectory__tagline-en">Responsive</span>
+              </p>
+              <p class="trajectory__desc-es">La misma arquitectura, optimizada para trabajo de campo.</p>
+              <p class="trajectory__desc-en">The same architecture, optimized for field work.</p>
+            </article>
+          </li>
+
+          <li class="trajectory__level" data-maturity="next">
+            <span class="trajectory__node" aria-hidden="true"></span>
+            <article class="trajectory__card">
+              <header class="trajectory__head">
+                <span class="trajectory__idx">03</span>
+                <h2 class="trajectory__name">XCID Exec</h2>
+                <span class="trajectory__pill trajectory__pill--next">
+                  <span data-es>PRÓXIMO</span>
+                  <span data-en>NEXT</span>
+                </span>
+              </header>
+              <p class="trajectory__tagline">
+                <span class="trajectory__tagline-es">Unibody</span>
+                <span class="trajectory__tagline-sep" aria-hidden="true">·</span>
+                <span class="trajectory__tagline-en">Unibody</span>
+              </p>
+              <p class="trajectory__desc-es">Operación air-gapped en escritorio o sitio. Soberanía individual.</p>
+              <p class="trajectory__desc-en">Air-gapped operation on desk or in the field. Individual sovereignty.</p>
+            </article>
+          </li>
+
+          <li class="trajectory__level" data-maturity="next">
+            <span class="trajectory__node" aria-hidden="true"></span>
+            <article class="trajectory__card">
+              <header class="trajectory__head">
+                <span class="trajectory__idx">04</span>
+                <h2 class="trajectory__name">XCID Companion</h2>
+                <span class="trajectory__pill trajectory__pill--next">
+                  <span data-es>PRÓXIMO</span>
+                  <span data-en>NEXT</span>
+                </span>
+              </header>
+              <p class="trajectory__tagline">
+                <span class="trajectory__tagline-es">Despacho profesional</span>
+                <span class="trajectory__tagline-sep" aria-hidden="true">·</span>
+                <span class="trajectory__tagline-en">Professional firm</span>
+              </p>
+              <p class="trajectory__desc-es">Hardware para despacho. Soberanía organizacional sobre el conocimiento operativo.</p>
+              <p class="trajectory__desc-en">Firm-grade hardware. Organizational sovereignty over operational knowledge.</p>
+            </article>
+          </li>
+
+          <li class="trajectory__level" data-maturity="roadmap">
+            <span class="trajectory__node" aria-hidden="true"></span>
+            <article class="trajectory__card">
+              <header class="trajectory__head">
+                <span class="trajectory__idx">05</span>
+                <h2 class="trajectory__name">XCID MDR-X</h2>
+                <span class="trajectory__pill trajectory__pill--roadmap">
+                  <span data-es>ROADMAP</span>
+                  <span data-en>ROADMAP</span>
+                </span>
+              </header>
+              <p class="trajectory__tagline">
+                <span class="trajectory__tagline-es">Micro centro de datos</span>
+                <span class="trajectory__tagline-sep" aria-hidden="true">·</span>
+                <span class="trajectory__tagline-en">Micro data center</span>
+              </p>
+              <p class="trajectory__desc-es">Centro de datos micro-escala con distribución energética propia.</p>
+              <p class="trajectory__desc-en">Micro-scale data center with autonomous power distribution.</p>
+            </article>
+          </li>
+
+          <li class="trajectory__level" data-maturity="roadmap">
+            <span class="trajectory__node" aria-hidden="true"></span>
+            <article class="trajectory__card">
+              <header class="trajectory__head">
+                <span class="trajectory__idx">06</span>
+                <h2 class="trajectory__name">XCID Silicio</h2>
+                <span class="trajectory__pill trajectory__pill--roadmap">
+                  <span data-es>ROADMAP</span>
+                  <span data-en>ROADMAP</span>
+                </span>
+              </header>
+              <p class="trajectory__tagline">
+                <span class="trajectory__tagline-es">Hardware dedicado</span>
+                <span class="trajectory__tagline-sep" aria-hidden="true">·</span>
+                <span class="trajectory__tagline-en">Dedicated hardware</span>
+              </p>
+              <p class="trajectory__desc-es">IP propietaria de XCID materializada en silicio dedicado.</p>
+              <p class="trajectory__desc-en">Proprietary XCID IP materialized in dedicated silicon.</p>
+            </article>
+          </li>
+
+          <li class="trajectory__level" data-maturity="horizon">
+            <span class="trajectory__node" aria-hidden="true"></span>
+            <article class="trajectory__card">
+              <header class="trajectory__head">
+                <span class="trajectory__idx">07</span>
+                <h2 class="trajectory__name">XCID Inside</h2>
+                <span class="trajectory__pill trajectory__pill--horizon">
+                  <span data-es>HORIZONTE</span>
+                  <span data-en>HORIZON</span>
+                </span>
+              </header>
+              <p class="trajectory__tagline">
+                <span class="trajectory__tagline-es">Licenciamiento</span>
+                <span class="trajectory__tagline-sep" aria-hidden="true">·</span>
+                <span class="trajectory__tagline-en">Licensing</span>
+              </p>
+              <p class="trajectory__desc-es">Distribución horizontal de la arquitectura, modelo ARM. Ecosistema global.</p>
+              <p class="trajectory__desc-en">Horizontal architecture distribution, ARM-style. Global ecosystem.</p>
+            </article>
+          </li>
+
+          <li class="trajectory__level" data-maturity="horizon">
+            <span class="trajectory__node" aria-hidden="true"></span>
+            <article class="trajectory__card">
+              <header class="trajectory__head">
+                <span class="trajectory__idx">08</span>
+                <h2 class="trajectory__name">MDR-X Orbital</h2>
+                <span class="trajectory__pill trajectory__pill--horizon">
+                  <span data-es>HORIZONTE</span>
+                  <span data-en>HORIZON</span>
+                </span>
+              </header>
+              <p class="trajectory__tagline">
+                <span class="trajectory__tagline-es">Cómputo satelital</span>
+                <span class="trajectory__tagline-sep" aria-hidden="true">·</span>
+                <span class="trajectory__tagline-en">Satellite compute</span>
+              </p>
+              <p class="trajectory__desc-es">Sustentar criterio profesional en órbita.</p>
+              <p class="trajectory__desc-en">Sustaining professional judgment in orbit.</p>
+            </article>
+          </li>
+        </ol>
+      </div>
+
+      <div class="container container--narrow hero__outro">
         <span class="hero-badge">
           <span data-es>EN CONSTRUCCIÓN · CORREDOR JUÁREZ–EL PASO</span>
           <span data-en>UNDER CONSTRUCTION · JUÁREZ–EL PASO CORRIDOR</span>
@@ -1006,6 +1475,79 @@
       renderer.render(scene, camera);
     }
     tick();
+  })();
+</script>
+
+<!-- TRAJECTORY — reveal levels + draw progress rail on scroll -->
+<script>
+  (function () {
+    var trajectory = document.querySelector('.trajectory');
+    var levels = document.querySelectorAll('.trajectory__level');
+    var progress = document.querySelector('.trajectory__rail-progress');
+    var rail = document.querySelector('.trajectory__rail');
+    if (!trajectory || !levels.length || !progress || !rail) return;
+
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function positionRail() {
+      var nodes = trajectory.querySelectorAll('.trajectory__node');
+      if (nodes.length < 2) return;
+      var tRect = trajectory.getBoundingClientRect();
+      var firstR = nodes[0].getBoundingClientRect();
+      var lastR  = nodes[nodes.length - 1].getBoundingClientRect();
+      var topY    = (firstR.top + firstR.height / 2) - tRect.top;
+      var bottomY = (lastR.top  + lastR.height  / 2) - tRect.top;
+      rail.style.top    = topY + 'px';
+      rail.style.bottom = (tRect.height - bottomY) + 'px';
+    }
+
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { rootMargin: '0px 0px -18% 0px', threshold: 0.05 });
+      levels.forEach(function (lv) { io.observe(lv); });
+    } else {
+      levels.forEach(function (lv) { lv.classList.add('is-revealed'); });
+    }
+
+    var ticking = false;
+    function update() {
+      var rect = trajectory.getBoundingClientRect();
+      var vh = window.innerHeight || document.documentElement.clientHeight;
+      var readLine = vh * 0.52;
+      var raw = (readLine - rect.top) / Math.max(rect.height, 1);
+      var prog = Math.max(0, Math.min(1, raw));
+      progress.style.transform = 'scaleY(' + prog.toFixed(4) + ')';
+      ticking = false;
+    }
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(update);
+        ticking = true;
+      }
+    }
+
+    function init() {
+      positionRail();
+      update();
+    }
+
+    if (reduced) {
+      levels.forEach(function (lv) { lv.classList.add('is-revealed'); });
+      positionRail();
+      return;
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', function () { positionRail(); onScroll(); }, { passive: true });
+    window.addEventListener('load', init);
+    init();
+    setTimeout(init, 350);
   })();
 </script>
 
