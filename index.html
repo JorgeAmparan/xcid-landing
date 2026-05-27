@@ -873,6 +873,363 @@
     }
   }
 
+  /* ── Trajectory dividers — phase transition markers ──── */
+  .trajectory__divider {
+    position: relative;
+    padding: 8px 0 8px 64px;
+    margin: -24px 0;
+    list-style: none;
+  }
+  .trajectory__divider-label {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+  .trajectory__divider::before {
+    content: "";
+    position: absolute;
+    left: 22px;
+    top: 0;
+    bottom: 0;
+    width: 5px;
+    background: var(--bg);
+  }
+  .trajectory__divider::after {
+    content: "";
+    position: absolute;
+    left: 24px;
+    top: 0;
+    bottom: 0;
+    width: 0;
+    border-left: 1px dashed var(--line-strong);
+  }
+  @media (max-width: 640px) {
+    .trajectory__divider { padding-left: 40px; }
+    .trajectory__divider::before { left: 12px; }
+    .trajectory__divider::after { left: 14px; }
+  }
+
+  /* ══════════════════ NEW SECTIONS: A/B/C ══════════════════ */
+
+  .section-subtitle--italic {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-style: italic;
+    font-size: clamp(18px, 2vw, 22px);
+    line-height: 1.3;
+    letter-spacing: -0.005em;
+    color: var(--text-muted);
+    margin: 0 0 64px;
+    max-width: 720px;
+    text-wrap: balance;
+  }
+  .section-title:has(+ .section-subtitle--italic) {
+    margin-bottom: 12px;
+  }
+  @media (max-width: 760px) {
+    .section-subtitle--italic { margin-bottom: 48px; font-size: 17px; }
+  }
+
+  .section--audience,
+  .section--seals,
+  .section--contrast {
+    padding: 96px 0;
+  }
+  @media (max-width: 760px) {
+    .section--audience,
+    .section--seals,
+    .section--contrast { padding: 72px 0; }
+  }
+
+  /* ════════════════ AUDIENCIA — 2x2 cards ════════════════ */
+  .audience {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  @media (max-width: 920px) {
+    .audience { grid-template-columns: 1fr; gap: 16px; }
+  }
+
+  .audience__card {
+    padding: 40px 36px;
+    background: var(--bg-elev-1);
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    transition: border-color 350ms ease, background 350ms ease;
+    display: flex;
+    flex-direction: column;
+  }
+  .audience__card:hover {
+    border-color: var(--teal-line);
+    background: var(--bg-elev-2);
+  }
+  @media (max-width: 540px) {
+    .audience__card { padding: 30px 24px; }
+  }
+
+  .audience__head {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin: 0 0 26px;
+  }
+
+  .audience__tagline-es {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: clamp(19px, 2vw, 22px);
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    color: var(--text);
+    margin: 0 0 6px;
+    text-wrap: balance;
+  }
+  .audience__tagline-en {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-style: italic;
+    font-size: clamp(15px, 1.6vw, 17px);
+    line-height: 1.3;
+    color: var(--text-muted);
+    margin: 0 0 24px;
+    text-wrap: balance;
+  }
+
+  .audience__body-es {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--text-soft);
+    margin: 0 0 12px;
+    text-wrap: pretty;
+  }
+  .audience__body-en {
+    font-family: var(--font-sans);
+    font-size: 13.5px;
+    line-height: 1.6;
+    font-style: italic;
+    color: var(--text-muted);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .audience__client {
+    margin-top: auto;
+    padding-top: 20px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+  .audience__client-label {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  /* ════════════════ SELLOS — intro + infra ════════════════ */
+  .seals__intro {
+    max-width: 760px;
+    margin: 0 0 56px;
+  }
+  .seals__intro-es {
+    font-family: var(--font-sans);
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--text-soft);
+    margin: 0 0 8px;
+    text-wrap: pretty;
+  }
+  .seals__intro-en {
+    font-family: var(--font-sans);
+    font-size: 14.5px;
+    line-height: 1.6;
+    font-style: italic;
+    color: var(--text-muted);
+    margin: 0;
+    text-wrap: pretty;
+  }
+  @media (max-width: 760px) {
+    .seals__intro { margin-bottom: 40px; }
+    .seals__intro-es { font-size: 16px; }
+    .seals__intro-en { font-size: 13.5px; }
+  }
+
+  .seals__infra {
+    margin: 48px 0 0;
+    padding: 24px 0 0;
+    border-top: 1px solid var(--line);
+    max-width: 760px;
+  }
+  .seals__infra-es {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin: 0 0 4px;
+    text-wrap: pretty;
+  }
+  .seals__infra-en {
+    font-family: var(--font-sans);
+    font-size: 12.5px;
+    line-height: 1.6;
+    font-style: italic;
+    color: var(--text-faint);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* ════════════════ DIFERENCIA — 2-column table ═════════ */
+  .contrast {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-top: 1px solid var(--line);
+  }
+  .contrast__row {
+    display: contents;
+  }
+
+  .contrast__cell {
+    padding: 26px 32px 26px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .contrast__cell--left {
+    padding-right: 36px;
+  }
+  .contrast__cell--right {
+    padding-left: 36px;
+    padding-right: 0;
+    border-left: 1px solid var(--line);
+    position: relative;
+  }
+  .contrast__cell--right::before {
+    content: "";
+    position: absolute;
+    left: -1px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, transparent 0%, rgba(45,212,191,0.18) 50%, transparent 100%);
+    opacity: 0;
+    transition: opacity 350ms ease;
+    pointer-events: none;
+  }
+  .contrast:hover .contrast__cell--right::before {
+    opacity: 1;
+  }
+
+  .contrast__row--head .contrast__cell--head {
+    padding-top: 22px;
+    padding-bottom: 22px;
+  }
+
+  .contrast__head-label {
+    font-family: var(--font-mono);
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+  .contrast__head-label--us {
+    color: var(--teal);
+    font-weight: 600;
+  }
+
+  .contrast__es {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.55;
+    margin: 0 0 6px;
+    text-wrap: pretty;
+  }
+  .contrast__en {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    line-height: 1.55;
+    font-style: italic;
+    margin: 0;
+    text-wrap: pretty;
+  }
+  .contrast__cell--left .contrast__es {
+    color: var(--text-faint);
+  }
+  .contrast__cell--left .contrast__en {
+    color: var(--text-faint);
+    opacity: 0.65;
+  }
+  .contrast__cell--right .contrast__es {
+    color: var(--text);
+  }
+  .contrast__cell--right .contrast__en {
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 760px) {
+    .contrast {
+      grid-template-columns: 1fr;
+      border-top: 0;
+    }
+    .contrast__row {
+      display: block;
+      padding: 22px 0 6px;
+      border-bottom: 1px solid var(--line);
+    }
+    .contrast__row--head {
+      display: none;
+    }
+    .contrast__cell {
+      border-bottom: 0;
+      padding: 0 0 16px;
+      position: relative;
+      padding-top: 22px;
+    }
+    .contrast__cell--left,
+    .contrast__cell--right {
+      padding-left: 0;
+      padding-right: 0;
+      border-left: 0;
+    }
+    .contrast__cell--right::before {
+      content: none;
+    }
+    .contrast__cell--left::after,
+    .contrast__cell--right::after {
+      position: absolute;
+      top: 0;
+      left: 0;
+      font-family: var(--font-mono);
+      font-weight: 500;
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-faint);
+    }
+    .contrast__cell--left::after {
+      content: "Asistente · Assistant";
+    }
+    .contrast__cell--right::after {
+      content: "XCID";
+      color: var(--teal);
+      font-weight: 600;
+    }
+  }
+
   /* ── Reduced motion ───────────────────────────────────── */
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -987,6 +1344,13 @@
             </article>
           </li>
 
+          <li class="trajectory__divider">
+            <span class="trajectory__divider-label">
+              <span data-es>PRÓXIMO</span>
+              <span data-en>NEXT</span>
+            </span>
+          </li>
+
           <li class="trajectory__level" data-maturity="next">
             <span class="trajectory__node" aria-hidden="true"></span>
             <article class="trajectory__card">
@@ -1029,6 +1393,13 @@
             </article>
           </li>
 
+          <li class="trajectory__divider">
+            <span class="trajectory__divider-label">
+              <span data-es>RUTA EN EL MAPA</span>
+              <span data-en>ROADMAP</span>
+            </span>
+          </li>
+
           <li class="trajectory__level" data-maturity="roadmap">
             <span class="trajectory__node" aria-hidden="true"></span>
             <article class="trajectory__card">
@@ -1069,6 +1440,13 @@
               <p class="trajectory__desc-es">IP propietaria de XCID materializada en silicio dedicado.</p>
               <p class="trajectory__desc-en">Proprietary XCID IP materialized in dedicated silicon.</p>
             </article>
+          </li>
+
+          <li class="trajectory__divider">
+            <span class="trajectory__divider-label">
+              <span data-es>HORIZONTE</span>
+              <span data-en>HORIZON</span>
+            </span>
           </li>
 
           <li class="trajectory__level" data-maturity="horizon">
@@ -1120,6 +1498,195 @@
           <span data-es>EN CONSTRUCCIÓN · CORREDOR JUÁREZ–EL PASO</span>
           <span data-en>UNDER CONSTRUCTION · JUÁREZ–EL PASO CORRIDOR</span>
         </span>
+      </div>
+    </section>
+
+    <!-- SECTION A — Audiencia / Audience -->
+    <section class="section section--audience" data-screen-label="Audiencia">
+      <div class="container">
+        <p class="section-label">AUDIENCIA · AUDIENCE</p>
+        <h2 class="section-title">¿Cómo XCID se inserta en su operación?</h2>
+        <p class="section-subtitle section-subtitle--italic">How XCID embeds into your operation.</p>
+
+        <ol class="audience">
+          <li class="audience__card">
+            <p class="audience__head">01 — PROFESIONAL · INDIVIDUAL</p>
+            <p class="audience__tagline-es">Su criterio individual, con respaldo verificable.</p>
+            <p class="audience__tagline-en">Your individual judgment, with verifiable backing.</p>
+            <p class="audience__body-es">Para el agente aduanal, consultor ambiental, auditor fiscal o director de cumplimiento que opera con criterio propio bajo marco regulatorio complejo. Cada decisión que XCID respalda viene con cita textual del marco normativo vigente y XTF Score que la sustenta ante cliente, regulador o juez.</p>
+            <p class="audience__body-en">For the customs broker, environmental consultant, tax auditor or compliance director operating under complex regulatory frameworks. Every decision XCID backs comes with literal citation from current regulatory text and an XTF Score that sustains it before client, regulator or judge.</p>
+          </li>
+          <li class="audience__card">
+            <p class="audience__head">02 — EQUIPO · TEAM</p>
+            <p class="audience__tagline-es">Su área operando con criterio consistente y trazable.</p>
+            <p class="audience__tagline-en">Your team operating with consistent, traceable judgment.</p>
+            <p class="audience__body-es">Para departamentos de comercio exterior, cumplimiento ambiental, fiscalidad corporativa o áreas reguladas con varios profesionales. El conocimiento operativo se acumula entre los miembros del equipo. Cada decisión queda registrada antes de la acción. La rotación de personal no pierde criterio institucional.</p>
+            <p class="audience__body-en">For departments of foreign trade, environmental compliance, corporate taxation or regulated areas with multiple professionals. Operational knowledge accumulates across team members. Every decision is recorded before the action. Staff rotation does not lose institutional judgment.</p>
+          </li>
+          <li class="audience__card">
+            <p class="audience__head">03 — ORGANIZACIÓN · ORGANIZATION</p>
+            <p class="audience__tagline-es">Su inteligencia operativa como activo permanente.</p>
+            <p class="audience__tagline-en">Your operational intelligence as a permanent asset.</p>
+            <p class="audience__body-es">Para corporativos, despachos, instituciones públicas y organizaciones que quieren XCID como infraestructura propia. Soberanía total sobre el conocimiento generado. Operación air-gapped opcional. Audit trail completo de cada interacción que la IA influye dentro de la organización.</p>
+            <p class="audience__body-en">For corporations, firms, public institutions and organizations that want XCID as proprietary infrastructure. Full sovereignty over generated knowledge. Optional air-gapped operation. Complete audit trail of every interaction AI influences inside the organization.</p>
+          </li>
+          <li class="audience__card">
+            <p class="audience__head">04 — ECOSISTEMA · ECOSYSTEM</p>
+            <p class="audience__tagline-es">Su gremio o red de actores con conocimiento federado.</p>
+            <p class="audience__tagline-en">Your industry network with federated knowledge.</p>
+            <p class="audience__body-es">Para cámaras, consejos profesionales, gremios industriales, OEMs y clusters sectoriales que quieren federar conocimiento entre múltiples miembros sin comprometer la soberanía individual de cada uno. XCID conecta nodos manteniendo la separación de datos sensibles por actor.</p>
+            <p class="audience__body-en">For chambers, professional councils, industry guilds, OEMs and sector clusters that want to federate knowledge across multiple members without compromising individual sovereignty. XCID connects nodes while maintaining separation of sensitive data per actor.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- SECTION B — Sellos / Seals -->
+    <section class="section section--products" data-screen-label="Sellos">
+      <div class="container">
+        <p class="section-label">CAPACIDADES · CAPABILITIES</p>
+        <h2 class="section-title">Cuatro sellos verificables.</h2>
+        <p class="section-subtitle section-subtitle--italic">Four verifiable seals.</p>
+
+        <div class="products__intro">
+          <p class="products__intro-es">Cada sello certifica una dimensión específica de la operación del actor. Se emiten con firma criptográfica, se pueden verificar en xcid.dev/verify y se sustentan ante terceros sin depender de la plataforma que los generó.</p>
+          <p class="products__intro-en">Each seal certifies a specific dimension of the actor&rsquo;s operation. They are issued with cryptographic signature, can be verified at xcid.dev/verify, and sustain before third parties without depending on the platform that generated them.</p>
+        </div>
+
+        <ul class="products">
+          <li class="product">
+            <header class="product__head">
+              <span class="product__code">XTF</span>
+              <h3 class="product__name">SELLO XTF · TRUST FRAMEWORK</h3>
+            </header>
+            <p class="product__desc-es">Certifica el nivel de confianza de cada decisión asistida por IA. Mide 7 dimensiones — desde la pertinencia de la fuente hasta la coherencia del razonamiento — y emite un XTF Score verificable antes de que el profesional actúe. Lo que convierte una sugerencia de IA en evidencia sustentable.</p>
+            <p class="product__desc-en">Certifies the trust level of every AI-assisted decision. Measures 7 dimensions — from source relevance to reasoning coherence — and issues a verifiable XTF Score before the professional acts. What turns an AI suggestion into sustainable evidence.</p>
+            <p class="product__client">
+              <span class="product__client-label">CLIENTE · CLIENT</span>
+              <span class="product__client-list-es">Áreas de cumplimiento, auditoría interna, profesionales que sustentan criterio ante regulador.</span>
+              <span class="product__client-list-en">Compliance areas, internal audit, professionals sustaining judgment before regulators.</span>
+            </p>
+          </li>
+          <li class="product">
+            <header class="product__head">
+              <span class="product__code">HXF</span>
+              <h3 class="product__name">SELLO HXF · HUMAN XITELLIGENCE</h3>
+            </header>
+            <p class="product__desc-es">Certifica la integridad del capital humano operativo. Mide 10 dimensiones del conocimiento tácito del profesional — experiencia, criterio bajo ambigüedad, capacidad de juicio en contextos regulados — y lo convierte en un activo organizacional persistente que no se pierde con la rotación de personal.</p>
+            <p class="product__desc-en">Certifies the integrity of operational human capital. Measures 10 dimensions of the professional&rsquo;s tacit knowledge — experience, judgment under ambiguity, decision-making in regulated contexts — and converts it into a persistent organizational asset that is not lost with staff turnover.</p>
+            <p class="product__client">
+              <span class="product__client-label">CLIENTE · CLIENT</span>
+              <span class="product__client-list-es">Despachos con rotación, organizaciones con know-how crítico institucional, áreas de capital humano.</span>
+              <span class="product__client-list-en">Firms with staff turnover, organizations with critical institutional know-how, human capital areas.</span>
+            </p>
+          </li>
+          <li class="product">
+            <header class="product__head">
+              <span class="product__code">XAF</span>
+              <h3 class="product__name">SELLO XAF · ACCOUNTABILITY FRAMEWORK</h3>
+            </header>
+            <p class="product__desc-es">Certifica la trazabilidad completa de cada decisión. Mide 7 dimensiones sobre el registro en FAT (Forensic Audit Trail) — desde el momento de la decisión hasta la cadena de evidencia que la sustenta — y garantiza que cada acción influida por IA es auditable antes, durante y después de ejecutarse.</p>
+            <p class="product__desc-en">Certifies complete traceability of every decision. Measures 7 dimensions on the FAT (Forensic Audit Trail) record — from the moment of decision to the evidence chain that sustains it — and guarantees every AI-influenced action is auditable before, during and after execution.</p>
+            <p class="product__client">
+              <span class="product__client-label">CLIENTE · CLIENT</span>
+              <span class="product__client-list-es">Defensa ante litigios, reportes regulatorios, auditoría externa, compliance officers.</span>
+              <span class="product__client-list-en">Litigation defense, regulatory reporting, external audit, compliance officers.</span>
+            </p>
+          </li>
+          <li class="product">
+            <header class="product__head">
+              <span class="product__code">XSO</span>
+              <h3 class="product__name">SELLO XSO · SOVEREIGN OPERATIONS</h3>
+            </header>
+            <p class="product__desc-es">Sello premium de consolidación. Certifica que la operación del actor cumple simultáneamente los tres sellos anteriores (XTF + HXF + XAF) y además opera con soberanía física sobre sus datos — infraestructura propia, air-gapped opcional, sin dependencia de cloud de terceros para el conocimiento operativo crítico.</p>
+            <p class="product__desc-en">Premium consolidation seal. Certifies the actor&rsquo;s operation simultaneously meets all three previous seals (XTF + HXF + XAF) and additionally operates with physical sovereignty over its data — proprietary infrastructure, optional air-gapped, no third-party cloud dependency for critical operational knowledge.</p>
+            <p class="product__client">
+              <span class="product__client-label">CLIENTE · CLIENT</span>
+              <span class="product__client-list-es">Corporativos con requisitos de soberanía, instituciones públicas, organizaciones en sectores estratégicos.</span>
+              <span class="product__client-list-en">Corporations with sovereignty requirements, public institutions, organizations in strategic sectors.</span>
+            </p>
+          </li>
+        </ul>
+
+        <div class="products__infra">
+          <p class="products__intro-es">Detrás de los 4 sellos operan 12 entidades especializadas y 28 componentes de Foundation que no se venden por separado — son la infraestructura que hace posible que cada sello sea verificable, trazable y sustentable ante terceros.</p>
+          <p class="products__intro-en">Behind the 4 seals operate 12 specialized entities and 28 Foundation components that are not sold separately — they are the infrastructure that makes each seal verifiable, traceable and sustainable before third parties.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION C — Diferencia / Difference -->
+    <section class="section section--contrast" data-screen-label="Diferencia">
+      <div class="container">
+        <p class="section-label">DIFERENCIA · DIFFERENCE</p>
+        <h2 class="section-title">No es un asistente. Es infraestructura de criterio.</h2>
+        <p class="section-subtitle section-subtitle--italic">Not an assistant. Infrastructure for judgment.</p>
+
+        <div class="contrast">
+          <div class="contrast__row contrast__row--head">
+            <div class="contrast__cell contrast__cell--left contrast__cell--head">
+              <span class="contrast__head-label">ASISTENTE DE IA · AI ASSISTANT</span>
+            </div>
+            <div class="contrast__cell contrast__cell--right contrast__cell--head">
+              <span class="contrast__head-label contrast__head-label--us">XCID</span>
+            </div>
+          </div>
+
+          <div class="contrast__row">
+            <div class="contrast__cell contrast__cell--left">
+              <p class="contrast__es">Genera una respuesta basada en su entrenamiento.</p>
+              <p class="contrast__en">Generates an answer based on its training.</p>
+            </div>
+            <div class="contrast__cell contrast__cell--right">
+              <p class="contrast__es">Genera una respuesta basada en el marco regulatorio vigente, con cita textual del artículo aplicable.</p>
+              <p class="contrast__en">Generates an answer based on current regulation, with literal citation of the applicable article.</p>
+            </div>
+          </div>
+
+          <div class="contrast__row">
+            <div class="contrast__cell contrast__cell--left">
+              <p class="contrast__es">La respuesta es opaca. No sabe cómo llegó a ella.</p>
+              <p class="contrast__en">The answer is opaque. No way to know how it got there.</p>
+            </div>
+            <div class="contrast__cell contrast__cell--right">
+              <p class="contrast__es">Cada respuesta tiene metadatos verificables de cómo se construyó y qué fuentes usó.</p>
+              <p class="contrast__en">Every answer has verifiable metadata of how it was built and what sources it used.</p>
+            </div>
+          </div>
+
+          <div class="contrast__row">
+            <div class="contrast__cell contrast__cell--left">
+              <p class="contrast__es">Si el modelo cambia, la respuesta cambia. Sin trazabilidad.</p>
+              <p class="contrast__en">If the model changes, the answer changes. No traceability.</p>
+            </div>
+            <div class="contrast__cell contrast__cell--right">
+              <p class="contrast__es">Cada decisión queda registrada antes de la acción. Auditable en cualquier momento.</p>
+              <p class="contrast__en">Every decision is recorded before the action. Auditable at any time.</p>
+            </div>
+          </div>
+
+          <div class="contrast__row">
+            <div class="contrast__cell contrast__cell--left">
+              <p class="contrast__es">Sus datos viajan al proveedor del modelo.</p>
+              <p class="contrast__en">Your data travels to the model provider.</p>
+            </div>
+            <div class="contrast__cell contrast__cell--right">
+              <p class="contrast__es">Operación air-gapped opcional. Soberanía total sobre datos y conocimiento generado.</p>
+              <p class="contrast__en">Optional air-gapped operation. Full sovereignty over data and generated knowledge.</p>
+            </div>
+          </div>
+
+          <div class="contrast__row">
+            <div class="contrast__cell contrast__cell--left">
+              <p class="contrast__es">No hay manera de sustentar la respuesta ante un regulador.</p>
+              <p class="contrast__en">No way to sustain the answer before a regulator.</p>
+            </div>
+            <div class="contrast__cell contrast__cell--right">
+              <p class="contrast__es">XTF Score y trail completo de evidencia para sostener cada conclusión.</p>
+              <p class="contrast__en">XTF Score and complete evidence trail to sustain every conclusion.</p>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
