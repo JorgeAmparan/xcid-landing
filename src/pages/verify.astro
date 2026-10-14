@@ -1,0 +1,14 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base title="Verificar sello · XCID" section="fact" sub="/ verify" description="Verificación de sellos XCID FACT.">
+  <section class="wrap" style="padding-top:88px;padding-bottom:120px;display:flex;flex-direction:column;gap:18px;max-width:720px">
+    <span class="eyebrow">xcid.dev/verify</span>
+    <h1 style="font-size:40px">Verificación de sellos</h1>
+    <p class="lede" style="margin:0">Aquí se verificarán los registros FAT y los sellos XTF emitidos por XCID FACT, con firma criptográfica y sin depender de la plataforma que los generó. Disponible con el lanzamiento del piloto.</p>
+    <form style="display:flex;gap:0;max-width:520px;padding-top:12px" method="get">
+      <input class="fld mono" name="id" placeholder="fat_01HZ…" style="font-size:14px" />
+      <button class="btn primary" type="submit" style="white-space:nowrap">Verificar</button>
+    </form>
+  </section>
+</Base>

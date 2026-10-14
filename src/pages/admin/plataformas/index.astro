@@ -1,0 +1,23 @@
+---
+import Admin from '../../../layouts/Admin.astro';
+import { currentAdmin } from '../../../lib/supabase';
+import { getPlataformas } from '../../../lib/content';
+const { sb } = await currentAdmin(Astro.request, Astro.cookies);
+const list = await getPlataformas({ all: true, sb });
+---
+<Admin title="Plataformas propias" area="plataformas">
+  <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px">
+    <h1 style="font-size:28px">Plataformas propias</h1>
+    <a href="/admin/plataformas/nuevo" class="btn accent sm">+ Nueva plataforma</a>
+  </div>
+  <div class="scroll-x"><table class="data">
+    <thead><tr><th>ORDEN</th><th>NOMBRE</th><th>ETIQUETA</th><th>ESTADO</th><th>VISIBLE</th></tr></thead>
+    <tbody>{list.map((p) => (
+      <tr><td class="mono" style="font-size:12px">{p.orden}</td>
+        <td><a href={`/admin/plataformas/${p.id}`} style="font-weight:600">{p.nombre}</a>{p.insignia && <span class="mono" style="font-size:10px;margin-left:8px;color:var(--accent)">INSIGNIA</span>}</td>
+        <td class="mono" style="font-size:11px;color:var(--ink-muted)">{p.etiqueta}</td>
+        <td style="font-size:14px">{p.estado ?? '—'}</td>
+        <td class="mono" style="font-size:11px">{p.publicado ? 'SÍ' : 'NO'}</td></tr>
+    ))}</tbody>
+  </table></div>
+</Admin>

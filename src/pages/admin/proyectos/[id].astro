@@ -1,0 +1,51 @@
+---
+import Admin from '../../../layouts/Admin.astro';
+import { currentAdmin } from '../../../lib/supabase';
+import { slugify } from '../../../lib/md';
+import type { Proyecto } from '../../../lib/content';
+
+const { sb, isAdmin } = await currentAdmin(Astro.request, Astro.cookies);
+if (!isAdmin || !sb) return Astro.redirect('/admin/login');
+const { id } = Astro.params; const isNew = id === 'nuevo';
+let p: Partial<Proyecto> = { nombre: '', resumen: '', tipo: 'Web app', stack: [], url: '', orden: 99, publicado: true };
+let error = ''; let saved = false;
+if (!isNew) { const { data } = await sb.from('proyectos').select('*').eq('id', id).maybeSingle(); if (!data) return new Response(null, { status: 404 }); p = data; }
+if (Astro.request.method === 'POST') {
+  const f = await Astro.request.formData(); const action = String(f.get('_action') ?? 'guardar');
+  if (action === 'borrar' && !isNew) { const { error: err } = await sb.from('proyectos').delete().eq('id', id); if (err) error = err.message; else return Astro.redirect('/admin/proyectos'); }
+  else {
+    const nombre = String(f.get('nombre') ?? '').trim();
+    const row = { nombre, slug: slugify(String(f.get('slug') ?? '')) || slugify(nombre), resumen: String(f.get('resumen') ?? '').trim() || null, tipo: String(f.get('tipo') ?? 'Web app'),
+      stack: String(f.get('stack') ?? '').split(',').map((s) => s.trim()).filter(Boolean), url: String(f.get('url') ?? '').trim() || null, orden: Number(f.get('orden')) || 99, publicado: f.get('publicado') === 'on' };
+    if (!nombre) error = 'El nombre es obligatorio.';
+    else { const q = isNew ? sb.from('proyectos').insert(row).select('id').single() : sb.from('proyectos').update(row).eq('id', id).select('id').single();
+      const { data, error: err } = await q; if (err) error = err.message; else if (isNew) return Astro.redirect(`/admin/proyectos/${data.id}`); else { p = { ...p, ...row }; saved = true; } }
+  }
+}
+---
+<Admin title={isNew ? 'Nuevo proyecto' : p.nombre!} area="proyectos">
+  <form method="post" style="display:flex;flex-direction:column;gap:22px">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px">
+      <div style="display:flex;flex-direction:column;gap:4px"><a href="/admin/proyectos" class="mono" style="font-size:12px;color:var(--ink-muted)">← Proyectos</a><h1 style="font-size:28px">{isNew ? 'Nuevo proyecto' : 'Editar proyecto'}</h1></div>
+      <div style="display:flex;gap:10px;align-items:center">{saved && <span class="mono" style="font-size:11.5px;color:var(--ink-muted)">Guardado</span>}<button class="btn accent sm" name="_action" value="guardar">Guardar</button></div>
+    </div>
+    {error && <p class="notice err">{error}</p>}
+    <div class="grid12" style="gap:22px">
+      <div style="grid-column:span 8;display:flex;flex-direction:column;gap:18px">
+        <div><label class="lbl" for="nombre">Proyecto</label><input class="fld" id="nombre" name="nombre" value={p.nombre} required style="font-family:var(--serif);font-size:22px;font-weight:500" /></div>
+        <div><label class="lbl" for="resumen">Qué resolvimos</label><textarea class="fld" id="resumen" name="resumen" rows="3" style="min-height:100px;font-family:var(--sans);font-size:15px">{p.resumen}</textarea></div>
+        <div><label class="lbl" for="stack">Stack (separado por coma)</label><input class="fld mono" id="stack" name="stack" value={(p.stack ?? []).join(', ')} style="font-size:13px" /></div>
+      </div>
+      <aside style="grid-column:span 4;display:flex;flex-direction:column;gap:18px">
+        <div class="panel" style="display:flex;flex-direction:column;gap:14px;padding:20px">
+          <label style="display:flex;gap:10px;align-items:center;font-size:14.5px"><input type="checkbox" name="publicado" checked={p.publicado} /> Visible en el sitio</label>
+          <div><label class="lbl" for="tipo">Tipo</label><select class="fld" id="tipo" name="tipo">{['Web app', 'Sitio web', 'Landing', 'App móvil'].map((t) => <option value={t} selected={p.tipo === t}>{t}</option>)}</select></div>
+          <div><label class="lbl" for="orden">Orden</label><input class="fld mono" id="orden" name="orden" type="number" value={p.orden} style="font-size:13px" /></div>
+          <div><label class="lbl" for="slug">Identificador</label><input class="fld mono" id="slug" name="slug" value={p.slug ?? ''} placeholder="se genera del nombre" style="font-size:13px" /></div>
+          <div><label class="lbl" for="url">Enlace (opcional; si existe, el nombre enlaza)</label><input class="fld" id="url" name="url" type="url" value={p.url ?? ''} placeholder="https://…" /></div>
+        </div>
+        {!isNew && <button class="btn sm" name="_action" value="borrar" style="color:var(--accent);border-color:var(--line)" onclick="return confirm('¿Eliminar este proyecto?')">Eliminar</button>}
+      </aside>
+    </div>
+  </form>
+</Admin>

@@ -1,0 +1,24 @@
+---
+import Admin from '../../layouts/Admin.astro';
+import { currentAdmin } from '../../lib/supabase';
+import { getAjuste } from '../../lib/content';
+const { sb, isAdmin } = await currentAdmin(Astro.request, Astro.cookies);
+if (!isAdmin || !sb) return Astro.redirect('/admin/login');
+let error = ''; let saved = false;
+if (Astro.request.method === 'POST') {
+  const f = await Astro.request.formData();
+  const valor = { ahora: String(f.get('ahora') ?? '').split('\n').map((s) => s.trim()).filter(Boolean), disponible: String(f.get('disponible') ?? '').trim() };
+  const { error: err } = await sb.from('ajustes').upsert({ clave: 'inicio', valor }, { onConflict: 'clave' });
+  if (err) error = err.message; else saved = true;
+}
+const v = await getAjuste<{ ahora: string[]; disponible: string }>('inicio', sb);
+---
+<Admin title="Página de inicio" area="inicio">
+  <h1 style="font-size:28px">Página de inicio</h1>
+  {error && <p class="notice err">{error}</p>}
+  <form method="post" class="panel" style="padding:24px;display:flex;flex-direction:column;gap:18px;max-width:640px">
+    <div><label class="lbl" for="disponible">Línea de disponibilidad (sección Contacto)</label><input class="fld" id="disponible" name="disponible" value={v?.disponible ?? ''} placeholder="Disponible para consultoría" /></div>
+    <div><label class="lbl" for="ahora">Líneas "Ahora" (una por renglón; reservado para una futura sección)</label><textarea class="fld" id="ahora" name="ahora" rows="4" style="min-height:120px;font-family:var(--sans);font-size:15px">{(v?.ahora ?? []).join('\n')}</textarea></div>
+    <div style="display:flex;gap:10px;align-items:center"><button class="btn accent sm">Guardar</button>{saved && <span class="mono" style="font-size:11.5px;color:var(--ink-muted)">Guardado</span>}</div>
+  </form>
+</Admin>

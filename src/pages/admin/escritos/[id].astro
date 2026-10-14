@@ -1,0 +1,157 @@
+---
+import Admin from '../../../layouts/Admin.astro';
+import { currentAdmin } from '../../../lib/supabase';
+import { getSeries, getTemas, readingMinutes, type Escrito } from '../../../lib/content';
+import { slugify } from '../../../lib/md';
+
+const { sb, isAdmin } = await currentAdmin(Astro.request, Astro.cookies);
+if (!isAdmin || !sb) return Astro.redirect('/admin/login');
+
+const { id } = Astro.params;
+const isNew = id === 'nuevo';
+let e: Partial<Escrito> = { titulo: '', bajada: '', cuerpo_md: '', serie: 'criterio', tipo: 'ensayo', idioma: 'es', temas: [], fecha: new Date().toISOString().slice(0, 10), publicado: false, origen_url: '' };
+let error = ''; let saved = false;
+
+if (!isNew) {
+  const { data } = await sb.from('escritos').select('*').eq('id', id).maybeSingle();
+  if (!data) return new Response(null, { status: 404 });
+  e = data;
+}
+
+if (Astro.request.method === 'POST') {
+  const f = await Astro.request.formData();
+  const action = String(f.get('_action') ?? 'guardar');
+  if (action === 'borrar' && !isNew) {
+    const { error: err } = await sb.from('escritos').delete().eq('id', id);
+    if (err) error = err.message; else return Astro.redirect('/admin?m=borrado');
+  } else {
+    const titulo = String(f.get('titulo') ?? '').trim();
+    const row = {
+      titulo,
+      slug: slugify(String(f.get('slug') ?? '')) || slugify(titulo),
+      bajada: String(f.get('bajada') ?? '').trim() || null,
+      cuerpo_md: String(f.get('cuerpo_md') ?? ''),
+      serie: String(f.get('serie') ?? 'criterio'),
+      tipo: String(f.get('tipo') ?? 'ensayo'),
+      idioma: String(f.get('idioma') ?? 'es'),
+      temas: String(f.get('temas') ?? '').split(',').map((t) => slugify(t.trim())).filter(Boolean),
+      fecha: String(f.get('fecha') ?? '') || new Date().toISOString().slice(0, 10),
+      minutos: Number(f.get('minutos')) || null,
+      origen_url: String(f.get('origen_url') ?? '').trim() || null,
+      publicado: action === 'publicar' ? true : action === 'despublicar' ? false : Boolean(e.publicado),
+    };
+    if (!titulo) error = 'El título es obligatorio.';
+    else {
+      // Temas nuevos se dan de alta solos.
+      if (row.temas.length) await sb.from('temas').upsert(row.temas.map((t) => ({ slug: t, nombre: t })), { onConflict: 'slug', ignoreDuplicates: true });
+      const q = isNew ? sb.from('escritos').insert(row).select('id').single() : sb.from('escritos').update(row).eq('id', id).select('id').single();
+      const { data, error: err } = await q;
+      if (err) error = err.message.includes('duplicate') ? 'Ya existe un escrito con esa URL.' : err.message;
+      else if (isNew) return Astro.redirect(`/admin/escritos/${data.id}?m=creado`);
+      else { e = { ...e, ...row }; saved = true; }
+    }
+  }
+}
+
+const [seriesList, temasList] = await Promise.all([getSeries(sb), getTemas(sb)]);
+const words = (e.cuerpo_md ?? '').trim().split(/\s+/).filter(Boolean).length;
+---
+<Admin title={isNew ? 'Nuevo escrito' : `Editar · ${e.titulo}`} area="escritos">
+  <form method="post" id="f" style="display:flex;flex-direction:column;gap:22px">
+    <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px">
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <a href="/admin" class="mono" style="font-size:12px;color:var(--ink-muted)">← Escritos</a>
+        <h1 style="font-size:28px">{isNew ? 'Nuevo escrito' : 'Editar escrito'}</h1>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center">
+        {saved && <span class="mono" style="font-size:11.5px;color:var(--ink-muted)">Guardado</span>}
+        {Astro.url.searchParams.get('m') === 'creado' && <span class="mono" style="font-size:11.5px;color:var(--ink-muted)">Creado</span>}
+        {!isNew && <a href={`/escritos/${e.slug}`} target="_blank" class="btn sm">Ver en el sitio ↗</a>}
+        <button type="button" class="btn sm" id="btn-prev">Vista previa</button>
+        <button class="btn sm" name="_action" value="guardar">Guardar</button>
+        {e.publicado
+          ? <button class="btn sm" name="_action" value="despublicar" style="color:var(--ink-muted)">Pasar a borrador</button>
+          : <button class="btn accent sm" name="_action" value="publicar">Publicar</button>}
+      </div>
+    </div>
+
+    {error && <p class="notice err">{error}</p>}
+
+    <div class="grid12" style="gap:22px">
+      <div style="grid-column:span 8;display:flex;flex-direction:column;gap:18px">
+        <div><label class="lbl" for="titulo">Título</label><input class="fld" id="titulo" name="titulo" value={e.titulo} required style="font-family:var(--serif);font-size:24px;font-weight:500;padding:12px 14px" /></div>
+        <div><label class="lbl" for="bajada">Bajada</label><input class="fld" id="bajada" name="bajada" value={e.bajada ?? ''} /></div>
+        <div>
+          <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px">
+            <label class="lbl" for="cuerpo_md">Cuerpo · Markdown</label>
+            <span class="mono" style="font-size:11px;color:var(--ink-muted)">**negritas** · *cursivas* · &gt; cita · ## subtítulo · <span id="cnt">{words} palabras · {readingMinutes(e.cuerpo_md, null)} min</span></span>
+          </div>
+          <textarea class="fld" id="cuerpo_md" name="cuerpo_md" rows="22">{e.cuerpo_md}</textarea>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding-top:8px">
+            <label class="btn sm" style="font-size:13px;cursor:pointer">Insertar imagen… <input type="file" id="img" accept="image/*" style="display:none" /></label>
+            <span id="img-msg" class="mono" style="font-size:11px;color:var(--ink-muted)"></span>
+          </div>
+          <div id="prev" class="prose panel" style="display:none;padding:28px;margin-top:12px"></div>
+        </div>
+      </div>
+
+      <aside style="grid-column:span 4;display:flex;flex-direction:column;gap:18px">
+        <div class="panel" style="display:flex;flex-direction:column;gap:14px;padding:20px">
+          <span class="section-no" style="letter-spacing:.12em">ESTADO</span>
+          <div class="seg"><span class={!e.publicado ? 'on' : ''}>Borrador</span><span class={e.publicado ? 'on' : ''}>Publicado</span></div>
+          <div><label class="lbl" for="fecha">Fecha</label><input class="fld" id="fecha" name="fecha" type="date" value={e.fecha} /></div>
+          <div><label class="lbl" for="slug">URL · /escritos/</label><input class="fld mono" id="slug" name="slug" value={e.slug ?? ''} placeholder="se genera del título" style="font-size:13px" /></div>
+          <div><label class="lbl" for="minutos">Minutos de lectura (vacío = automático)</label><input class="fld mono" id="minutos" name="minutos" type="number" min="1" value={e.minutos ?? ''} style="font-size:13px" /></div>
+        </div>
+        <div class="panel" style="display:flex;flex-direction:column;gap:14px;padding:20px">
+          <span class="section-no" style="letter-spacing:.12em">CLASIFICACIÓN</span>
+          <div><label class="lbl" for="serie">Serie</label><select class="fld" id="serie" name="serie">{seriesList.map((s) => <option value={s.slug} selected={e.serie === s.slug}>{s.nombre}</option>)}</select></div>
+          <div><label class="lbl" for="tipo">Tipo</label><select class="fld" id="tipo" name="tipo">{['ensayo', 'comentario', 'nota'].map((t) => <option value={t} selected={e.tipo === t}>{t}</option>)}</select></div>
+          <div><label class="lbl" for="idioma">Idioma</label><select class="fld" id="idioma" name="idioma"><option value="es" selected={e.idioma === 'es'}>Español</option><option value="en" selected={e.idioma === 'en'}>English</option></select></div>
+          <div>
+            <label class="lbl" for="temas">Temas (separados por coma)</label>
+            <input class="fld mono" id="temas" name="temas" value={(e.temas ?? []).join(', ')} list="temas-list" style="font-size:13px" />
+            <datalist id="temas-list">{temasList.map((t) => <option value={t.slug} />)}</datalist>
+            <span class="mono" style="font-size:11px;color:var(--ink-muted)">Existentes: {temasList.map((t) => t.slug).join(', ')}</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;padding:20px;border:1px solid var(--line)">
+          <span class="section-no" style="letter-spacing:.12em">ORIGEN</span>
+          <div><label class="lbl" for="origen_url">Publicado también en</label><input class="fld" id="origen_url" name="origen_url" type="url" value={e.origen_url ?? ''} placeholder="https://www.linkedin.com/pulse/…" /></div>
+        </div>
+        {!isNew && <button class="btn sm" name="_action" value="borrar" style="color:var(--accent);border-color:var(--line)" onclick="return confirm('¿Eliminar este escrito? No se puede deshacer.')">Eliminar escrito</button>}
+      </aside>
+    </div>
+  </form>
+
+  <script>
+    const ta = document.getElementById('cuerpo_md') as HTMLTextAreaElement;
+    const cnt = document.getElementById('cnt')!;
+    const prev = document.getElementById('prev')!;
+    const btn = document.getElementById('btn-prev')!;
+    const count = () => { const w = ta.value.trim().split(/\s+/).filter(Boolean).length; cnt.textContent = `${w} palabras · ${Math.max(1, Math.round(w / 220))} min`; };
+    ta.addEventListener('input', count);
+    btn.addEventListener('click', async () => {
+      if (prev.style.display !== 'none') { prev.style.display = 'none'; btn.textContent = 'Vista previa'; return; }
+      const r = await fetch('/api/preview', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ md: ta.value }) });
+      prev.innerHTML = await r.text(); prev.style.display = 'block'; btn.textContent = 'Cerrar vista previa';
+    });
+    const img = document.getElementById('img') as HTMLInputElement;
+    const msg = document.getElementById('img-msg')!;
+    img.addEventListener('change', async () => {
+      const file = img.files?.[0]; if (!file) return;
+      msg.textContent = 'Subiendo…';
+      const fd = new FormData(); fd.append('file', file);
+      const r = await fetch('/api/upload', { method: 'POST', body: fd });
+      const j = await r.json();
+      if (!r.ok) { msg.textContent = j.error ?? 'Error'; return; }
+      const s = ta.selectionStart; const md = `\n![${file.name.replace(/\.[^.]+$/, '')}](${j.url})\n`;
+      ta.value = ta.value.slice(0, s) + md + ta.value.slice(s); msg.textContent = 'Imagen insertada'; count();
+    });
+    // Autoguardado del cuerpo en el navegador por si se cierra la pestaña.
+    const key = 'xcid-draft-' + location.pathname;
+    try { const d = localStorage.getItem(key); if (d && !ta.value) ta.value = d; } catch {}
+    ta.addEventListener('input', () => { try { localStorage.setItem(key, ta.value); } catch {} });
+    document.getElementById('f')!.addEventListener('submit', () => { try { localStorage.removeItem(key); } catch {} });
+  </script>
+</Admin>
