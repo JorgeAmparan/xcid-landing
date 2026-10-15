@@ -1,0 +1,58 @@
+---
+import Base from '../../layouts/Base.astro';
+import Sello from '../../components/Sello.astro';
+const { id } = Astro.params;
+// Sello de muestra. Los sellos reales se servirán desde la API de FACT a partir del piloto.
+const DEMO: Record<string, any> = {
+  sel_XTF_8471demo: {
+    familia: 'XTF', score: 87, banda: 'CONFIABLE', entidad: 'Pedimento 26 48 3621 6001234 · embarque de arneses',
+    tipo: 'Expediente (anonimizado)', emision: '14 oct 2026', vigencia: '14 oct 2026 → 14 oct 2027', score_emision: 86,
+    eventos: 47, origen: 'conector local', revocado: false, tipo_sello: 'Autodiagnóstico',
+  },
+};
+const s = DEMO[id ?? ''];
+const esDemo = Boolean(s);
+if (!s) Astro.response.status = 404;
+const checks = s ? [['Validez de la firma', 'Válida'], ['Integridad de la cadena', `Íntegra · ${s.eventos} eventos`], ['Vigencia', 'Vigente'], ['Estado de revocación', s.revocado ? 'Revocado' : 'Activo']] : [];
+---
+<Base title={s ? `Sello ${id} · auténtico · XCID FACT` : `Sello ${id} · XCID FACT`} section="fact" sub="/ verify" description="Verificación pública de un sello XCID FACT.">
+  <section class="wrap grid12" style="padding-top:64px;padding-bottom:96px;align-items:start">
+    {s ? (<>
+      <div style="grid-column:span 7;display:flex;flex-direction:column;gap:22px">
+        <span class="eyebrow">Verificador público · formato Público</span>
+        <h1 style="font-size:clamp(32px,4vw,44px);line-height:1.1;display:flex;align-items:center;gap:14px"><span aria-hidden="true" style="display:inline-flex;width:40px;height:40px;border-radius:50%;background:#1F4E5C;color:#fff;align-items:center;justify-content:center;font-size:22px">✓</span>Sello auténtico.</h1>
+        <p class="lede" style="margin:0;font-size:16px">Este sello fue emitido por XCID FACT y no ha sido alterado. Lo que ve aquí es lo que cualquier tercero puede comprobar sin cuenta y sin acceso al expediente.</p>
+        <div class="panel" style="padding:0">
+          {checks.map(([k, v]) => (
+            <div style="display:flex;justify-content:space-between;gap:16px;padding:14px 20px;border-bottom:1px solid var(--line);font-size:15px"><span style="color:var(--ink-soft)">{k}</span><span style="font-weight:600;color:#1F4E5C">✓ {v}</span></div>
+          ))}
+          {[['Identificador', id], ['Entidad', s.tipo], ['Score actual', `${s.score} · ${s.banda}`], ['Score al emitir', String(s.score_emision)], ['Emisión', s.emision], ['Vigencia', s.vigencia], ['Origen de la firma', s.origen], ['Tipo de sello', s.tipo_sello]].map(([k, v]) => (
+            <div style="display:flex;justify-content:space-between;gap:16px;padding:12px 20px;border-bottom:1px solid var(--line);font-size:14px"><span style="color:var(--ink-muted)">{k}</span><span class="mono" style="font-size:12.5px;text-align:right">{v}</span></div>
+          ))}
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px;font-size:14px;line-height:1.55;color:var(--ink-soft)">
+          <strong style="color:var(--ink);font-size:13px;font-family:var(--mono);letter-spacing:.12em">LO QUE NO VE AQUÍ</strong>
+          <span>Los documentos, los nombres de proveedores y el contenido de los eventos. El <strong style="font-weight:600;color:var(--ink)">formato Profesional</strong> (socios con acceso) agrega dimensiones y resumen de eventos; el <strong style="font-weight:600;color:var(--ink)">formato Forense</strong> (auditoría y autoridad, con consentimiento) entrega la cadena completa con documentos.</span>
+        </div>
+        {esDemo && <p class="notice" style="font-size:13px">Este es un sello de muestra para que vea cómo funciona el verificador. Los sellos de operaciones reales se emiten durante el piloto.</p>}
+      </div>
+      <div style="grid-column:span 5;display:flex;flex-direction:column;gap:20px;align-items:center;padding-top:24px">
+        <Sello id={id} score={s.score} banda={s.banda} familia={s.familia} entidad={s.entidad} vigencia={s.vigencia} link={false} />
+        <div style="display:flex;flex-direction:column;gap:8px;width:100%;max-width:300px">
+          <span class="section-no" style="letter-spacing:.12em">FAMILIAS DE SELLO</span>
+          {[['XTF', '#1F4E5C', 'Confianza operativa'], ['HXF', '#2D6A4F', 'Capital humano'], ['XAF', '#8C6F2C', 'Trazabilidad'], ['XSO', '#B8860B', 'Soberanía operativa']].map(([f, c, n]) => (
+            <div style="display:flex;align-items:center;gap:10px;font-size:13px"><span aria-hidden="true" style={`width:12px;height:12px;background:${c}`}></span><span class="mono" style="font-weight:500;width:34px">{f}</span><span style="color:var(--ink-soft)">{n}</span>{f === s.familia && <span class="mono" style="font-size:10px;color:var(--accent)">· este sello</span>}</div>
+          ))}
+        </div>
+        <a href="/fact" class="mono" style="font-size:12px;color:var(--accent)">¿Qué es XCID FACT? →</a>
+      </div>
+    </>) : (
+      <div style="grid-column:span 7;display:flex;flex-direction:column;gap:18px">
+        <span class="eyebrow">Verificador público</span>
+        <h1 style="font-size:40px;line-height:1.1">No encontramos ese sello.</h1>
+        <p class="lede" style="margin:0">El identificador <span class="mono" style="font-size:14px">{id}</span> no corresponde a ningún sello emitido. Revise el QR o la liga que recibió. Durante el piloto, los sellos de operaciones reales aparecerán aquí.</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap"><a href="/verify" class="btn">Intentar con otro</a><a href="/verify/sel_XTF_8471demo" class="btn primary">Ver el sello de muestra</a></div>
+      </div>
+    )}
+  </section>
+</Base>

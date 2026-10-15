@@ -1,0 +1,50 @@
+---
+/** Sello XTF (formato Público) — el artefacto que el cliente embebe y que el verificador muestra. Basado en DA 63. */
+interface Props {
+  id?: string; score?: number; banda?: string; familia?: 'XTF' | 'HXF' | 'XAF' | 'XSO';
+  entidad?: string; vigencia?: string; size?: 'full' | 'compact'; link?: boolean;
+}
+const { id = 'sel_XTF_8471demo', score = 87, banda = 'CONFIABLE', familia = 'XTF', entidad = 'Pedimento 26 48 3621 6001234', vigencia = '14 oct 2026 → 14 oct 2027', size = 'full', link = true } = Astro.props;
+const colores: Record<string, string> = { XTF: '#1F4E5C', HXF: '#2D6A4F', XAF: '#8C6F2C', XSO: '#B8860B' };
+const c = colores[familia];
+const nombres: Record<string, string> = { XTF: 'Confianza operativa', HXF: 'Capital humano', XAF: 'Trazabilidad', XSO: 'Soberanía operativa' };
+const href = `/verify/${id}`;
+const Tag = link ? 'a' : 'div';
+---
+{size === 'full' ? (
+  <Tag href={link ? href : undefined} class="sello" style={`--f:${c}`} aria-label={`Sello ${familia} ${score} ${banda}, verificar`}>
+    <div class="s-head"><span>XCID</span><span style="color:var(--f)">{familia}</span></div>
+    <div class="s-score"><span class="s-num">{score}</span><span class="s-esc">/ 100</span></div>
+    <div class="s-banda">{banda}</div>
+    <div class="s-ent">{entidad}</div>
+    <div class="s-meta"><span>{nombres[familia]}</span><span>Vigente {vigencia}</span></div>
+    <div class="s-foot"><span class="s-qr" aria-hidden="true"></span><span>Verificar →</span></div>
+  </Tag>
+) : (
+  <Tag href={link ? href : undefined} class="sello-c" style={`--f:${c}`} aria-label={`Sello ${familia} ${score}, verificar`}>
+    <span class="sc-dot" aria-hidden="true"></span><span class="sc-f">{familia}</span><span class="sc-n">{score}</span><span class="sc-b">{banda}</span>
+  </Tag>
+)}
+
+<style>
+  .sello { display:flex; flex-direction:column; gap:6px; width:220px; padding:16px 18px 14px; background:#fff; border:3px solid var(--f); color:#1C1B17; font-family:var(--sans); text-decoration:none; box-shadow:0 18px 40px -28px rgba(0,0,0,.45); }
+  .sello:hover { color:#1C1B17; transform:translateY(-1px); }
+  .s-head { display:flex; justify-content:space-between; font-family:var(--mono); font-size:11px; letter-spacing:.14em; font-weight:500; }
+  .s-score { display:flex; align-items:baseline; gap:6px; margin-top:4px; }
+  .s-num { font-family:var(--mono); font-size:52px; font-weight:500; line-height:1; color:var(--f); }
+  .s-esc { font-family:var(--mono); font-size:12px; color:#6E7978; }
+  .s-banda { align-self:flex-start; font-family:var(--mono); font-size:11px; letter-spacing:.12em; padding:4px 10px; background:var(--f); color:#fff; }
+  .s-ent { font-size:13px; font-weight:600; margin-top:6px; line-height:1.3; }
+  .s-meta { display:flex; flex-direction:column; gap:2px; font-size:11px; color:#6E7978; line-height:1.4; }
+  .s-foot { display:flex; justify-content:space-between; align-items:center; margin-top:8px; padding-top:10px; border-top:1px solid #E4E0D7; font-size:12px; font-weight:600; color:var(--f); }
+  .s-qr { width:34px; height:34px; border:2px solid var(--f); background:
+    repeating-linear-gradient(90deg, var(--f) 0 3px, transparent 3px 6px) 0 0/100% 3px no-repeat,
+    repeating-linear-gradient(0deg, var(--f) 0 3px, transparent 3px 6px) 0 6px/3px 100% no-repeat,
+    repeating-linear-gradient(90deg, transparent 0 9px, var(--f) 9px 12px) 0 50%/100% 3px no-repeat; }
+  .sello-c { display:inline-flex; align-items:center; gap:8px; padding:4px 10px 4px 8px; background:#fff; border:1.5px solid var(--f); font-family:var(--mono); font-size:11.5px; color:#1C1B17; text-decoration:none; white-space:nowrap; }
+  .sello-c:hover { color:#1C1B17; background:#F8F6F1; }
+  .sc-dot { width:9px; height:9px; border-radius:50%; background:var(--f); }
+  .sc-f { font-weight:500; color:var(--f); }
+  .sc-n { font-weight:500; }
+  .sc-b { font-size:10px; letter-spacing:.1em; color:#6E7978; }
+</style>

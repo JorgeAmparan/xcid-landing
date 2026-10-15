@@ -1,0 +1,17 @@
+---
+import Base from '../../layouts/Base.astro';
+const id = Astro.url.searchParams.get('id')?.trim();
+if (id) return Astro.redirect(`/verify/${encodeURIComponent(id)}`);
+---
+<Base title="Verificar un sello · XCID FACT" section="fact" sub="/ verify" description="Verifique la autenticidad de un sello XCID FACT sin cuenta: firma, vigencia e integridad de la cadena.">
+  <section class="wrap" style="padding-top:88px;padding-bottom:120px;display:flex;flex-direction:column;gap:18px;max-width:720px">
+    <span class="eyebrow">Verificador público</span>
+    <h1 style="font-size:40px">¿Este sello es auténtico?</h1>
+    <p class="lede" style="margin:0">Pegue el identificador del sello o escanee su QR. Verá si la firma es válida, si la cadena está íntegra y si sigue vigente. Sin cuenta y sin datos sensibles del expediente.</p>
+    <form style="display:flex;gap:0;max-width:520px;padding-top:12px" method="get">
+      <input class="fld mono" name="id" placeholder="sel_XTF_…" required style="font-size:14px" />
+      <button class="btn primary" type="submit" style="white-space:nowrap">Verificar</button>
+    </form>
+    <a href="/verify/sel_XTF_8471demo" class="mono" style="font-size:12px;color:var(--accent)">Probar con el sello de muestra →</a>
+  </section>
+</Base>
