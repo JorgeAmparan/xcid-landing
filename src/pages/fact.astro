@@ -1,24 +1,198 @@
 ---
 import Base from '../layouts/Base.astro';
----
-<Base title="XCID FACT — Forensic Audit & Compliance Trail" section="fact" sub="/ FACT"
-  description="Infraestructura de trazabilidad para comercio regulado: cada decisión asistida por IA queda registrada, puntuada y verificable ante terceros.">
 
-  <section class="wrap grid12" style="padding-top:72px;padding-bottom:56px;align-items:stretch">
-    <div class="panel" style="grid-column:span 6;display:flex;flex-direction:column;justify-content:center;gap:24px;padding:clamp(28px,4vw,48px)">
-      <span class="eyebrow">XCID FACT — Forensic Audit &amp; Compliance Trail</span>
-      <h1 style="font-size:clamp(34px,4.2vw,46px);line-height:1.1">Evidencia de cómo decidió usted, antes de actuar.</h1>
-      <p class="lede" style="margin:0;font-size:17px">Infraestructura de trazabilidad para comercio regulado — aduanal, fiscal, ambiental. Cada decisión asistida por IA queda registrada, puntuada y verificable ante terceros. Para despachos, empresas IMMEX y los sistemas y agentes que las sirven.</p>
+const pasos = [
+  { n: '01', t: 'Usted decide', d: 'Un profesional toma una decisión con apoyo de IA: una clasificación arancelaria, un dictamen ambiental, un criterio fiscal.', icon: 'user' },
+  { n: '02', t: 'Queda registrada antes de actuar', d: 'XCID FACT guarda la decisión, las fuentes consultadas y el razonamiento en un registro forense (FAT), no después como autopsia.', icon: 'record' },
+  { n: '03', t: 'Se mide la confianza', d: 'Siete dimensiones evalúan cada decisión y producen un XTF Score: qué tan sustentada está, de dónde salió, qué tan coherente es.', icon: 'gauge' },
+  { n: '04', t: 'Sello verificable', d: 'Cualquier tercero — cliente, regulador, auditor, juez — verifica el sello en xcid.dev/verify sin depender de nadie.', icon: 'seal' },
+];
+
+const sellos = [
+  { code: 'XTF', name: 'Sello de confianza', line: 'Confianza medible por decisión.', dims: '7 dimensiones', who: 'Cumplimiento, auditoría interna, profesionales que sustentan criterio ante regulador.' },
+  { code: 'HXF', name: 'Sello de capital humano', line: 'El criterio de su gente, como activo que no se va con la rotación.', dims: '10 dimensiones', who: 'Despachos con rotación, organizaciones con know-how crítico.' },
+  { code: 'XAF', name: 'Sello de trazabilidad', line: 'Audit trail forense, antes y después de cada acción.', dims: '7 dimensiones', who: 'Defensa ante litigios, reportes regulatorios, auditoría externa.' },
+  { code: 'XSO', name: 'Sello de soberanía', line: 'Los tres anteriores más soberanía física sobre sus datos.', dims: 'XTF + HXF + XAF', who: 'Corporativos con requisitos de soberanía, instituciones públicas.' },
+];
+
+const quienes = [
+  ['Agencias aduanales', 'Clasificación y pedimentos con cita del marco vigente.', 'ship'],
+  ['Empresas IMMEX', 'Comercio exterior y cumplimiento con evidencia por decisión.', 'factory'],
+  ['Consultores ambientales', 'Dictámenes sustentables ante SEMARNAT y auditores.', 'leaf'],
+  ['Auditores y fiscalistas', 'Criterio fiscal trazable ante el SAT y el cliente.', 'scale'],
+  ['Laboratorios', 'Resultados con fuente, método y nivel de confianza.', 'flask'],
+  ['Desarrolladores y agentes', 'Una API para sellar las decisiones de sus propios sistemas.', 'code'],
+];
+
+const icons: Record<string, string> = {
+  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/>',
+  record: '<rect x="4" y="3" width="16" height="18" rx="1"/><path d="M8 8h8M8 12h8M8 16h5"/>',
+  gauge: '<path d="M4 16a8 8 0 0 1 16 0"/><path d="M12 16l4-5"/><circle cx="12" cy="16" r="1.5"/>',
+  seal: '<circle cx="12" cy="11" r="6"/><path d="M9 11l2 2 4-4M9 17l-1 5 4-2 4 2-1-5"/>',
+  ship: '<path d="M3 17h18l-2 4H5zM5 17V9h14v8M9 9V5h6v4"/>',
+  factory: '<path d="M3 21V10l5 3V10l5 3V10l5 3v8zM7 21v-4M12 21v-4M17 21v-4"/>',
+  leaf: '<path d="M5 19c0-8 5-13 14-13-1 9-6 14-14 13z"/><path d="M5 19l8-8"/>',
+  scale: '<path d="M12 3v18M4 7h16M6 7l-3 7h6zM18 7l-3 7h6zM8 21h8"/>',
+  flask: '<path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 2 3h10a2 2 0 0 0 2-3l-5-9V3"/><path d="M7 15h10"/>',
+  code: '<path d="M8 7l-5 5 5 5M16 7l5 5-5 5M14 4l-4 16"/>',
+};
+const Icon = (k: string, size = 24) => `<svg aria-hidden="true" width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">${icons[k]}</svg>`;
+---
+<Base title="XCID FACT — evidencia para cada decisión que su empresa toma con IA" section="fact" sub="/ FACT"
+  description="XCID FACT registra, mide y sella cada decisión asistida por IA para que su empresa pueda sustentarla ante clientes, reguladores y auditores.">
+
+  <!-- HERO -->
+  <section class="wrap grid12" style="padding-top:64px;padding-bottom:40px;align-items:center">
+    <div style="grid-column:span 6;display:flex;flex-direction:column;gap:24px">
+      <span class="eyebrow">XCID FACT · Forensic Audit &amp; Compliance Trail</span>
+      <h1 style="font-size:clamp(36px,4.6vw,52px);line-height:1.06">Cada decisión que su empresa toma con IA, con evidencia que la respalda.</h1>
+      <p class="lede" style="margin:0;font-size:18px">Cuando un regulador, un cliente o un auditor pregunte <em>"¿y esto en qué se basó?"</em>, XCID FACT tiene la respuesta registrada desde antes de actuar. Para despachos, empresas IMMEX, consultores y los sistemas que los sirven.</p>
       <div style="display:flex;flex-wrap:wrap;gap:12px;padding-top:4px">
-        <a href="/#contacto" class="btn primary">Solicitar piloto</a>
-        <a href="#api" class="btn mono" style="font-size:14px">Ver API →</a>
+        <a href="/contacto?motivo=piloto" class="btn primary">Solicitar piloto</a>
+        <a href="#como" class="btn">Ver cómo funciona ↓</a>
       </div>
     </div>
-    <div id="api" class="panel dark" style="grid-column:span 6;display:flex;flex-direction:column;min-width:0">
+
+    <!-- Tarjeta: así se ve un registro sellado -->
+    <div style="grid-column:span 6;display:flex;justify-content:center">
+      <div class="panel" style="width:100%;max-width:480px;padding:0;position:relative;box-shadow:0 20px 50px -30px rgba(35,48,47,.45)">
+        <div class="mono" style="display:flex;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--line);font-size:11px;letter-spacing:.12em;color:var(--ink-muted)"><span>REGISTRO FAT</span><span>fat_01HZ…K7</span></div>
+        <div style="padding:22px 20px;display:flex;flex-direction:column;gap:14px;font-size:14.5px;line-height:1.5">
+          <div><span class="mono" style="font-size:10.5px;letter-spacing:.12em;color:var(--ink-muted);display:block">DECISIÓN</span>Clasificación arancelaria · fracción 8471.30.01</div>
+          <div><span class="mono" style="font-size:10.5px;letter-spacing:.12em;color:var(--ink-muted);display:block">FUENTES CITADAS</span>LIGIE 2026, art. 2 · TIGIE 8471.30 · Criterio normativo 12/2025</div>
+          <div><span class="mono" style="font-size:10.5px;letter-spacing:.12em;color:var(--ink-muted);display:block">QUIÉN · CUÁNDO</span>Agente aduanal 0421 · 14 oct 2026, 11:42 · antes de presentar el pedimento</div>
+          <div style="display:flex;align-items:center;gap:16px;padding-top:6px;border-top:1px solid var(--line)">
+            <div style="flex:1">
+              <span class="mono" style="font-size:10.5px;letter-spacing:.12em;color:var(--ink-muted);display:block">XTF SCORE</span>
+              <div style="display:flex;align-items:baseline;gap:8px"><span class="mono" style="font-size:30px;font-weight:500;color:var(--accent)">0.91</span><span style="font-size:12.5px;color:var(--ink-soft)">7 dimensiones evaluadas</span></div>
+              <div style="height:6px;background:var(--stone);border:1px solid var(--line);margin-top:6px"><div style="width:91%;height:100%;background:var(--accent)"></div></div>
+            </div>
+            <div aria-hidden="true" style="width:84px;height:84px;border:2px solid var(--accent);border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--accent);transform:rotate(-8deg);font-family:var(--mono);font-size:10px;letter-spacing:.1em;line-height:1.2">
+              <span style="font-size:16px;font-weight:500">XTF</span><span>VERIFICADO</span>
+            </div>
+          </div>
+        </div>
+        <div class="mono" style="padding:10px 20px;border-top:1px solid var(--line);background:var(--stone);font-size:11px;color:var(--ink-soft)">Verificable por cualquiera en <span style="color:var(--accent)">xcid.dev/verify/fat_01HZ…K7</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CÓMO FUNCIONA -->
+  <section id="como" style="border-top:1px solid var(--line);background:var(--paper)">
+    <div class="wrap" style="padding-top:72px;padding-bottom:72px;display:flex;flex-direction:column;gap:36px">
+      <div style="display:flex;flex-direction:column;gap:10px;max-width:640px">
+        <span class="section-no">§ 01 — CÓMO FUNCIONA</span>
+        <h2 style="font-size:34px;line-height:1.15">De la decisión al sello, en cuatro pasos.</h2>
+        <p class="lede" style="margin:0;font-size:16px">Sin cambiar cómo trabaja su gente. XCID FACT se coloca entre la IA y la acción.</p>
+      </div>
+      <ol class="steps">
+        {pasos.map((p) => (
+          <li class="step">
+            <div class="step-icon"><Fragment set:html={Icon(p.icon, 26)} /></div>
+            <span class="mono" style="font-size:11px;letter-spacing:.14em;color:var(--accent)">{p.n}</span>
+            <h3 style="font-size:20px;line-height:1.25">{p.t}</h3>
+            <p style="margin:0;font-size:14.5px;line-height:1.55;color:var(--ink-soft)">{p.d}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <!-- CUATRO SELLOS -->
+  <section class="wrap" style="padding-top:72px;padding-bottom:72px;display:flex;flex-direction:column;gap:32px">
+    <div style="display:flex;flex-direction:column;gap:10px;max-width:640px">
+      <span class="section-no">§ 02 — CUATRO SELLOS</span>
+      <h2 style="font-size:34px;line-height:1.15">Cada sello certifica una dimensión de su operación.</h2>
+      <p class="lede" style="margin:0;font-size:16px">Se emiten con firma criptográfica y se sustentan ante terceros sin depender de la plataforma que los generó.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));gap:20px">
+      {sellos.map((s, i) => (
+        <article class="panel" style={`display:flex;flex-direction:column;gap:12px;padding:26px;${i === 3 ? 'background:var(--ink);color:var(--on-dark);border-color:var(--ink)' : ''}`}>
+          <div aria-hidden="true" style={`width:64px;height:64px;border-radius:50%;border:2px solid ${i === 3 ? 'var(--accent-light)' : 'var(--accent)'};display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:15px;font-weight:500;color:${i === 3 ? 'var(--accent-light)' : 'var(--accent)'};position:relative`}>
+            {s.code}
+            <span style={`position:absolute;inset:4px;border-radius:50%;border:1px dashed ${i === 3 ? 'var(--accent-light)' : 'var(--accent)'};opacity:.5`}></span>
+          </div>
+          <h3 style="font-size:20px">{s.name}</h3>
+          <p style="margin:0;font-size:15px;line-height:1.5">{s.line}</p>
+          <span class="mono" style={`font-size:11px;letter-spacing:.1em;color:${i === 3 ? 'var(--accent-light)' : 'var(--accent)'}`}>{s.dims.toUpperCase()}</span>
+          <span style={`font-size:13px;line-height:1.5;color:${i === 3 ? 'var(--ink-faint)' : 'var(--ink-muted)'};margin-top:auto;padding-top:8px;border-top:1px solid ${i === 3 ? 'var(--line-dark)' : 'var(--line)'}`}>Para: {s.who}</span>
+        </article>
+      ))}
+    </div>
+    <p class="mono" style="margin:0;font-size:12px;color:var(--ink-muted);line-height:1.6">Detrás de los sellos operan 12 entidades especializadas y 28 componentes de Foundation que no se venden por separado: son la infraestructura que hace a cada sello verificable.</p>
+  </section>
+
+  <!-- PARA QUIÉN -->
+  <section style="border-top:1px solid var(--line);background:var(--paper)">
+    <div class="wrap" style="padding-top:72px;padding-bottom:72px;display:flex;flex-direction:column;gap:32px">
+      <div style="display:flex;flex-direction:column;gap:10px;max-width:640px">
+        <span class="section-no">§ 03 — PARA QUIÉN</span>
+        <h2 style="font-size:34px;line-height:1.15">Donde una decisión equivocada cuesta más que el software.</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:16px">
+        {quienes.map(([t, d, k]) => (
+          <div style="display:flex;gap:14px;padding:20px;border:1px solid var(--line);background:var(--stone)">
+            <span style="color:var(--accent);flex:0 0 auto"><Fragment set:html={Icon(k, 26)} /></span>
+            <div style="display:flex;flex-direction:column;gap:4px"><strong style="font-size:15.5px;font-weight:600">{t}</strong><span style="font-size:13.5px;line-height:1.5;color:var(--ink-soft)">{d}</span></div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ASISTENTE VS FACT -->
+  <section class="wrap" style="padding-top:72px;padding-bottom:72px;display:flex;flex-direction:column;gap:28px">
+    <div style="display:flex;flex-direction:column;gap:10px;max-width:640px">
+      <span class="section-no">§ 04 — LA DIFERENCIA</span>
+      <h2 style="font-size:34px;line-height:1.15">No es un asistente. Es infraestructura de criterio.</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:20px">
+      <div class="panel" style="padding:26px;display:flex;flex-direction:column;gap:14px">
+        <span class="mono" style="font-size:11px;letter-spacing:.14em;color:var(--ink-muted)">ASISTENTE DE IA</span>
+        {['La respuesta es opaca: no sabe cómo llegó a ella.', 'Si el modelo cambia, la respuesta cambia. Sin trazabilidad.', 'Sus datos viajan al proveedor del modelo.', 'No hay manera de sustentarla ante un regulador.'].map((t) => (
+          <div style="display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.5;color:var(--ink-soft)"><span aria-hidden="true" style="color:var(--ink-faint);font-family:var(--mono);flex:0 0 18px">✕</span>{t}</div>
+        ))}
+      </div>
+      <div class="panel dark" style="padding:26px;display:flex;flex-direction:column;gap:14px">
+        <span class="mono" style="font-size:11px;letter-spacing:.14em;color:var(--accent-light)">XCID FACT</span>
+        {['Cada respuesta lleva metadatos verificables: cómo se construyó y qué fuentes usó.', 'Cada decisión queda registrada antes de la acción, auditable en cualquier momento.', 'Soberanía sobre datos y conocimiento; operación air-gapped opcional.', 'XTF Score y cadena de evidencia para sostener cada conclusión ante terceros.'].map((t) => (
+          <div style="display:flex;gap:12px;align-items:flex-start;font-size:15px;line-height:1.5"><span aria-hidden="true" style="color:var(--accent-light);font-family:var(--mono);flex:0 0 18px">✓</span>{t}</div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA PILOTO -->
+  <section style="border-top:1px solid var(--line);background:var(--paper)">
+    <div class="wrap grid12" style="padding-top:64px;padding-bottom:64px;align-items:center">
+      <div style="grid-column:span 7;display:flex;flex-direction:column;gap:14px">
+        <span class="eyebrow">Piloto</span>
+        <h2 style="font-size:32px;line-height:1.15">Empiece con un piloto acotado en su vertical.</h2>
+        <p class="lede" style="margin:0;font-size:16px">Un tipo de decisión, un equipo, unas semanas. Al final tiene registros sellados reales de su operación y un criterio claro para decidir si escala.</p>
+      </div>
+      <div style="grid-column:span 5;display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-end">
+        <a href="/contacto?motivo=piloto" class="btn primary">Solicitar piloto</a>
+        <a href="https://wa.me/5216561224073?text=Hola%20Jorge%2C%20me%20interesa%20el%20piloto%20de%20XCID%20FACT." class="btn" target="_blank" rel="noopener">WhatsApp directo</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARA DESARROLLADORES -->
+  <section class="wrap grid12" style="padding-top:64px;padding-bottom:80px;align-items:start">
+    <div style="grid-column:span 5;display:flex;flex-direction:column;gap:14px">
+      <span class="section-no">§ 05 — PARA DESARROLLADORES Y AGENTES</span>
+      <h2 style="font-size:28px;line-height:1.2">Una llamada para sellar cualquier decisión.</h2>
+      <p style="margin:0;font-size:15px;line-height:1.6;color:var(--ink-soft)">XCID FACT se integra en sus propios sistemas, flujos y agentes de IA: envíe la decisión con sus fuentes y reciba el registro FAT, el XTF Score y la URL de verificación.</p>
+      <div class="panel" style="padding:16px 18px;display:flex;flex-direction:column;gap:6px;margin-top:6px">
+        <span class="section-no" style="letter-spacing:.12em">HORIZONTE</span>
+        <span style="font-size:13.5px;line-height:1.55;color:var(--ink-soft)">XCID FACT es el primer producto de una familia: XCID Companion (soberanía en despacho), MDR-X (micro centros de datos regionales) y XCID Inside (licenciamiento de la arquitectura). Hoy vendemos lo que ya opera.</span>
+      </div>
+    </div>
+    <div id="api" class="panel dark" style="grid-column:span 7;display:flex;flex-direction:column;min-width:0">
       <div class="mono" style="display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--line-dark);font-size:12px;color:var(--ink-faint)">
         <span>POST /v1/decisions</span><span style="color:var(--accent-light)">curl</span>
       </div>
-<pre class="mono" style="margin:0;padding:22px 20px;font-size:13px;line-height:1.7;color:var(--on-dark);overflow-x:auto;flex:1">curl -X POST https://api.xcid.dev/v1/decisions \
+<pre class="mono" style="margin:0;padding:22px 20px;font-size:13px;line-height:1.7;color:var(--on-dark);overflow-x:auto">curl -X POST https://api.xcid.dev/v1/decisions \
   -H "Authorization: Bearer xf_live_…" \
   -d '&#123;
     "actor":     "agente_aduanal_0421",
@@ -33,50 +207,18 @@ import Base from '../layouts/Base.astro';
   <span style="color:var(--accent-light)">"verify"</span>:    "https://xcid.dev/verify/fat_01HZ…" &#125;</pre>
     </div>
   </section>
-
-  <section class="wrap" style="padding-top:16px;padding-bottom:72px;display:flex;flex-direction:column;gap:28px">
-    <div style="display:flex;align-items:baseline;gap:16px"><span class="section-no">§ 01</span><h2 style="font-size:32px">Tres capas, un solo registro.</h2></div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:24px">
-      {[
-        ['FAT', 'Forensic Audit Trail', 'Registro de cada decisión antes de la acción, con la cadena de evidencia que la sustenta. Auditoría como estado vivo, no como autopsia.'],
-        ['XTF', 'Trust Framework', 'Siete dimensiones evaluadas por decisión e índice de integridad emergente. El XTF Score convierte una sugerencia de IA en evidencia sustentable.'],
-        ['XSM', 'Sovereign Metrics', 'Métricas de cumplimiento con agregación jerárquica: del individuo al equipo, a la organización, al bloque comercial.'],
-      ].map(([k, t, d]) => (
-        <div class="panel" style="display:flex;flex-direction:column;gap:12px;padding:30px">
-          <span class="mono" style="font-size:24px;font-weight:500;color:var(--accent)">{k}</span>
-          <span style="font-family:var(--serif);font-size:21px;font-weight:500">{t}</span>
-          <span style="font-size:15px;line-height:1.55;color:var(--ink-soft)">{d}</span>
-        </div>
-      ))}
-    </div>
-  </section>
-
-  <section style="border-top:1px solid var(--line);background:var(--paper)">
-    <div class="wrap" style="padding-top:72px;padding-bottom:72px;display:flex;flex-direction:column;gap:28px">
-      <div style="display:flex;align-items:baseline;gap:16px"><span class="section-no">§ 02</span><h2 style="font-size:32px">No es un asistente. Es infraestructura de criterio.</h2></div>
-      <div class="scroll-x">
-        <table class="data">
-          <thead><tr><th style="width:50%">ASISTENTE DE IA</th><th style="color:var(--accent)">XCID FACT</th></tr></thead>
-          <tbody>
-            <tr><td style="color:var(--ink-muted)">La respuesta es opaca. No sabe cómo llegó a ella.</td><td>Cada respuesta tiene metadatos verificables de cómo se construyó y qué fuentes usó.</td></tr>
-            <tr><td style="color:var(--ink-muted)">Si el modelo cambia, la respuesta cambia. Sin trazabilidad.</td><td>Cada decisión queda registrada antes de la acción. Auditable en cualquier momento.</td></tr>
-            <tr><td style="color:var(--ink-muted)">Sus datos viajan al proveedor del modelo.</td><td>Soberanía sobre datos y conocimiento generado; air-gapped opcional.</td></tr>
-            <tr><td style="color:var(--ink-muted)">No hay manera de sustentar la respuesta ante un regulador.</td><td>XTF Score y trail completo de evidencia para sostener cada conclusión.</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  <section class="wrap grid12" style="padding-top:72px;padding-bottom:72px">
-    <div style="grid-column:span 7;display:flex;flex-direction:column;gap:18px">
-      <span class="section-no">§ 03 — PARA QUIÉN</span>
-      <h2 style="font-size:30px;line-height:1.2">Profesionales que sustentan criterio ante terceros.</h2>
-      <p class="lede" style="margin:0;font-size:16px">Agentes aduanales, consultores ambientales, auditores fiscales y directores de cumplimiento; departamentos de comercio exterior y áreas reguladas; empresas IMMEX; y los desarrolladores que integran estas garantías en sus propios sistemas y agentes.</p>
-    </div>
-    <div class="panel" style="grid-column:span 5;display:flex;flex-direction:column;gap:14px;padding:28px">
-      <span class="eyebrow" style="font-size:11px">Horizonte</span>
-      <p style="margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-soft)">XCID FACT es el primer producto de una familia. En la ruta: XCID Companion (soberanía en despacho), MDR-X (micro centros de datos regionales) y XCID Inside (licenciamiento de la arquitectura). Hoy vendemos lo que ya opera.</p>
-    </div>
-  </section>
 </Base>
+
+<style>
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; position: relative; }
+  .step { display: flex; flex-direction: column; gap: 10px; position: relative; padding-top: 8px; }
+  .step-icon { width: 56px; height: 56px; border: 1px solid var(--ink); background: var(--stone); display: flex; align-items: center; justify-content: center; color: var(--accent); position: relative; z-index: 1; }
+  .step::before { content: ""; position: absolute; top: 36px; left: 56px; right: -24px; border-top: 1px dashed var(--ink-faint); }
+  .step:last-child::before { display: none; }
+  @media (max-width: 900px) {
+    .steps { grid-template-columns: 1fr; gap: 28px; }
+    .step { padding-left: 76px; padding-top: 0; }
+    .step-icon { position: absolute; left: 0; top: 0; }
+    .step::before { top: 56px; left: 28px; right: auto; bottom: -28px; border-top: 0; border-left: 1px dashed var(--ink-faint); }
+  }
+</style>

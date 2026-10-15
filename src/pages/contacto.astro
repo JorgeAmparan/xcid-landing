@@ -1,0 +1,95 @@
+---
+import Base from '../layouts/Base.astro';
+import { anonClient } from '../lib/supabase';
+
+const MOTIVOS: Record<string, string> = {
+  piloto: 'Solicitar piloto de XCID FACT',
+  consultoria: 'Consultoría en IA para mi empresa',
+  desarrollo: 'Desarrollo web o de aplicación',
+  taller: 'Taller IA con Criterio',
+  otro: 'Otro tema',
+};
+const WA = '5216561224073';
+const MAIL = 'contacto@xcid.dev';
+
+let motivo = Astro.url.searchParams.get('motivo') ?? '';
+if (!MOTIVOS[motivo]) motivo = '';
+let enviado: null | { nombre: string; empresa: string; contacto: string; motivo: string; mensaje: string; canal: string } = null;
+let error = '';
+
+if (Astro.request.method === 'POST') {
+  const f = await Astro.request.formData();
+  const d = {
+    nombre: String(f.get('nombre') ?? '').trim(),
+    empresa: String(f.get('empresa') ?? '').trim(),
+    contacto: String(f.get('contacto') ?? '').trim(),
+    motivo: String(f.get('motivo') ?? 'otro'),
+    mensaje: String(f.get('mensaje') ?? '').trim(),
+    canal: String(f.get('canal') ?? 'correo'),
+  };
+  if (!d.nombre || !d.contacto) error = 'Necesito al menos tu nombre y un correo o teléfono.';
+  else if (String(f.get('web') ?? '')) error = 'No se pudo enviar.'; // honeypot
+  else {
+    const sb = anonClient();
+    if (sb) await sb.from('solicitudes').insert({ nombre: d.nombre, empresa: d.empresa || null, contacto: d.contacto, motivo: d.motivo, mensaje: d.mensaje || null, canal: d.canal });
+    enviado = d;
+  }
+}
+
+const texto = (d: NonNullable<typeof enviado>) =>
+  `Hola Jorge, soy ${d.nombre}${d.empresa ? ` de ${d.empresa}` : ''}.\nMotivo: ${MOTIVOS[d.motivo] ?? d.motivo}.\n${d.mensaje ? d.mensaje + '\n' : ''}Contacto: ${d.contacto}`;
+const waUrl = enviado ? `https://wa.me/${WA}?text=${encodeURIComponent(texto(enviado))}` : '';
+const mailUrl = enviado ? `mailto:${MAIL}?subject=${encodeURIComponent(MOTIVOS[enviado.motivo] ?? 'Contacto')}&body=${encodeURIComponent(texto(enviado))}` : '';
+---
+<Base title="Contacto · XCID" section="contacto" sub="/ contacto" description="Solicita un piloto de XCID FACT o escríbeme para consultoría y desarrollo. Por WhatsApp o correo.">
+  <section class="wrap grid12" style="padding-top:72px;padding-bottom:96px;align-items:start">
+    <div style="grid-column:span 5;display:flex;flex-direction:column;gap:18px">
+      <span class="eyebrow">Contacto</span>
+      <h1 style="font-size:clamp(34px,4.4vw,46px);line-height:1.1">{motivo === 'piloto' ? 'Solicitar un piloto de XCID FACT.' : 'Trabajemos juntos.'}</h1>
+      <p class="lede" style="margin:0;font-size:17px">{motivo === 'piloto'
+        ? 'Cuéntame en qué vertical operas (aduanal, fiscal, ambiental) y qué decisiones necesitas sustentar. Te respondo con una propuesta de piloto acotado.'
+        : 'Cuéntame qué necesitas. Quedo atento de responder a la brevedad posible.'}</p>
+      <div class="mono" style="display:flex;flex-direction:column;gap:10px;font-size:13px;color:var(--ink-soft);border-top:1px solid var(--ink);padding-top:16px">
+        <span>WhatsApp · <a href={`https://wa.me/${WA}`} style="color:var(--accent)">+52 656 122 4073</a></span>
+        <span>Correo · <a href={`mailto:${MAIL}`} style="color:var(--accent)">{MAIL}</a></span>
+        <span>LinkedIn · <a href="https://www.linkedin.com/in/jorge-luis-amparan/" style="color:var(--accent)">/in/jorge-luis-amparan</a></span>
+      </div>
+    </div>
+
+    <div class="panel" style="grid-column:span 7;padding:clamp(24px,3vw,36px)">
+      {enviado ? (
+        <div style="display:flex;flex-direction:column;gap:18px">
+          <span class="eyebrow">Un paso más</span>
+          <h2 style="font-size:26px">Gracias, {enviado.nombre}. Elige por dónde enviarlo.</h2>
+          <p style="margin:0;color:var(--ink-soft);font-size:15px;line-height:1.55">Tu solicitud ya quedó registrada. Al abrir el canal verás el mensaje listo; solo tienes que enviarlo.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:12px">
+            <a href={waUrl} class="btn primary" target="_blank" rel="noopener">Enviar por WhatsApp</a>
+            <a href={mailUrl} class="btn">Enviar por correo</a>
+          </div>
+          <pre class="mono" style="margin:0;white-space:pre-wrap;font-size:13px;line-height:1.6;color:var(--ink-soft);border-top:1px solid var(--line);padding-top:14px">{texto(enviado)}</pre>
+        </div>
+      ) : (
+        <form method="post" style="display:flex;flex-direction:column;gap:16px">
+          {error && <p class="notice err">{error}</p>}
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:16px">
+            <div><label class="lbl" for="nombre">Nombre</label><input class="fld" id="nombre" name="nombre" required autocomplete="name" /></div>
+            <div><label class="lbl" for="empresa">Empresa (opcional)</label><input class="fld" id="empresa" name="empresa" autocomplete="organization" /></div>
+          </div>
+          <div><label class="lbl" for="contacto">Correo o teléfono</label><input class="fld" id="contacto" name="contacto" required /></div>
+          <div><label class="lbl" for="motivo">Motivo</label>
+            <select class="fld" id="motivo" name="motivo">
+              {Object.entries(MOTIVOS).map(([k, v]) => <option value={k} selected={motivo === k}>{v}</option>)}
+            </select>
+          </div>
+          <div><label class="lbl" for="mensaje">Mensaje</label><textarea class="fld" id="mensaje" name="mensaje" rows="5" style="min-height:140px;font-family:var(--sans);font-size:15px" placeholder={motivo === 'piloto' ? 'Vertical, tamaño del equipo, tipo de decisiones que necesitan evidencia…' : ''}></textarea></div>
+          <input type="text" name="web" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true" />
+          <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;padding-top:4px">
+            <button class="btn primary" name="canal" value="whatsapp">Continuar por WhatsApp</button>
+            <button class="btn" name="canal" value="correo">Continuar por correo</button>
+          </div>
+          <span class="mono" style="font-size:11px;color:var(--ink-muted)">Sin listas de correo. Solo uso tus datos para responderte.</span>
+        </form>
+      )}
+    </div>
+  </section>
+</Base>

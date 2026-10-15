@@ -3,7 +3,7 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description?: string;
-  section?: 'inicio' | 'fact' | 'trabajo' | 'escritos' | 'admin';
+  section?: 'inicio' | 'fact' | 'trabajo' | 'escritos' | 'contacto' | 'admin';
   sub?: string;
   lang?: string;
   ogType?: string;
@@ -53,7 +53,7 @@ const subLabel = sub ?? (section === 'inicio' ? 'CoInteligencia Profesional' : `
         <a href="/fact" class={section === 'fact' ? 'active' : ''}>XCID FACT</a>
         <a href="/trabajo" class={section === 'trabajo' ? 'active' : ''}>Trabajo</a>
         <a href="/escritos" class={section === 'escritos' ? 'active' : ''}>Escritos</a>
-        <a href="/#contacto" class="contact">Contacto</a>
+        <a href="/contacto" class={section === 'contacto' ? 'contact active' : 'contact'}>Contacto</a>
       </nav>
     </header>
 
@@ -61,7 +61,7 @@ const subLabel = sub ?? (section === 'inicio' ? 'CoInteligencia Profesional' : `
 
     <footer class="site-footer">
       <span>XCID · CoInteligencia Profesional · Hecho en Juárez · El Paso · {new Date().getFullYear()}</span>
-      <span>Lappicero Studio · <a href="/verify">xcid.dev/verify</a></span>
+      <span>Lappicero Studio · <a href="/verify">xcid.dev/verify</a> · <a href="/admin" rel="nofollow">Entrar</a></span>
     </footer>
   </div>
 </body>
