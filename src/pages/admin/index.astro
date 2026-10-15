@@ -1,0 +1,33 @@
+---
+import Admin from '../../layouts/Admin.astro';
+import { currentAdmin } from '../../lib/supabase';
+import { getEscritos, getSeries, readingMinutes } from '../../lib/content';
+const { sb } = await currentAdmin(Astro.request, Astro.cookies);
+const [list, seriesList] = await Promise.all([getEscritos({ all: true, sb }), getSeries(sb)]);
+const series = Object.fromEntries(seriesList.map((s) => [s.slug, s.nombre]));
+const msg = Astro.url.searchParams.get('m');
+---
+<Admin title="Escritos" area="escritos">
+  <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px">
+    <h1 style="font-size:28px">Escritos</h1>
+    <a href="/admin/escritos/nuevo" class="btn accent sm">+ Nuevo escrito</a>
+  </div>
+  {msg === 'borrado' && <p class="notice">Escrito eliminado.</p>}
+  <div class="scroll-x">
+    <table class="data">
+      <thead><tr><th>TÍTULO</th><th>SERIE</th><th>FECHA</th><th>MIN</th><th>ESTADO</th></tr></thead>
+      <tbody>
+        {list.map((e) => (
+          <tr>
+            <td><a href={`/admin/escritos/${e.id}`} style="font-weight:600">{e.titulo}</a><br /><span class="mono" style="font-size:11px;color:var(--ink-muted)">/escritos/{e.slug} · {e.idioma.toUpperCase()}</span></td>
+            <td class="mono" style="font-size:12px">{series[e.serie] ?? e.serie}</td>
+            <td class="mono" style="font-size:12px">{e.fecha}</td>
+            <td class="mono" style="font-size:12px">{readingMinutes(e.cuerpo_md, e.minutos)}</td>
+            <td><span class="mono" style={`font-size:11px;padding:4px 8px;border:1px solid ${e.publicado ? 'var(--ink)' : 'var(--line)'};color:${e.publicado ? 'var(--ink)' : 'var(--ink-muted)'}`}>{e.publicado ? 'PUBLICADO' : 'BORRADOR'}</span></td>
+          </tr>
+        ))}
+        {list.length === 0 && <tr><td colspan="5" style="color:var(--ink-muted)">Aún no hay escritos. Corre <code>supabase/seed.sql</code> para cargar los existentes.</td></tr>}
+      </tbody>
+    </table>
+  </div>
+</Admin>

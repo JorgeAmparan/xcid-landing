@@ -1,0 +1,70 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getEscritos, getSeries, getTemas, readingMinutes } from '../../lib/content';
+
+const url = Astro.url;
+const serieQ = url.searchParams.get('serie') ?? '';
+const temaQ = url.searchParams.get('tema') ?? '';
+
+const [all, seriesList, temasList] = await Promise.all([getEscritos(), getSeries(), getTemas()]);
+const series = Object.fromEntries(seriesList.map((s) => [s.slug, s.nombre]));
+const temas = Object.fromEntries(temasList.map((t) => [t.slug, t.nombre]));
+const list = all.filter((e) => (!serieQ || e.serie === serieQ) && (!temaQ || (e.temas ?? []).includes(temaQ)));
+const link = (s: string, t: string) => {
+  const p = new URLSearchParams(); if (s) p.set('serie', s); if (t) p.set('tema', t);
+  const q = p.toString(); return '/escritos' + (q ? `?${q}` : '');
+};
+const tipoLabel = (e: any) => e.idioma === 'en' ? (e.tipo === 'comentario' ? 'COMMENTARY' : 'ESSAY') : e.tipo.toUpperCase();
+---
+<Base title="Escritos — ensayos sobre criterio, IA y vida · XCID" section="escritos"
+  description="Dos series: Criterio (gobernanza de IA, soberanía, arquitectura) y Roce (lo personal y literario). Ensayos de Jorge Luis Amparán.">
+
+  <section class="wrap grid12" style="padding-top:72px;padding-bottom:32px;align-items:end">
+    <div style="grid-column:span 7;display:flex;flex-direction:column;gap:18px">
+      <span class="eyebrow">§ 03 — Escritos</span>
+      <h1 style="font-size:clamp(34px,4.4vw,48px);line-height:1.1">Ensayos sobre criterio, IA y vida.</h1>
+      <p class="lede" style="margin:0;max-width:560px;font-size:17px">Dos series. <strong style="font-weight:600;color:var(--ink)">Criterio</strong> reúne lo que escribo sobre gobernanza de IA, soberanía operativa y arquitectura. <strong style="font-weight:600;color:var(--ink)">Roce</strong> es lo personal y literario: la vida como movimiento y fricción con el mundo.</p>
+    </div>
+    <div class="mono" style="grid-column:span 5;font-size:12px;line-height:1.9;color:var(--ink-soft);border-top:1px solid var(--ink);padding-top:12px">
+      <span style="display:block;color:var(--ink-muted)">ÍNDICE</span>
+      <span style="display:block">{all.length} textos · {seriesList.length} series · {temasList.length} temas</span>
+      <span style="display:block">Español e inglés, cada uno en su idioma original</span>
+      <span style="display:block">RSS · <a href="/escritos/feed.xml">xcid.dev/escritos/feed.xml</a></span>
+    </div>
+  </section>
+
+  <section class="wrap" style="padding-bottom:20px;display:flex;flex-wrap:wrap;gap:24px 40px;align-items:center;border-bottom:1px solid var(--ink)">
+    <div style="display:flex;align-items:center">
+      <span class="section-no" style="margin-right:14px;letter-spacing:.12em">SERIE</span>
+      <div class="seg">
+        <a href={link('', temaQ)} class={serieQ === '' ? 'on' : ''}>Todas</a>
+        {seriesList.map((s) => <a href={link(s.slug, temaQ)} class={serieQ === s.slug ? 'on' : ''}>{s.nombre}</a>)}
+      </div>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;align-items:center">
+      <span class="section-no" style="margin-right:6px;letter-spacing:.12em">TEMA</span>
+      {temasList.map((t) => (
+        <a href={link(serieQ, temaQ === t.slug ? '' : t.slug)} class="mono"
+           style={`min-height:34px;padding:7px 12px;border:1px solid ${temaQ === t.slug ? 'var(--ink)' : 'var(--line)'};background:${temaQ === t.slug ? 'var(--ink)' : 'var(--paper)'};color:${temaQ === t.slug ? 'var(--paper)' : 'var(--ink)'};font-size:12px`}>{t.nombre}</a>
+      ))}
+    </div>
+  </section>
+
+  <section class="wrap" style="padding-top:8px;padding-bottom:88px;display:flex;flex-direction:column">
+    {list.length === 0 && <p class="notice" style="margin-top:24px">No hay textos con ese filtro todavía.</p>}
+    {list.map((e) => (
+      <a href={`/escritos/${e.slug}`} class="row grid12" style="padding:28px 0;border-bottom:1px solid var(--line);align-items:baseline">
+        <span class="mono" style="grid-column:span 3;font-size:11.5px;line-height:1.8;color:var(--ink-muted)">
+          <span style={e.serie === 'roce' ? 'color:var(--accent)' : ''}>{(series[e.serie] ?? e.serie).toUpperCase()}</span> · {tipoLabel(e)} · {e.idioma.toUpperCase()}<br />{e.fecha} · {readingMinutes(e.cuerpo_md, e.minutos)} min
+        </span>
+        <span style="grid-column:span 9;display:flex;flex-direction:column;gap:8px">
+          <h3 style="font-size:27px;line-height:1.2">{e.titulo}</h3>
+          {e.bajada && <span style="font-size:15.5px;line-height:1.55;color:var(--ink-soft)">{e.bajada}</span>}
+          <span class="mono" style="font-size:11px;color:var(--ink-muted)">{(e.temas ?? []).map((t) => temas[t] ?? t).join(' · ')}</span>
+        </span>
+      </a>
+    ))}
+  </section>
+</Base>
+
+<style>.row:hover h3 { color: var(--accent); } .row:hover { color: inherit; }</style>

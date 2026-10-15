@@ -1,0 +1,91 @@
+---
+import Base from '../layouts/Base.astro';
+import { getPlataformas, getProyectos } from '../lib/content';
+const [plataformas, proyectos] = await Promise.all([getPlataformas(), getProyectos()]);
+const insignia = plataformas.find((p) => p.insignia);
+const resto = plataformas.filter((p) => !p.insignia);
+---
+<Base title="Trabajo — plataformas propias y proyectos de Lappicero Studio · XCID" section="trabajo"
+  description="Plataformas que construyo y proyectos entregados a clientes desde Lappicero Studio: Bubble, React, Node, pipelines de IA, agentes de voz.">
+
+  <section class="wrap grid12" style="padding-top:72px;padding-bottom:36px;align-items:end">
+    <div style="grid-column:span 8;display:flex;flex-direction:column;gap:20px">
+      <span class="eyebrow">§ 02 — Trabajo</span>
+      <h1 style="font-size:clamp(34px,4.4vw,48px);line-height:1.1">Dos modos: construyo plataformas propias y entrego proyectos para clientes.</h1>
+      <p class="lede" style="margin:0;max-width:600px;font-size:17px">Desarrollo asistido por IA, sin equipo tradicional de ingeniería. Bubble para velocidad; React y Node cuando el producto lo exige; pipelines de IA y agentes de voz cuando el problema lo pide.</p>
+    </div>
+    <div class="mono" style="grid-column:span 4;font-size:12px;line-height:1.9;color:var(--ink-soft);border-top:1px solid var(--ink);padding-top:12px">
+      <span style="display:block;color:var(--ink-muted)">STACK HABITUAL</span>
+      <span style="display:block">Bubble · React · Node · FastAPI</span>
+      <span style="display:block">Supabase · FalkorDB · Railway</span>
+      <span style="display:block">ElevenLabs · LangExtract</span>
+    </div>
+  </section>
+
+  <section class="wrap" style="padding-top:16px;display:flex;border-bottom:1px solid var(--ink)">
+    <a href="#plataformas" class="seg-tab on">Plataformas propias</a>
+    <a href="#lappicero" class="seg-tab">Lappicero Studio · proyectos</a>
+  </section>
+
+  <section id="plataformas" class="wrap" style="padding-top:32px;padding-bottom:72px;display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:24px">
+    {insignia && (
+      <article class="panel dark grid12" style="grid-column:1 / -1;padding:clamp(24px,3vw,36px)">
+        <div style="grid-column:span 7;display:flex;flex-direction:column;gap:14px">
+          <span class="mono" style="font-size:11px;letter-spacing:.14em;color:var(--accent-light)">{insignia.etiqueta}</span>
+          <h2 style="font-size:32px;line-height:1.15">{insignia.nombre}</h2>
+          <p style="margin:0;font-size:15.5px;line-height:1.6;color:var(--on-dark-soft)">{insignia.descripcion}</p>
+          <div class="dark" style="display:flex;flex-wrap:wrap;gap:6px;padding-top:4px">{insignia.stack.map((s) => <span class="tag">{s}</span>)}</div>
+          {insignia.url && <a href={insignia.url} style="font-size:14px;font-weight:600;color:var(--accent-light);padding-top:6px">Ver producto →</a>}
+        </div>
+        <div style="grid-column:span 5;display:grid;gap:10px;align-content:center">
+          {[['PROBLEMA', insignia.problema], ['SOLUCIÓN', insignia.solucion], ['ESTADO', insignia.estado]].filter(([, v]) => v).map(([k, v]) => (
+            <div style="padding:14px 18px;border:1px solid var(--line-dark);display:flex;gap:16px;align-items:baseline">
+              <span class="mono" style="font-size:11px;color:var(--accent-light);min-width:80px">{k}</span>
+              <span style="font-size:14px;line-height:1.45">{v}</span>
+            </div>
+          ))}
+        </div>
+      </article>
+    )}
+    {resto.map((p) => (
+      <article class="card">
+        <span class="eyebrow" style="font-size:11px">{p.etiqueta}</span>
+        <h3 style="font-size:24px">{p.nombre}</h3>
+        <p style="margin:0;font-size:14.5px;line-height:1.55;color:var(--ink-soft)">{p.descripcion}</p>
+        {p.estado && <span class="mono" style="font-size:11.5px;color:var(--ink-muted)">● {p.estado}</span>}
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:auto;padding-top:8px">{p.stack.map((s) => <span class="tag">{s}</span>)}</div>
+        {p.url && <a href={p.url} style="font-size:14px;font-weight:600;color:var(--accent)">Ver →</a>}
+      </article>
+    ))}
+  </section>
+
+  <section id="lappicero" style="border-top:1px solid var(--line);background:var(--paper)">
+    <div class="wrap" style="padding-top:64px;padding-bottom:80px;display:flex;flex-direction:column;gap:28px">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:12px">
+        <div style="display:flex;align-items:baseline;gap:16px"><span class="section-no">§ 02.2</span><h2 style="font-size:30px">Lappicero Studio — proyectos entregados desde la agencia.</h2></div>
+        <a href="https://lappicerostudio.com" class="mono" style="font-size:13px;color:var(--accent)">lappicerostudio.com →</a>
+      </div>
+      <div class="scroll-x">
+        <table class="data">
+          <thead><tr><th style="width:26%">PROYECTO</th><th>QUÉ RESOLVIMOS</th><th style="width:16%">TIPO</th></tr></thead>
+          <tbody>
+            {proyectos.map((p) => (
+              <tr>
+                <td style="font-weight:600">{p.url ? <a href={p.url}>{p.nombre} ↗</a> : p.nombre}</td>
+                <td>{p.resumen}</td>
+                <td class="mono" style="font-size:12px;color:var(--ink-soft)">{p.tipo}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .seg-tab { min-height: 46px; padding: 0 20px; display: inline-flex; align-items: center; color: var(--ink-soft); font-size: 15px; font-weight: 500; }
+  .seg-tab.on { background: var(--ink); color: var(--paper); }
+  .seg-tab:hover { color: var(--ink); }
+  .seg-tab.on:hover { color: var(--paper); }
+</style>

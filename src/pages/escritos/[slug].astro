@@ -1,0 +1,89 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getEscrito, getEscritos, getSeries, getTemas, readingMinutes, fmtFecha } from '../../lib/content';
+import { renderMarkdown } from '../../lib/md';
+import { currentAdmin } from '../../lib/supabase';
+
+const { slug } = Astro.params;
+// Un admin con sesión puede previsualizar borradores.
+const { sb, isAdmin } = await currentAdmin(Astro.request, Astro.cookies);
+const e = await getEscrito(slug!, { sb: isAdmin ? sb : null, all: isAdmin });
+if (!e) return new Response(null, { status: 404 });
+
+const [all, seriesList, temasList] = await Promise.all([getEscritos(), getSeries(), getTemas()]);
+const series = Object.fromEntries(seriesList.map((s) => [s.slug, s]));
+const temas = Object.fromEntries(temasList.map((t) => [t.slug, t.nombre]));
+const idx = all.findIndex((x) => x.slug === e.slug);
+const anterior = idx >= 0 ? all[idx + 1] : null;
+const siguiente = idx > 0 ? all[idx - 1] : null;
+const html = renderMarkdown(e.cuerpo_md);
+const min = readingMinutes(e.cuerpo_md, e.minutos);
+const serie = series[e.serie];
+const en = e.idioma === 'en';
+const tipo = en ? (e.tipo === 'comentario' ? 'Commentary' : 'Essay') : e.tipo.charAt(0).toUpperCase() + e.tipo.slice(1);
+---
+<Base title={`${e.titulo} · Escritos · XCID`} section="escritos" sub={`/ escritos / ${e.serie}`} lang={e.idioma} ogType="article"
+  description={e.bajada ?? e.titulo}>
+
+  <article>
+    <section class="wrap grid12" style="padding-top:56px">
+      <a href="/escritos" class="mono" style="grid-column:1 / -1;font-size:12px;color:var(--ink-muted)">← {en ? 'All writing' : 'Todos los escritos'}</a>
+      <div style="grid-column:2 / span 8;display:flex;flex-direction:column;gap:22px;padding-top:24px">
+        <span class="mono" style="font-size:11.5px;letter-spacing:.14em;text-transform:uppercase">
+          <span style="color:var(--accent)">{serie?.nombre ?? e.serie}</span>
+          <span style="color:var(--ink-muted)"> · {tipo} · {fmtFecha(e.fecha, e.idioma)} · {min} min{en ? ' read' : ' de lectura'}</span>
+          {!e.publicado && <span style="color:var(--accent)"> · BORRADOR</span>}
+        </span>
+        <h1 style="font-size:clamp(36px,5vw,56px);line-height:1.06;letter-spacing:-.015em">{e.titulo}</h1>
+        {e.bajada && <p style="margin:0;font-family:var(--serif);font-size:clamp(19px,2vw,23px);line-height:1.4;color:var(--ink-soft);font-style:italic">{e.bajada}</p>}
+        <div style="display:flex;flex-wrap:wrap;gap:16px;align-items:center;border-top:1px solid var(--ink);padding-top:18px;font-size:14px;color:var(--ink-soft)">
+          <span style="font-weight:600;color:var(--ink)">Jorge Luis Amparán Hernández</span>
+          <span class="mono" style="font-size:11px;color:var(--ink-muted)">· {(e.temas ?? []).map((t) => temas[t] ?? t).join(' · ')}</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="wrap grid12" style="padding-top:48px;padding-bottom:72px">
+      <div class="prose" style="grid-column:2 / span 7;min-width:0">
+        {html ? <Fragment set:html={html} /> : (
+          <p style="font-family:var(--sans);font-size:15px;color:var(--ink-muted);border:1px dashed var(--line);padding:20px">
+            {en ? 'The full text of this piece is not loaded yet.' : 'El texto completo de este escrito aún no está cargado aquí.'}
+            {e.origen_url && <> {en ? 'Read it on' : 'Puedes leerlo en'} <a href={e.origen_url} style="color:var(--accent)">LinkedIn →</a></>}
+          </p>
+        )}
+      </div>
+      <aside style="grid-column:10 / span 3;display:flex;flex-direction:column;gap:20px;font-size:13.5px;line-height:1.55;color:var(--ink-soft);padding-top:8px">
+        <div class="panel" style="display:flex;flex-direction:column;gap:8px;padding:18px">
+          <span class="section-no" style="letter-spacing:.12em">{en ? 'IN THIS SERIES' : 'EN ESTA SERIE'}</span>
+          <span>{serie?.descripcion}</span>
+          <a href={`/escritos?serie=${e.serie}`} style="color:var(--accent);font-weight:600;font-size:13px">{en ? 'More from' : 'Más de'} {serie?.nombre} →</a>
+        </div>
+        {e.origen_url && (
+          <div style="display:flex;flex-direction:column;gap:8px;padding:18px;border-top:1px solid var(--line)">
+            <span class="section-no" style="letter-spacing:.12em">{en ? 'ALSO PUBLISHED AT' : 'PUBLICADO TAMBIÉN EN'}</span>
+            <a href={e.origen_url} style="color:var(--accent)">LinkedIn →</a>
+          </div>
+        )}
+        <div style="display:flex;flex-direction:column;gap:8px;padding:18px;border-top:1px solid var(--line)">
+          <span class="section-no" style="letter-spacing:.12em">{en ? 'SHARE' : 'COMPARTIR'}</span>
+          <span class="mono" style="font-size:12px;color:var(--ink);word-break:break-all">xcid.dev/escritos/{e.slug}</span>
+        </div>
+      </aside>
+    </section>
+  </article>
+
+  <section style="border-top:1px solid var(--line);background:var(--paper)">
+    <div class="wrap" style="padding-top:48px;padding-bottom:48px;display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:32px">
+      {anterior ? (
+        <a href={`/escritos/${anterior.slug}`} class="card" style="padding:24px;background:var(--stone);gap:8px">
+          <span class="section-no" style="letter-spacing:.12em">← {en ? 'PREVIOUS' : 'ANTERIOR'} · {(series[anterior.serie]?.nombre ?? '').toUpperCase()}</span>
+          <span style="font-family:var(--serif);font-size:21px;font-weight:500;line-height:1.25">{anterior.titulo}</span>
+        </a>
+      ) : <span />}
+      <a href={siguiente ? `/escritos/${siguiente.slug}` : '/escritos'} class="card" style="padding:24px;background:var(--stone);gap:8px;text-align:right">
+        <span class="section-no" style="letter-spacing:.12em">{siguiente ? `${en ? 'NEXT' : 'SIGUIENTE'} · ${(series[siguiente.serie]?.nombre ?? '').toUpperCase()}` : (en ? 'INDEX' : 'ÍNDICE')} →</span>
+        <span style="font-family:var(--serif);font-size:21px;font-weight:500;line-height:1.25">{siguiente ? siguiente.titulo : (en ? 'All writing' : 'Todos los escritos')}</span>
+      </a>
+    </div>
+  </section>
+</Base>

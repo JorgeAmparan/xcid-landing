@@ -1,0 +1,126 @@
+{
+  "series": [
+    { "slug": "criterio", "nombre": "Criterio", "descripcion": "Gobernanza de IA, soberanía operativa y arquitectura de sistemas inteligentes.", "orden": 1 },
+    { "slug": "roce", "nombre": "Roce", "descripcion": "Lo personal y literario: la vida como movimiento y fricción con el mundo.", "orden": 2 }
+  ],
+  "temas": [
+    { "slug": "gobernanza", "nombre": "gobernanza" },
+    { "slug": "soberania", "nombre": "soberanía" },
+    { "slug": "arquitectura", "nombre": "arquitectura" },
+    { "slug": "organizacion", "nombre": "organización" },
+    { "slug": "vida", "nombre": "vida" },
+    { "slug": "familia", "nombre": "familia" }
+  ],
+  "escritos": [
+    {
+      "slug": "el-precio-de-estar-vivo",
+      "titulo": "El precio de estar vivo",
+      "bajada": "Las consecuencias de nuestros actos no como reglas quebrantadas, sino como el precio de estar vivo, del inevitable roce con el mundo y los demás.",
+      "cuerpo_md": "",
+      "serie": "roce", "tipo": "ensayo", "idioma": "es",
+      "temas": ["vida", "familia"],
+      "fecha": "2026-10-14", "minutos": 9,
+      "origen_url": null,
+      "publicado": false
+    },
+    {
+      "slug": "9-segundos",
+      "titulo": "9 segundos",
+      "bajada": "El caso PocketOS demuestra que la gobernanza de IA es arquitectura, no cosmética. Trazabilidad pre-acción, separación de responsabilidades y marco de confianza medible son capas que deben existir por diseño — no después como autopsia.",
+      "cuerpo_md": "",
+      "serie": "criterio", "tipo": "ensayo", "idioma": "es",
+      "temas": ["gobernanza", "arquitectura"],
+      "fecha": "2026-04-30", "minutos": 7,
+      "origen_url": "https://www.linkedin.com/pulse/9-segundos-jorge-l-amparán-lmfvf/",
+      "publicado": true
+    },
+    {
+      "slug": "inteligencia-organizacional-el-eslabon-perdido",
+      "titulo": "Inteligencia organizacional, el eslabón perdido",
+      "bajada": "Cuando un colaborador se va, lo que pierde la organización no son procesos sino criterio acumulado. Documentar no es lo mismo que aprender — y capturar el flujo de trabajo en el momento en que ocurre es hoy técnicamente posible y estratégicamente medible.",
+      "cuerpo_md": "",
+      "serie": "criterio", "tipo": "ensayo", "idioma": "es",
+      "temas": ["organizacion", "soberania"],
+      "fecha": "2026-03-26", "minutos": 6,
+      "origen_url": "https://www.linkedin.com/pulse/inteligencia-organizacional-el-eslabón-perdido-jorge-l-amparán-soeqe/",
+      "publicado": true
+    },
+    {
+      "slug": "soberania-la-llave-que-me-dio-mi-padre-una-noche",
+      "titulo": "Soberanía: la llave que me dio mi padre una noche",
+      "bajada": "Una IA que opera sin acceso a fuentes externas verificadas y gobernadas no es inteligencia — es eco. La soberanía operativa de un sistema no está en el modelo, está en la calidad y arquitectura del conocimiento al que accede.",
+      "cuerpo_md": "",
+      "serie": "criterio", "tipo": "ensayo", "idioma": "es",
+      "temas": ["soberania", "familia"],
+      "fecha": "2026-03-14", "minutos": 8,
+      "origen_url": "https://www.linkedin.com/pulse/soberanía-la-llave-que-me-dio-mi-padre-una-noche-jorge-l-amparán-n4ywe/",
+      "publicado": true
+    },
+    {
+      "slug": "lo-que-aprendi-debajo-de-un-auto",
+      "titulo": "Lo que aprendí debajo de un auto que Amazon aún no sabe",
+      "bajada": "Una válvula gobernadora controla el flujo hidráulico, no lo aprueba después de que ocurra. La gobernanza de IA tiene que estar en la arquitectura — no como guardrail de emergencia.",
+      "cuerpo_md": "",
+      "serie": "criterio", "tipo": "ensayo", "idioma": "es",
+      "temas": ["gobernanza", "arquitectura"],
+      "fecha": "2026-03-10", "minutos": 6,
+      "origen_url": "https://www.linkedin.com/pulse/lo-que-aprendí-debajo-de-un-auto-amazon-aún-sabe-jorge-l-amparán-l4cif/",
+      "publicado": true
+    },
+    {
+      "slug": "guardrails-and-policies-are-not-governance",
+      "titulo": "Guardrails & Policies Are Not Governance. They're Cosmetics",
+      "bajada": "Real AI governance is a chain of four architectural layers — normalization, contextual knowledge, decision traceability, visibility — applied to the foundations of the system, not added as containment after deployment.",
+      "cuerpo_md": "",
+      "serie": "criterio", "tipo": "ensayo", "idioma": "en",
+      "temas": ["gobernanza", "arquitectura"],
+      "fecha": "2026-03-05", "minutos": 7,
+      "origen_url": "https://www.linkedin.com/pulse/guardrails-policies-governance-theyre-cosmetics-jorge-l-amparán-s7gje/",
+      "publicado": true
+    },
+    {
+      "slug": "the-day-the-cloud-burned",
+      "titulo": "The Day the Cloud Burned",
+      "bajada": "A drone strike on a Dubai data center turned an invisible assumption visible: critical operational intelligence has been quietly migrating to infrastructure with physical addresses, walls, and coordinates. Sovereignty isn't a feature — it's an architecture decision.",
+      "cuerpo_md": "",
+      "serie": "criterio", "tipo": "ensayo", "idioma": "en",
+      "temas": ["soberania"],
+      "fecha": "2026-03-01", "minutos": 5,
+      "origen_url": "https://www.linkedin.com/feed/update/urn:li:activity:7434995107260702720/",
+      "publicado": true
+    },
+    {
+      "slug": "on-mckinseys-sovereign-ai-forecast",
+      "titulo": "On McKinsey's $600B Sovereign AI Forecast",
+      "bajada": "Sovereign AI initiatives stall not from lack of investment but from chasing isolated assets instead of designing ecosystems. The Juárez–El Paso corridor moves 20% of U.S.–Mexico trade across three jurisdictions; that's not a technology problem, it's an architecture problem.",
+      "cuerpo_md": "",
+      "serie": "criterio", "tipo": "comentario", "idioma": "en",
+      "temas": ["soberania", "organizacion"],
+      "fecha": "2026-02-15", "minutos": 4,
+      "origen_url": "https://www.linkedin.com/feed/update/urn:li:activity:7434714696093646849/",
+      "publicado": true
+    }
+  ],
+  "plataformas": [
+    { "slug": "xcid-fact", "nombre": "XCID FACT", "etiqueta": "INSIGNIA · EN DESARROLLO", "descripcion": "Infraestructura de evidencia, trazabilidad y métricas de cumplimiento para comercio exterior e interior. Primer producto de la familia XCID; piloto con protocolos de ciberseguridad en curso.", "stack": ["FastAPI", "FalkorDB", "Supabase", "Docker", "Railway"], "estado": "Piloto en curso", "insignia": true, "problema": "Decisiones con IA sin evidencia ante regulador.", "solucion": "FAT + XTF + XSM como plataforma en línea.", "url": "/fact", "orden": 1, "publicado": true },
+    { "slug": "docyan", "nombre": "DocYan", "etiqueta": "MOTOR DE INGESTA", "descripcion": "Motor de ingesta de documentos a datos estructurados y verificables. Base de las verticales QuotYan, LabXTF y MantYan.", "stack": ["Python", "LangExtract", "Supabase"], "estado": null, "insignia": false, "orden": 2, "publicado": true },
+    { "slug": "quotyan", "nombre": "QuotYan", "etiqueta": "VERTICAL · VENTAS INDUSTRIALES", "descripcion": "De solicitud de cotización a propuesta estructurada: extracción, normalización y comparación de partidas para el sector maquilador.", "stack": ["DocYan", "Cotizaciones"], "insignia": false, "orden": 3, "publicado": true },
+    { "slug": "labxtf", "nombre": "LabXTF", "etiqueta": "VERTICAL · LABORATORIO", "descripcion": "Resultados de laboratorio con trazabilidad XTF: cada dato con su fuente, su método y su nivel de confianza.", "stack": ["DocYan", "XTF"], "insignia": false, "orden": 4, "publicado": true },
+    { "slug": "mantyan-xtf", "nombre": "MantYan XTF", "etiqueta": "VERTICAL · MANTENIMIENTO", "descripcion": "Consulta técnica para talleres y mantenimiento sobre DocYan v3: manuales, diagnósticos y procedimientos con cita a la fuente, por voz o texto.", "stack": ["FastAPI", "Next.js", "Voz"], "insignia": false, "orden": 5, "publicado": true },
+    { "slug": "taller-ia-con-criterio", "nombre": "Taller IA con Criterio", "etiqueta": "FORMACIÓN", "descripcion": "Uso estructurado de IA en empresas (Shadow AI, las 7 claves). Taller presencial con suscripción de refuerzo de 3 a 6 meses.", "stack": ["Capacitación", "Empresas"], "insignia": false, "orden": 6, "publicado": true },
+    { "slug": "document-to-data-plugins", "nombre": "Document to Data · Document to AI-ready Data", "etiqueta": "PLUGINS · BUBBLE", "descripcion": "El motor DocYan empaquetado como plugins para Bubble.io: ingesta de documentos a datos estructurados y a datos listos para IA.", "stack": ["Bubble", "Plugin", "DocYan"], "insignia": false, "orden": 7, "publicado": true }
+  ],
+  "proyectos": [
+    { "slug": "fixydany", "nombre": "FixyDany", "resumen": "App de servicios con agente de voz (patrón Dany); lanzamiento y crecimiento en El Paso.", "tipo": "Web app", "stack": ["Railway", "Voz"], "orden": 1, "publicado": true },
+    { "slug": "promaser", "nombre": "PROMASER Ingeniería", "resumen": "Migración de sistema legacy a web y módulo de cotizaciones.", "tipo": "Web app", "stack": ["Bubble"], "orden": 2, "publicado": true },
+    { "slug": "mobility", "nombre": "Mobility", "resumen": "Marketplace de renta de autos entre particulares.", "tipo": "Web app", "stack": ["Emergent"], "url": "https://mobilityrental.co", "orden": 3, "publicado": true },
+    { "slug": "vivemania", "nombre": "Vivemania", "resumen": "Sitio del producto para celebración y experiencia colectiva en eventos.", "tipo": "Sitio web", "stack": ["HTML", "Netlify"], "orden": 4, "publicado": true },
+    { "slug": "shieldpoint", "nombre": "ShieldPoint", "resumen": "Landing de servicios de consultoría en ciberseguridad.", "tipo": "Sitio web", "stack": ["HTML"], "orden": 5, "publicado": true }
+  ],
+  "ajustes": {
+    "inicio": {
+      "ahora": ["XCID FACT — piloto en curso", "MantYan XTF — v3 desplegada", "Escritos — nuevo ensayo"],
+      "disponible": "Disponible para consultoría"
+    }
+  }
+}

@@ -1,0 +1,19 @@
+---
+import Admin from '../../../layouts/Admin.astro';
+import { currentAdmin } from '../../../lib/supabase';
+import { getProyectos } from '../../../lib/content';
+const { sb } = await currentAdmin(Astro.request, Astro.cookies);
+const list = await getProyectos({ all: true, sb });
+---
+<Admin title="Proyectos Lappicero" area="proyectos">
+  <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px">
+    <h1 style="font-size:28px">Proyectos Lappicero Studio</h1>
+    <a href="/admin/proyectos/nuevo" class="btn accent sm">+ Nuevo proyecto</a>
+  </div>
+  <div class="scroll-x"><table class="data">
+    <thead><tr><th>ORDEN</th><th>PROYECTO</th><th>QUÉ RESOLVIMOS</th><th>TIPO</th><th>VISIBLE</th></tr></thead>
+    <tbody>{list.map((p) => (
+      <tr><td class="mono" style="font-size:12px">{p.orden}</td><td><a href={`/admin/proyectos/${p.id}`} style="font-weight:600">{p.nombre}</a></td><td style="font-size:14px">{p.resumen}</td><td class="mono" style="font-size:12px">{p.tipo}</td><td class="mono" style="font-size:11px">{p.publicado ? 'SÍ' : 'NO'}</td></tr>
+    ))}</tbody>
+  </table></div>
+</Admin>

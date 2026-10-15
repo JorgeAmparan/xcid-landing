@@ -1,0 +1,91 @@
+---
+import Base from '../layouts/Base.astro';
+import EscritoCard from '../components/EscritoCard.astro';
+import { getEscritos, getSeries, getAjuste } from '../lib/content';
+
+const [escritos, seriesList, inicio] = await Promise.all([
+  getEscritos(), getSeries(), getAjuste<{ ahora: string[]; disponible: string }>('inicio'),
+]);
+const series = Object.fromEntries(seriesList.map((s) => [s.slug, s.nombre]));
+const ultimos = escritos.slice(0, 3);
+---
+<Base title="XCID — Jorge Luis Amparán H. · Consultor y constructor de soluciones de IA para empresas" section="inicio">
+
+  <!-- HERO -->
+  <section class="wrap grid12" style="padding-top:72px;padding-bottom:48px;align-items:stretch">
+    <div class="panel" style="grid-column:span 7;display:flex;flex-direction:column;justify-content:center;gap:26px;padding:clamp(28px,5vw,56px)">
+      <span class="eyebrow">Jorge Luis Amparán H. — Corredor Juárez · El Paso</span>
+      <h1 style="font-size:clamp(36px,5vw,54px);line-height:1.08">Consultor y constructor de soluciones de IA para empresas.</h1>
+      <p class="lede" style="margin:0;max-width:540px">Infraestructura que sustenta el criterio profesional cuando la IA participa en formarlo. Consultoría, desarrollo y escritura desde el corredor T-MEC, con 25+ años en él.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;padding-top:4px">
+        <a href="/fact" class="btn primary">Conocer XCID FACT</a>
+        <a href="/trabajo" class="btn">Ver trabajo</a>
+      </div>
+    </div>
+    <div style="grid-column:span 5;display:flex;flex-direction:column;gap:16px">
+      <div class="panel dark" style="flex:1;display:flex;flex-direction:column;justify-content:space-between;gap:20px;padding:28px">
+        <span class="mono" style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent-light)">§ Premisa</span>
+        <p style="margin:0;font-family:var(--serif);font-size:24px;line-height:1.3">La gobernanza no es contención añadida después. Es arquitectura.</p>
+        <span style="font-size:13.5px;color:var(--ink-faint);line-height:1.5">La IA no decide por usted; XCID conserva la evidencia de cómo decidió usted — ante el cliente, el regulador, el auditor, el juez.</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:16px">
+        <div class="panel" style="padding:20px;display:flex;flex-direction:column;gap:6px"><span class="mono" style="font-size:26px;font-weight:500;color:var(--accent)">25+</span><span style="font-size:13px;color:var(--ink-soft);line-height:1.4">años en el corredor T-MEC</span></div>
+        <div class="panel" style="padding:20px;display:flex;flex-direction:column;gap:6px"><span class="mono" style="font-size:26px;font-weight:500;color:var(--accent)">3</span><span style="font-size:13px;color:var(--ink-soft);line-height:1.4">verticales: aduanal, fiscal, ambiental</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRES ENTRADAS -->
+  <section class="wrap" style="padding-top:16px;padding-bottom:88px;display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:24px">
+    <a href="/fact" class="card" style="padding:32px;min-height:240px">
+      <span class="eyebrow" style="font-size:11px">01 — Producto</span>
+      <span style="font-family:var(--serif);font-size:28px;font-weight:500;line-height:1.15">XCID FACT</span>
+      <span style="font-size:15px;line-height:1.55;color:var(--ink-soft)">Forensic Audit &amp; Compliance Trail. Evidencia, trazabilidad y métricas de cumplimiento para comercio regulado. Integrable por desarrolladores y agentes.</span>
+      <span style="margin-top:auto;font-size:14px;font-weight:600;color:var(--accent)">Ver producto →</span>
+    </a>
+    <a href="/trabajo" class="card" style="padding:32px;min-height:240px">
+      <span class="eyebrow" style="font-size:11px">02 — Trabajo</span>
+      <span style="font-family:var(--serif);font-size:28px;font-weight:500;line-height:1.15">Plataformas propias y Lappicero Studio</span>
+      <span style="font-size:15px;line-height:1.55;color:var(--ink-soft)">Plataformas que construyo y proyectos entregados a clientes desde la agencia: Bubble, React, Node, pipelines de IA, agentes de voz.</span>
+      <span style="margin-top:auto;font-size:14px;font-weight:600;color:var(--accent)">Ver portafolio →</span>
+    </a>
+    <a href="/escritos" class="card" style="padding:32px;min-height:240px">
+      <span class="eyebrow" style="font-size:11px">03 — Escritos</span>
+      <span style="font-family:var(--serif);font-size:28px;font-weight:500;line-height:1.15">Ensayos sobre criterio, IA y vida</span>
+      <span style="font-size:15px;line-height:1.55;color:var(--ink-soft)">Dos series: <strong style="font-weight:600;color:var(--ink)">Criterio</strong> (gobernanza de IA, soberanía) y <strong style="font-weight:600;color:var(--ink)">Roce</strong> (personal, literario). Alojados aquí, no rentados.</span>
+      <span style="margin-top:auto;font-size:14px;font-weight:600;color:var(--accent)">Leer →</span>
+    </a>
+  </section>
+
+  <!-- ÚLTIMOS ESCRITOS -->
+  <section style="border-top:1px solid var(--line);background:var(--paper)">
+    <div class="wrap" style="padding-top:72px;padding-bottom:72px;display:flex;flex-direction:column;gap:28px">
+      <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:12px">
+        <div style="display:flex;align-items:baseline;gap:16px">
+          <span class="section-no">§ 03</span>
+          <h2 style="font-size:32px">Últimos escritos</h2>
+        </div>
+        <a href="/escritos" style="font-size:14px;font-weight:600;color:var(--accent)">Todos los escritos →</a>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:32px">
+        {ultimos.map((e) => <EscritoCard e={e} series={series} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto" style="border-top:1px solid var(--line)">
+    <div class="wrap" style="padding-top:64px;padding-bottom:48px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;align-items:flex-end">
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <h2 style="font-size:36px">Trabajemos juntos.</h2>
+        <span style="color:var(--ink-soft);font-size:15px">Quedo atento de responder a la brevedad posible.</span>
+        {inicio?.disponible && <span class="mono" style="font-size:12px;color:var(--ink-muted);padding-top:6px">● {inicio.disponible}</span>}
+      </div>
+      <div class="mono" style="display:flex;flex-wrap:wrap;gap:12px;font-size:13.5px">
+        <a href="https://wa.me/5216561224073" class="btn sm">WhatsApp</a>
+        <a href="mailto:contacto@xcid.dev" class="btn sm">contacto@xcid.dev</a>
+        <a href="https://www.linkedin.com/in/jorge-luis-amparan/" class="btn sm">LinkedIn</a>
+      </div>
+    </div>
+  </section>
+</Base>
