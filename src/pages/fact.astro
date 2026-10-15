@@ -1,82 +1,302 @@
 ---
 import Base from '../layouts/Base.astro';
----
-<Base title="XCID FACT — Forensic Audit & Compliance Trail" section="fact" sub="/ FACT"
-  description="Infraestructura de trazabilidad para comercio regulado: cada decisión asistida por IA queda registrada, puntuada y verificable ante terceros.">
+import Sello from '../components/Sello.astro';
 
-  <section class="wrap grid12" style="padding-top:72px;padding-bottom:56px;align-items:stretch">
-    <div class="panel" style="grid-column:span 6;display:flex;flex-direction:column;justify-content:center;gap:24px;padding:clamp(28px,4vw,48px)">
-      <span class="eyebrow">XCID FACT — Forensic Audit &amp; Compliance Trail</span>
-      <h1 style="font-size:clamp(34px,4.2vw,46px);line-height:1.1">Evidencia de cómo decidió usted, antes de actuar.</h1>
-      <p class="lede" style="margin:0;font-size:17px">Infraestructura de trazabilidad para comercio regulado — aduanal, fiscal, ambiental. Cada decisión asistida por IA queda registrada, puntuada y verificable ante terceros. Para despachos, empresas IMMEX y los sistemas y agentes que las sirven.</p>
+const DEMO = 'sel_XTF_8471demo';
+
+const puertas = [
+  { n: '1', t: 'Widget embebido', quien: 'El operador, el comprador, el analista de embarques', q: '¿Esto está en orden?', ve: 'El Sello junto al pedimento, proveedor u orden, dentro de su ERP. Un clic abre el Lens: las dimensiones del score y los eventos que lo sostienen.', entra: 'Sin salir de su sistema' },
+  { n: '2', t: 'Portal FACT', quien: 'Gerente de cumplimiento, auditor interno, agente aduanal', q: '¿Qué pasó exactamente y con qué respaldo?', ve: 'El Thread: la línea de tiempo completa de eventos firmados, el score dual expediente/entregable, alertas y el paquete de evidencia listo para enviar.', entra: 'Con cuenta' },
+  { n: '3', t: 'Verificador público', quien: 'CBP, el cliente OEM, el auditor externo, un comprador europeo', q: '¿Este sello es auténtico?', ve: 'Una página por sello: firma válida, vigencia, integridad de la cadena, score. Sin datos sensibles.', entra: 'Sin cuenta: QR o liga' },
+];
+
+const caso = [
+  ['Meses de operación normal', 'Almacén, producción, calidad y el agente aduanal trabajan en sus sistemas. El conector firma cada evento al momento.', 'conector'],
+  ['El analista ya lo veía venir', 'Junto al pedimento, el Sello mostraba una alerta: dos proveedores sin declaración de origen firmada. El humano decidió embarcar; FACT lo registró.', '1'],
+  ['Embarque detenido en frontera', 'La autoridad pide demostrar el origen de los materiales. El gerente entra al portal, ve el Thread completo y genera el paquete de evidencia.', '2'],
+  ['La autoridad verifica sola', 'Abre la liga o escanea el QR: sello auténtico, vigente e íntegro. Sin cuenta y sin ver datos sensibles de la planta.', '3'],
+  ['El cliente OEM lo consulta sin pantalla', 'Su plataforma de proveedores lee el sello por API y actualiza el estatus por su cuenta.', '4'],
+];
+
+const dudas = [
+  ['¿Tengo que cambiar mi ERP?', 'No. FACT se conecta al que ya tiene; el conector captura eventos, no sustituye procesos.'],
+  ['¿Mis datos salen de la planta?', 'Con conector local, solo salen hashes y firmas; los documentos se quedan en su red. Usted elige la modalidad.'],
+  ['¿Quién toma las decisiones?', 'Siempre una persona. FACT reporta, alerta y deja constancia; no bloquea embarques ni aprueba nada.'],
+  ['¿Qué ve mi cliente o la autoridad?', 'Solo lo que el formato permite: Público, Profesional o Forense. El sello se verifica sin exponer el expediente.'],
+  ['¿Y si no tenemos equipo de TI?', 'El widget es una línea en su sistema o un enlace; el portal y el verificador no se instalan. El conector lo configura XCID en el piloto.'],
+  ['¿Por qué confiar en el sello?', 'Porque cualquiera puede verificarlo: cadena íntegra y vigencia, comprobables sin pedirle permiso a XCID ni a la empresa.'],
+  ['¿Sirve para agentes de IA?', 'Sí. La misma API que alimenta las pantallas se expone vía MCP; un agente consulta un sello o registra un evento igual que una persona.'],
+];
+---
+<Base title="XCID FACT — su sistema sigue igual; la evidencia, no" section="fact" sub="/ FACT"
+  description="XCID FACT registra lo que ya pasa en los sistemas de su empresa y lo convierte en evidencia verificable. Nadie cambia su forma de trabajar; cada quien ve la trazabilidad por su puerta.">
+
+  <!-- 1 · APERTURA — la caja negra -->
+  <section class="wrap grid12" style="padding-top:64px;padding-bottom:56px;align-items:center">
+    <div style="grid-column:span 5;display:flex;flex-direction:column;gap:22px">
+      <span class="eyebrow">XCID FACT · Forensic Audit &amp; Compliance Trail</span>
+      <h1 style="font-size:clamp(36px,4.6vw,52px);line-height:1.06">Su sistema sigue igual. La evidencia, no.</h1>
+      <p class="lede" style="margin:0;font-size:18px">Piénselo como la caja negra de un avión. El piloto vuela con su cabina —el ERP, el CRM, el sistema de siempre— y la caja negra graba en silencio. Cuando alguien necesita saber qué pasó, no abre el avión: usa un lector hecho para eso.</p>
+      <p style="margin:0;font-size:15.5px;line-height:1.55;color:var(--ink-soft)">FACT es la caja negra y, además, los lectores: uno dentro del propio sistema, uno para cumplimiento, uno público para terceros y uno para máquinas.</p>
       <div style="display:flex;flex-wrap:wrap;gap:12px;padding-top:4px">
-        <a href="/#contacto" class="btn primary">Solicitar piloto</a>
-        <a href="#api" class="btn mono" style="font-size:14px">Ver API →</a>
+        <a href="/contacto?motivo=piloto" class="btn primary">Solicitar piloto</a>
+        <a href={`/verify/${DEMO}`} class="btn">Abrir un sello de muestra</a>
       </div>
     </div>
-    <div id="api" class="panel dark" style="grid-column:span 6;display:flex;flex-direction:column;min-width:0">
-      <div class="mono" style="display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--line-dark);font-size:12px;color:var(--ink-faint)">
-        <span>POST /v1/decisions</span><span style="color:var(--accent-light)">curl</span>
-      </div>
-<pre class="mono" style="margin:0;padding:22px 20px;font-size:13px;line-height:1.7;color:var(--on-dark);overflow-x:auto;flex:1">curl -X POST https://api.xcid.dev/v1/decisions \
-  -H "Authorization: Bearer xf_live_…" \
-  -d '&#123;
-    "actor":     "agente_aduanal_0421",
-    "encargo":   "clasificacion_arancelaria",
-    "fuentes":   ["LIGIE 2026 art. 2", "TIGIE 8471.30"],
-    "conclusion":"Fracción 8471.30.01"
-  &#125;'
 
-<span style="color:var(--ink-faint)"># respuesta</span>
-&#123; <span style="color:var(--accent-light)">"fat_id"</span>:    "fat_01HZ…",
-  <span style="color:var(--accent-light)">"xtf_score"</span>: 0.91,
-  <span style="color:var(--accent-light)">"verify"</span>:    "https://xcid.dev/verify/fat_01HZ…" &#125;</pre>
+    <!-- Animación: cabina → caja negra → lector -->
+    <figure class="cn" style="grid-column:span 7;margin:0" aria-label="Animación: los eventos del ERP entran a la caja negra de FACT y un lector los verifica">
+      <svg viewBox="0 0 640 360" width="100%" role="img" aria-hidden="true">
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5 0 10z" fill="#6E7978"/></marker>
+        </defs>
+        <!-- cabina / ERP -->
+        <g>
+          <rect x="24" y="70" width="190" height="220" fill="#F8F6F1" stroke="#23302F"/>
+          <text x="40" y="96" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="2" fill="#6E7978">CABINA · SU ERP</text>
+          <g class="rows" font-family="Source Sans 3, sans-serif" font-size="12.5" fill="#23302F">
+            <rect x="40" y="112" width="158" height="26" fill="#ECEAE4"/><text x="48" y="129">Recepción de material</text>
+            <rect x="40" y="146" width="158" height="26" fill="#ECEAE4"/><text x="48" y="163">Orden cerrada · MES</text>
+            <rect x="40" y="180" width="158" height="26" fill="#ECEAE4"/><text x="48" y="197">Inspección de calidad</text>
+            <rect x="40" y="214" width="158" height="26" fill="#ECEAE4"/><text x="48" y="231">Certificado de origen</text>
+            <rect x="40" y="248" width="158" height="26" fill="#ECEAE4"/><text x="48" y="265">Pedimento transmitido</text>
+          </g>
+        </g>
+        <!-- conector -->
+        <line x1="214" y1="180" x2="300" y2="180" stroke="#6E7978" stroke-dasharray="4 4"/>
+        <text x="222" y="170" font-family="IBM Plex Mono, monospace" font-size="10" letter-spacing="1.5" fill="#6E7978">CONECTOR</text>
+        <!-- pulsos: eventos que viajan -->
+        <g class="pulses">
+          <circle class="p p1" r="5" fill="#7B2D3B"/><circle class="p p2" r="5" fill="#7B2D3B"/><circle class="p p3" r="5" fill="#7B2D3B"/><circle class="p p4" r="5" fill="#7B2D3B"/><circle class="p p5" r="5" fill="#7B2D3B"/>
+        </g>
+        <!-- caja negra FACT -->
+        <g>
+          <rect x="300" y="120" width="150" height="120" fill="#23302F"/>
+          <rect x="312" y="132" width="126" height="96" fill="none" stroke="#3A4A48"/>
+          <text x="375" y="160" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" letter-spacing="2" fill="#C98A95">FACT</text>
+          <text x="375" y="176" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing="1.5" fill="#A9B3B2">CAJA NEGRA</text>
+          <g class="tape" stroke="#C98A95" stroke-width="2"><line x1="324" y1="200" x2="324" y2="212"/><line x1="334" y1="196" x2="334" y2="212"/><line x1="344" y1="202" x2="344" y2="212"/><line x1="354" y1="194" x2="354" y2="212"/><line x1="364" y1="200" x2="364" y2="212"/><line x1="374" y1="197" x2="374" y2="212"/><line x1="384" y1="203" x2="384" y2="212"/><line x1="394" y1="195" x2="394" y2="212"/><line x1="404" y1="201" x2="404" y2="212"/><line x1="414" y1="198" x2="414" y2="212"/><line x1="424" y1="204" x2="424" y2="212"/></g>
+          <circle class="rec" cx="428" cy="146" r="4" fill="#7B2D3B"/>
+          <text x="420" y="149" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9" fill="#A9B3B2">GRABANDO</text>
+        </g>
+        <!-- lector / sello -->
+        <line x1="450" y1="180" x2="520" y2="180" stroke="#6E7978" marker-end="url(#arr)"/>
+        <text x="455" y="170" font-family="IBM Plex Mono, monospace" font-size="10" letter-spacing="1.5" fill="#6E7978">LECTOR</text>
+        <g class="lector">
+          <rect x="524" y="104" width="96" height="152" fill="#fff" stroke="#1F4E5C" stroke-width="3"/>
+          <text x="536" y="126" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing="1.5" fill="#23302F">XCID</text>
+          <text x="608" y="126" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9" letter-spacing="1.5" fill="#1F4E5C">XTF</text>
+          <text x="536" y="172" font-family="IBM Plex Mono, monospace" font-size="38" fill="#1F4E5C">87</text>
+          <rect x="536" y="184" width="68" height="14" fill="#1F4E5C"/>
+          <text x="570" y="194" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="8" letter-spacing="1.5" fill="#fff">CONFIABLE</text>
+          <text x="536" y="218" font-family="Source Sans 3, sans-serif" font-size="9" fill="#23302F">Pedimento 26 48 3621</text>
+          <text x="536" y="243" font-family="Source Sans 3, sans-serif" font-size="9" font-weight="600" fill="#1F4E5C">Verificar →</text>
+        </g>
+        <!-- leyenda inferior -->
+        <text x="24" y="330" font-family="Source Sans 3, sans-serif" font-size="12" fill="#6E7978">1 · Los sistemas no cambian</text>
+        <text x="300" y="330" font-family="Source Sans 3, sans-serif" font-size="12" fill="#6E7978">2 · El conector captura y FACT guarda</text>
+        <text x="524" y="330" font-family="Source Sans 3, sans-serif" font-size="12" fill="#6E7978">3 · El lector verifica</text>
+      </svg>
+      <figcaption class="mono" style="font-size:11px;color:var(--ink-muted);padding-top:10px">Una caja negra que graba antes del incidente, no después.</figcaption>
+    </figure>
+  </section>
+
+  <!-- 2 · CONEXIÓN -->
+  <section style="border-top:1px solid var(--line);background:var(--paper)">
+    <div class="wrap grid12" style="padding-top:72px;padding-bottom:72px;align-items:start">
+      <div style="grid-column:span 5;display:flex;flex-direction:column;gap:16px">
+        <span class="section-no">§ 02 — CONEXIÓN</span>
+        <h2 style="font-size:34px;line-height:1.15">Se conecta a lo que ya tiene.</h2>
+        <p class="lede" style="margin:0;font-size:16px">FACT no reemplaza ningún sistema. Un conector captura cada evento relevante, lo firma y lo guarda en la cadena de evidencia (FAT). La decisión local o nube es del conector, no de las pantallas: el ERP nunca habla con el widget, habla con el conector.</p>
+      </div>
+      <div style="grid-column:span 7;display:grid;grid-template-columns:repeat(2, minmax(0, 1fr));gap:16px">
+        <div class="panel" style="padding:22px;display:flex;flex-direction:column;gap:10px">
+          <span class="mono" style="font-size:11px;letter-spacing:.14em;color:var(--accent)">CONECTOR LOCAL</span>
+          <strong style="font-size:16px">Un contenedor dentro de su red</strong>
+          <span style="font-size:14px;line-height:1.5;color:var(--ink-soft)">Para maquilas y empresas con política estricta de datos.</span>
+          <span class="mono" style="font-size:11.5px;line-height:1.6;color:var(--ink);padding-top:8px;border-top:1px solid var(--line)">Sale de la planta: solo hashes y firmas.<br />Los documentos se quedan adentro.</span>
+        </div>
+        <div class="panel" style="padding:22px;display:flex;flex-direction:column;gap:10px">
+          <span class="mono" style="font-size:11px;letter-spacing:.14em;color:var(--accent)">CONECTOR NUBE</span>
+          <strong style="font-size:16px">Conexión directa por API o MCP</strong>
+          <span style="font-size:14px;line-height:1.5;color:var(--ink-soft)">Para empresas con sistemas ya en la nube y agentes de IA.</span>
+          <span class="mono" style="font-size:11.5px;line-height:1.6;color:var(--ink);padding-top:8px;border-top:1px solid var(--line)">Sale de la planta: eventos firmados.<br />Documentos opcionales.</span>
+        </div>
+        <!-- diagrama de flujo -->
+        <div class="flujo" style="grid-column:1 / -1">
+          <div class="fl-row"><span class="fl-box">ERP</span><span class="fl-box">MES</span><span class="fl-box">Calidad</span><span class="fl-box">Agente aduanal</span></div>
+          <div class="fl-arrow">↓ eventos</div>
+          <div class="fl-row"><span class="fl-box wide">Conector · local o nube · captura y firma</span></div>
+          <div class="fl-arrow">↓</div>
+          <div class="fl-row"><span class="fl-box dark wide">FAT · cadena de evidencia → API</span></div>
+          <div class="fl-arrow">↓ tres vistas de la misma API</div>
+          <div class="fl-row"><span class="fl-box">1 · Widget en su ERP</span><span class="fl-box">2 · Portal FACT</span><span class="fl-box">3 · Verificador público</span></div>
+        </div>
+      </div>
     </div>
   </section>
 
-  <section class="wrap" style="padding-top:16px;padding-bottom:72px;display:flex;flex-direction:column;gap:28px">
-    <div style="display:flex;align-items:baseline;gap:16px"><span class="section-no">§ 01</span><h2 style="font-size:32px">Tres capas, un solo registro.</h2></div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:24px">
-      {[
-        ['FAT', 'Forensic Audit Trail', 'Registro de cada decisión antes de la acción, con la cadena de evidencia que la sustenta. Auditoría como estado vivo, no como autopsia.'],
-        ['XTF', 'Trust Framework', 'Siete dimensiones evaluadas por decisión e índice de integridad emergente. El XTF Score convierte una sugerencia de IA en evidencia sustentable.'],
-        ['XSM', 'Sovereign Metrics', 'Métricas de cumplimiento con agregación jerárquica: del individuo al equipo, a la organización, al bloque comercial.'],
-      ].map(([k, t, d]) => (
-        <div class="panel" style="display:flex;flex-direction:column;gap:12px;padding:30px">
-          <span class="mono" style="font-size:24px;font-weight:500;color:var(--accent)">{k}</span>
-          <span style="font-family:var(--serif);font-size:21px;font-weight:500">{t}</span>
-          <span style="font-size:15px;line-height:1.55;color:var(--ink-soft)">{d}</span>
-        </div>
+  <!-- 3 · LAS PUERTAS -->
+  <section class="wrap" style="padding-top:72px;padding-bottom:72px;display:flex;flex-direction:column;gap:32px">
+    <div style="display:flex;flex-direction:column;gap:10px;max-width:640px">
+      <span class="section-no">§ 03 — LAS PUERTAS</span>
+      <h2 style="font-size:34px;line-height:1.15">Cada quien ve lo que le toca.</h2>
+      <p class="lede" style="margin:0;font-size:16px">Ninguna exige aprender un sistema nuevo. La cuarta puerta —API y MCP— no es una pantalla: es la base de las otras tres.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:20px">
+      {puertas.map((p) => (
+        <article class="panel" style="display:flex;flex-direction:column;gap:0;overflow:hidden">
+          <div style="padding:18px 22px 14px;display:flex;flex-direction:column;gap:6px;border-bottom:1px solid var(--line)">
+            <span class="mono" style="font-size:11px;letter-spacing:.14em;color:var(--accent)">PUERTA {p.n} · {p.entra.toUpperCase()}</span>
+            <h3 style="font-size:21px">{p.t}</h3>
+            <span style="font-size:13px;color:var(--ink-muted)">{p.quien}</span>
+          </div>
+          <!-- mini pantalla -->
+          <div class="pantalla" style="padding:16px 22px;background:var(--stone);min-height:150px;display:flex;align-items:center;justify-content:center">
+            {p.n === '1' && (
+              <div style="width:100%;background:#fff;border:1px solid var(--line);font-size:12px">
+                <div class="mono" style="padding:6px 10px;border-bottom:1px solid var(--line);font-size:10px;color:var(--ink-muted)">SU ERP · Pedimentos</div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;border-bottom:1px solid var(--line)"><span>26 48 3621 6001234</span><Sello size="compact" link={false} /></div>
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;color:var(--ink-muted)"><span>26 48 3621 6001198</span><span class="mono" style="font-size:10px;color:#B8860B">● XTF 64 · 2 alertas</span></div>
+              </div>
+            )}
+            {p.n === '2' && (
+              <div style="width:100%;background:#fff;border:1px solid var(--line);font-size:11.5px">
+                <div class="mono" style="padding:6px 10px;border-bottom:1px solid var(--line);font-size:10px;color:var(--ink-muted)">PORTAL FACT · Thread · 26 48 3621 6001234</div>
+                {[['12 jun', 'Recepción material · ERP', '✓'], ['03 jul', 'Orden cerrada · MES', '✓'], ['18 ago', 'Inspección calidad', '✓'], ['02 sep', 'Certificado de origen', '✓'], ['14 oct', 'Pedimento transmitido', '✓']].map(([f, e, s]) => (
+                  <div style="display:flex;gap:10px;padding:5px 10px;border-bottom:1px solid var(--line)"><span class="mono" style="color:var(--ink-muted);width:44px">{f}</span><span style="flex:1">{e}</span><span style="color:#1F4E5C">{s} firmado</span></div>
+                ))}
+                <div class="mono" style="padding:6px 10px;font-size:10px;color:var(--accent)">Generar paquete de evidencia →</div>
+              </div>
+            )}
+            {p.n === '3' && (
+              <div style="width:150px;background:#fff;border:6px solid #23302F;border-radius:18px;padding:12px 10px;font-size:10.5px;display:flex;flex-direction:column;gap:6px">
+                <span class="mono" style="font-size:9px;color:var(--ink-muted)">xcid.dev/verify/…</span>
+                <strong style="font-size:12px">Sello auténtico</strong>
+                <span style="color:#1F4E5C">✓ Firma válida</span><span style="color:#1F4E5C">✓ Cadena íntegra</span><span style="color:#1F4E5C">✓ Vigente</span>
+                <span class="mono" style="font-size:20px;color:#1F4E5C">87 <span style="font-size:9px;color:var(--ink-muted)">CONFIABLE</span></span>
+                <span style="color:var(--ink-muted)">Sin datos sensibles</span>
+              </div>
+            )}
+          </div>
+          <div style="padding:16px 22px 20px;display:flex;flex-direction:column;gap:8px">
+            <strong style="font-size:15px;font-family:var(--serif);font-weight:500">{p.q}</strong>
+            <span style="font-size:14px;line-height:1.5;color:var(--ink-soft)">{p.ve}</span>
+          </div>
+        </article>
       ))}
     </div>
+    <div class="panel dark" style="padding:18px 22px;display:flex;flex-wrap:wrap;gap:16px;align-items:center;justify-content:space-between">
+      <span style="font-size:14.5px"><strong style="color:var(--accent-light)">Puerta 4 · API / MCP.</strong> El ERP del cliente, el sistema del comprador y los agentes de IA consultan eventos, scores y sellos como datos, sin pantalla.</span>
+      <a href="#maquinas" class="mono" style="font-size:12px;color:var(--accent-light)">Ver cómo ↓</a>
+    </div>
   </section>
 
+  <!-- 4 · EL CASO -->
   <section style="border-top:1px solid var(--line);background:var(--paper)">
-    <div class="wrap" style="padding-top:72px;padding-bottom:72px;display:flex;flex-direction:column;gap:28px">
-      <div style="display:flex;align-items:baseline;gap:16px"><span class="section-no">§ 02</span><h2 style="font-size:32px">No es un asistente. Es infraestructura de criterio.</h2></div>
-      <div class="scroll-x">
-        <table class="data">
-          <thead><tr><th style="width:50%">ASISTENTE DE IA</th><th style="color:var(--accent)">XCID FACT</th></tr></thead>
-          <tbody>
-            <tr><td style="color:var(--ink-muted)">La respuesta es opaca. No sabe cómo llegó a ella.</td><td>Cada respuesta tiene metadatos verificables de cómo se construyó y qué fuentes usó.</td></tr>
-            <tr><td style="color:var(--ink-muted)">Si el modelo cambia, la respuesta cambia. Sin trazabilidad.</td><td>Cada decisión queda registrada antes de la acción. Auditable en cualquier momento.</td></tr>
-            <tr><td style="color:var(--ink-muted)">Sus datos viajan al proveedor del modelo.</td><td>Soberanía sobre datos y conocimiento generado; air-gapped opcional.</td></tr>
-            <tr><td style="color:var(--ink-muted)">No hay manera de sustentar la respuesta ante un regulador.</td><td>XTF Score y trail completo de evidencia para sostener cada conclusión.</td></tr>
-          </tbody>
-        </table>
+    <div class="wrap" style="padding-top:72px;padding-bottom:72px;display:flex;flex-direction:column;gap:32px">
+      <div style="display:flex;flex-direction:column;gap:10px;max-width:680px">
+        <span class="section-no">§ 04 — UN CASO DE PRINCIPIO A FIN</span>
+        <h2 style="font-size:34px;line-height:1.15">De embarque detenido a respuesta en 48 horas.</h2>
+        <p class="lede" style="margin:0;font-size:16px">Un embarque de arneses queda detenido en la frontera: la autoridad pide demostrar el origen de los materiales. Sin FACT, eso son días de reconstruir carpetas y correos, y al final una narración que el otro lado tiene que creer.</p>
+      </div>
+      <ol class="caso">
+        {caso.map(([t, d, p], i) => (
+          <li>
+            <span class="caso-n"><span class="mono" style="font-size:10px;letter-spacing:.1em">{p === 'conector' ? 'CONECTOR' : `PUERTA ${p}`}</span></span>
+            <strong style="font-size:16px;line-height:1.3">{t}</strong>
+            <span style="font-size:14px;line-height:1.5;color:var(--ink-soft)">{d}</span>
+          </li>
+        ))}
+      </ol>
+      <p class="mono" style="margin:0;font-size:12px;color:var(--ink);border-top:1px solid var(--ink);padding-top:14px">Resultado: respuesta en menos de 48 horas, sin reconstrucción y sin pedirle a nadie que confíe en una narración.</p>
+    </div>
+  </section>
+
+  <!-- 5 · PARA MÁQUINAS -->
+  <section id="maquinas" class="wrap grid12" style="padding-top:72px;padding-bottom:64px;align-items:center">
+    <div style="grid-column:span 5;display:flex;flex-direction:column;gap:16px">
+      <span class="section-no">§ 05 — PARA MÁQUINAS</span>
+      <h2 style="font-size:32px;line-height:1.15">API primero. Las pantallas son tres vistas de lo mismo.</h2>
+      <p class="lede" style="margin:0;font-size:16px">Un agente de IA o el sistema del comprador consulta un sello igual que una persona. La misma API se expone vía MCP.</p>
+      <div style="padding-top:6px"><Sello /></div>
+    </div>
+    <div class="panel dark" style="grid-column:span 7;min-width:0">
+      <div class="mono" style="display:flex;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--line-dark);font-size:12px;color:var(--ink-faint)"><span>GET /v1/sellos/{DEMO}</span><span style="color:var(--accent-light)">json</span></div>
+<pre class="mono" style="margin:0;padding:20px;font-size:12.5px;line-height:1.7;overflow-x:auto;color:var(--on-dark)">&#123;
+  <span style="color:var(--accent-light)">"sello_id"</span>:   "{DEMO}",
+  <span style="color:var(--accent-light)">"familia"</span>:    "XTF",
+  <span style="color:var(--accent-light)">"entidad"</span>:    "pedimento:26-48-3621-6001234",
+  <span style="color:var(--accent-light)">"score"</span>:      87,
+  <span style="color:var(--accent-light)">"banda"</span>:      "CONFIABLE",
+  <span style="color:var(--accent-light)">"vigencia"</span>:   &#123; "inicio": "2026-10-14", "fin": "2027-10-14" &#125;,
+  <span style="color:var(--accent-light)">"cadena"</span>:     &#123; "eventos": 47, "integra": true &#125;,
+  <span style="color:var(--accent-light)">"formato"</span>:    "publico",
+  <span style="color:var(--accent-light)">"verificar"</span>:  "https://xcid.dev/verify/{DEMO}"
+&#125;</pre>
+    </div>
+  </section>
+
+  <!-- PREGUNTAS -->
+  <section style="border-top:1px solid var(--line);background:var(--paper)">
+    <div class="wrap" style="padding-top:64px;padding-bottom:64px;display:flex;flex-direction:column;gap:24px">
+      <h2 style="font-size:28px">Las dudas que trae el visitante.</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));gap:0 40px">
+        {dudas.map(([q, a]) => (
+          <div style="display:flex;flex-direction:column;gap:6px;padding:16px 0;border-top:1px solid var(--line)">
+            <strong style="font-size:15.5px;font-family:var(--serif);font-weight:500">{q}</strong>
+            <span style="font-size:14.5px;line-height:1.55;color:var(--ink-soft)">{a}</span>
+          </div>
+        ))}
       </div>
     </div>
   </section>
 
-  <section class="wrap grid12" style="padding-top:72px;padding-bottom:72px">
-    <div style="grid-column:span 7;display:flex;flex-direction:column;gap:18px">
-      <span class="section-no">§ 03 — PARA QUIÉN</span>
-      <h2 style="font-size:30px;line-height:1.2">Profesionales que sustentan criterio ante terceros.</h2>
-      <p class="lede" style="margin:0;font-size:16px">Agentes aduanales, consultores ambientales, auditores fiscales y directores de cumplimiento; departamentos de comercio exterior y áreas reguladas; empresas IMMEX; y los desarrolladores que integran estas garantías en sus propios sistemas y agentes.</p>
+  <!-- CTA -->
+  <section class="wrap grid12" style="padding-top:64px;padding-bottom:80px;align-items:center">
+    <div style="grid-column:span 7;display:flex;flex-direction:column;gap:12px">
+      <span class="eyebrow">Piloto</span>
+      <h2 style="font-size:32px;line-height:1.15">Empiece con un piloto acotado en su operación.</h2>
+      <p class="lede" style="margin:0;font-size:16px">Un sistema conectado, un tipo de evento, unas semanas. Al final tiene sellos reales de su operación y un criterio claro para decidir si escala.</p>
     </div>
-    <div class="panel" style="grid-column:span 5;display:flex;flex-direction:column;gap:14px;padding:28px">
-      <span class="eyebrow" style="font-size:11px">Horizonte</span>
-      <p style="margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-soft)">XCID FACT es el primer producto de una familia. En la ruta: XCID Companion (soberanía en despacho), MDR-X (micro centros de datos regionales) y XCID Inside (licenciamiento de la arquitectura). Hoy vendemos lo que ya opera.</p>
+    <div style="grid-column:span 5;display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-end">
+      <a href="/contacto?motivo=piloto" class="btn primary">Solicitar piloto</a>
+      <a href="https://wa.me/5216561224073?text=Hola%20Jorge%2C%20me%20interesa%20el%20piloto%20de%20XCID%20FACT." class="btn" target="_blank" rel="noopener">WhatsApp directo</a>
     </div>
   </section>
 </Base>
+
+<style>
+  /* Caja negra: pulsos que viajan de la cabina a la caja; cinta que graba; LED; lector que aparece */
+  .cn svg { background: var(--paper); border: 1px solid var(--line); }
+  .p { opacity: 0; animation: viaja 6s linear infinite; }
+  .p1 { animation-delay: 0s; --y: 125px; } .p2 { animation-delay: 1.2s; --y: 159px; } .p3 { animation-delay: 2.4s; --y: 193px; } .p4 { animation-delay: 3.6s; --y: 227px; } .p5 { animation-delay: 4.8s; --y: 261px; }
+  @keyframes viaja {
+    0%   { opacity: 0; transform: translate(205px, var(--y)); }
+    8%   { opacity: 1; }
+    40%  { transform: translate(300px, 180px); opacity: 1; }
+    45%  { transform: translate(312px, 180px); opacity: 0; }
+    100% { opacity: 0; transform: translate(312px, 180px); }
+  }
+  .tape line { animation: graba 1.2s ease-in-out infinite alternate; transform-origin: 50% 100%; transform-box: fill-box; }
+  .tape line:nth-child(2n) { animation-delay: .3s; } .tape line:nth-child(3n) { animation-delay: .6s; }
+  @keyframes graba { from { transform: scaleY(.35); } to { transform: scaleY(1); } }
+  .rec { animation: led 1.6s ease-in-out infinite; }
+  @keyframes led { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+  .lector { animation: lee 6s ease-in-out infinite; transform-origin: 572px 180px; transform-box: view-box; }
+  @keyframes lee { 0%, 40% { opacity: .35; transform: scale(.96); } 55%, 90% { opacity: 1; transform: scale(1); } 100% { opacity: .35; transform: scale(.96); } }
+  @media (prefers-reduced-motion: reduce) { .p { animation: none; opacity: 0; } .tape line, .rec, .lector { animation: none; opacity: 1; } }
+
+  .flujo { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 20px; background: var(--stone); border: 1px solid var(--line); }
+  .fl-row { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; width: 100%; }
+  .fl-box { font-family: var(--mono); font-size: 11.5px; padding: 8px 12px; background: var(--paper); border: 1px solid var(--ink); color: var(--ink); text-align: center; }
+  .fl-box.wide { flex: 1; max-width: 520px; }
+  .fl-box.dark { background: var(--ink); color: var(--on-dark); }
+  .fl-arrow { font-family: var(--mono); font-size: 11px; color: var(--ink-muted); }
+
+  .caso { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 20px; }
+  .caso li { display: flex; flex-direction: column; gap: 10px; position: relative; padding-top: 14px; border-top: 1px solid var(--ink); }
+  .caso-n { display: inline-flex; align-self: flex-start; padding: 4px 8px; background: var(--ink); color: var(--paper); }
+  @media (max-width: 1000px) { .caso { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 600px) { .caso { grid-template-columns: 1fr; } }
+</style>

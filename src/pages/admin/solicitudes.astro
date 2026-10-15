@@ -1,0 +1,42 @@
+---
+import Admin from '../../layouts/Admin.astro';
+import { currentAdmin } from '../../lib/supabase';
+const { sb, isAdmin } = await currentAdmin(Astro.request, Astro.cookies);
+if (!isAdmin || !sb) return Astro.redirect('/admin/login');
+let error = '';
+if (Astro.request.method === 'POST') {
+  const f = await Astro.request.formData();
+  const id = String(f.get('id')); const action = String(f.get('_action'));
+  const { error: err } = action === 'borrar' ? await sb.from('solicitudes').delete().eq('id', id)
+    : await sb.from('solicitudes').update({ atendida: action === 'atendida' }).eq('id', id);
+  if (err) error = err.message;
+}
+const { data: list, error: qerr } = await sb.from('solicitudes').select('*').order('creado_en', { ascending: false });
+const MOTIVOS: Record<string, string> = { piloto: 'Piloto XCID FACT', consultoria: 'Consultoría', desarrollo: 'Desarrollo', taller: 'Taller', otro: 'Otro' };
+---
+<Admin title="Solicitudes" area={'solicitudes' as any}>
+  <h1 style="font-size:28px">Solicitudes de contacto</h1>
+  {error && <p class="notice err">{error}</p>}
+  {qerr && <p class="notice err">La tabla <code>solicitudes</code> no existe todavía. Ejecuta <code>supabase/migrations/002_solicitudes.sql</code> en el SQL Editor.</p>}
+  <div class="scroll-x"><table class="data">
+    <thead><tr><th>FECHA</th><th>QUIÉN</th><th>MOTIVO</th><th>MENSAJE</th><th>CANAL</th><th></th></tr></thead>
+    <tbody>
+      {(list ?? []).map((s: any) => (
+        <tr style={s.atendida ? 'color:var(--ink-muted)' : ''}>
+          <td class="mono" style="font-size:12px;white-space:nowrap">{String(s.creado_en).slice(0, 16).replace('T', ' ')}</td>
+          <td><strong>{s.nombre}</strong>{s.empresa && <> · {s.empresa}</>}<br /><span class="mono" style="font-size:12px">{s.contacto}</span></td>
+          <td style="font-size:14px">{MOTIVOS[s.motivo] ?? s.motivo}</td>
+          <td style="font-size:14px;max-width:360px">{s.mensaje}</td>
+          <td class="mono" style="font-size:11px">{s.canal}</td>
+          <td style="white-space:nowrap">
+            <form method="post" style="margin:0;display:flex;gap:6px"><input type="hidden" name="id" value={s.id} />
+              <button class="btn sm" name="_action" value={s.atendida ? 'pendiente' : 'atendida'} style="font-size:12px">{s.atendida ? 'Reabrir' : 'Atendida'}</button>
+              <button class="btn sm" name="_action" value="borrar" style="font-size:12px;color:var(--accent);border-color:var(--line)" onclick="return confirm('¿Eliminar?')">×</button>
+            </form>
+          </td>
+        </tr>
+      ))}
+      {!qerr && (list ?? []).length === 0 && <tr><td colspan="6" style="color:var(--ink-muted)">Sin solicitudes todavía.</td></tr>}
+    </tbody>
+  </table></div>
+</Admin>
