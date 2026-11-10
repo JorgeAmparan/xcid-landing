@@ -7,6 +7,8 @@ interface Props {
   sub?: string;
   lang?: string;
   ogType?: string;
+  /** false omite Cloudflare Web Analytics (p. ej. /verify) */
+  analytics?: boolean;
 }
 const {
   title,
@@ -15,6 +17,7 @@ const {
   sub,
   lang = 'es',
   ogType = 'website',
+  analytics = true,
 } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url.origin).toString();
 const subLabel = sub ?? (section === 'inicio' ? 'CoInteligencia Profesional' : `/ ${section}`);
@@ -64,5 +67,7 @@ const subLabel = sub ?? (section === 'inicio' ? 'CoInteligencia Profesional' : `
       <span>Lappicero Studio · <a href="/verify">xcid.dev/verify</a> · <a href="/admin" rel="nofollow">Entrar</a></span>
     </footer>
   </div>
+  {/* Se emite con set:html para conservar los comentarios y el atributo tal cual (Astro los recompone si van en plantilla). */}
+  {analytics && <Fragment set:html={`<!-- Cloudflare Web Analytics --><script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "f45bfdba954841aea3d904e03e3c7fa0"}'></script><!-- End Cloudflare Web Analytics -->`} />}
 </body>
 </html>
